@@ -14,7 +14,7 @@ squareStockWidth = 3.8;
 
 longDowelLength = 108;
 
-hangingHeight = 121.243;
+hangingHeight = 121.2435;
 legAngle = 60;
 
 // Ratio of the upper leg triangle to the lower leg triangle
@@ -35,8 +35,8 @@ heightToLegRatio = sin(legAngle);
 // hypotenuse of desired height plus half the width to hold the dowel
 legLength = (hangingHeight / heightToLegRatio) + (squareStockWidth / 2);
 topLegDowelDistance = legLength - squareStockWidth / 2;
-middleLegDowelDistance = (legLength / (upperRatio + lowerRatio)) * lowerRatio;
-bottomLegDowelDistance = legLength / (upperRatio + lowerRatio);
+middleLegDowelDistance = (topLegDowelDistance / (upperRatio + lowerRatio)) * lowerRatio;
+bottomLegDowelDistance = topLegDowelDistance / (upperRatio + lowerRatio);
 legShift = middleLegDowelDistance * cos(legAngle);
 
 armPivotDowelSpan = (topLegDowelDistance - middleLegDowelDistance) * cos(legAngle);
@@ -50,6 +50,7 @@ shortDowelColor = [0, 0, 1];
 legColor = [0.5, 1.0, 0.5];
 armColor = [0.9, 0.5, 0.8];
 
+// COMPONENTS
 module dowel(length) {
     rotate([-90, 0, 0]) cylinder(h = length, r = dowelRadius);
 }
@@ -92,6 +93,69 @@ module arm() {
     }
 }
 
+module sizeLabel(distance, over=false) {
+    rotate([0, 90, 0]) color("grey") {
+        cylinder(0.1, r=squareStockWidth/2);
+        // translated in Z, because this is unrotated, and cylinder height is in Z
+        translate([0, 0, distance-0.1]) cylinder(0.1, r=squareStockThickness);
+        cylinder(distance, r=0.1);
+    }
+    translate([distance/2, 0, (over ? 1 : -1) * squareStockWidth/4])
+        rotate([90, 0, 0])
+        color("grey")
+        text(str(distance), halign="center", valign=(over ? "bottom" : "top"), size=squareStockWidth/2);
+}
+
+// KEY
+module key() {
+    module keytext(string, halign="right", valign="center", size=squareStockWidth) {
+        rotate([90, 0, 0])
+        color("black")
+        text(string, halign=halign, valign=valign, size=size);
+    }
+    
+    module partLabel(string) {
+        translate([-squareStockWidth, 0, 0]) keytext(string);
+    }
+
+    translate([0, 0, (hangingHeight+squareStockWidth) * 1.5]) {
+        translate([legLength/2, 0, -squareStockWidth*2.75])
+            keytext("KEY", halign="center", valign="top", size=squareStockWidth*2);
+
+        partLabel("LEG");
+        leg();
+        translate([0, 0, -squareStockWidth]) sizeLabel(legLength);
+        translate([0, 0, -squareStockWidth*1.25]) sizeLabel(bottomLegDowelDistance);
+
+        translate([0, 0, squareStockWidth]) sizeLabel(middleLegDowelDistance, over=true);
+        translate([middleLegDowelDistance, 0, squareStockWidth]) sizeLabel(topLegDowelDistance-middleLegDowelDistance, over=true);
+        translate([topLegDowelDistance, 0, squareStockWidth]) sizeLabel(legLength-topLegDowelDistance, over=true);
+        
+        translate([0, 0, squareStockWidth*4.5]){
+            partLabel("ARM");
+            arm();
+            translate([0, 0, -squareStockWidth]) sizeLabel(armLength);
+            translate([0, 0, squareStockWidth]) sizeLabel(squareStockWidth/2, over=true);
+            for (i=[1:len(armDowelHoles)-1]) translate([armDowelHoles[i-1], 0, squareStockWidth]) sizeLabel(armHangDowelSpan, over=true);
+            translate([armDowelHoles[len(armDowelHoles)-1], 0, squareStockWidth]) sizeLabel(squareStockWidth/2, over=true);
+            
+            translate([0, 0, squareStockWidth*4.5]) {
+                partLabel("LONG DOWEL");
+                rotate([0, 0, -90]) longDowel();
+                translate([0, 0, -squareStockWidth]) sizeLabel(longDowelLength);
+                
+                translate([0, 0, squareStockWidth*3]) {
+                    partLabel("SHORT DOWEL");
+                    rotate([0, 0, -90]) shortDowel();
+                    translate([0, 0, -squareStockWidth]) sizeLabel(shortDowelLength);
+                }
+            }
+        }
+    }
+}
+key();
+
+// ASSEMBLY
 rotate([0, -legAngle, 0]) {
     leg();
     translate([bottomLegDowelDistance, 0]) longDowel();
