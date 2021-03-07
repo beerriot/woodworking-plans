@@ -1,7 +1,6 @@
 // Folding Laundy Rack
 
 // TODO: paracord and hooks
-// TODO: treat Z as "up", as "front"/"top"/etc. view settings do
 // TODO: animate open/close?
 
 // finer faceting on small cylinders
@@ -52,12 +51,12 @@ legColor = [0.5, 1.0, 0.5];
 armColor = [0.9, 0.5, 0.8];
 
 module dowel(length) {
-    cylinder(h = length, r = dowelRadius);
+    rotate([-90, 0, 0]) cylinder(h = length, r = dowelRadius);
 }
 
 module squareStock(length) {
-    translate([0, -squareStockWidth / 2, 0])
-        cube([length, squareStockWidth, squareStockThickness]);
+    translate([0, 0, -squareStockWidth / 2])
+        cube([length, squareStockThickness, squareStockWidth]);
 }
 
 module longDowel() {
@@ -72,7 +71,7 @@ module shortDowel() {
 
 // subtract this from arm & leg
 module dowelHole(distance) {
-    translate([distance, 0, -0.1]) dowel(squareStockThickness + 0.2);
+    translate([distance, -0.1]) dowel(squareStockThickness + 0.2);
 }
 
 module leg() {
@@ -93,27 +92,27 @@ module arm() {
     }
 }
 
-rotate([0, 0, legAngle]) {
+rotate([0, -legAngle, 0]) {
     leg();
     translate([bottomLegDowelDistance, 0]) longDowel();
     translate([middleLegDowelDistance, 0]) longDowel();
-    translate([0, 0, longDowelLength - squareStockThickness]) leg();
+    translate([0, longDowelLength - squareStockThickness]) leg();
 }
-translate([legShift*2, 0, 0]) rotate([0, 0, 180 - legAngle]) {
-    translate([0, 0, squareStockThickness]) leg();
-    translate([0, 0, longDowelLength - (squareStockThickness * 2)]) leg();
-    translate([bottomLegDowelDistance, 0, squareStockThickness]) shortDowel();
+translate([legShift*2, 0]) rotate([0, legAngle - 180, 0]) {
+    translate([0, squareStockThickness]) leg();
+    translate([0, longDowelLength - (squareStockThickness * 2)]) leg();
+    translate([bottomLegDowelDistance, squareStockThickness]) shortDowel();
 }
 
-translate([legShift - squareStockThickness - (armHangDowelSpan * (len(armDowelHoles)-1)), hangingHeight]) {
+translate([legShift - squareStockThickness - (armHangDowelSpan * (len(armDowelHoles)-1)), 0, hangingHeight]) {
     arm();
-    translate([0, 0, longDowelLength - squareStockThickness]) arm();
+    translate([0, longDowelLength - squareStockThickness]) arm();
     for (i = armDowelHoles) translate([i, 0]) longDowel();
 }
-translate([legShift - squareStockThickness, hangingHeight, 0]) {
-    translate([0, 0, squareStockThickness]) arm();
-    translate([0, 0, longDowelLength - squareStockThickness*2]) arm();
-    translate([armDowelHoles[1], 0, squareStockThickness]) shortDowel();
+translate([legShift - squareStockThickness, 0, hangingHeight]) {
+    translate([0, squareStockThickness]) arm();
+    translate([0, longDowelLength - squareStockThickness*2]) arm();
+    translate([armDowelHoles[1], squareStockThickness]) shortDowel();
     translate([armDowelHoles[2], 0]) longDowel();
-    for (i = [3:len(armDowelHoles)-1]) translate([armDowelHoles[i], 0, squareStockThickness]) shortDowel();
+    for (i = [3:len(armDowelHoles)-1]) translate([armDowelHoles[i], squareStockThickness]) shortDowel();
 }
