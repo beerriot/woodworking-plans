@@ -1,6 +1,5 @@
 // Folding Laundy Rack
 
-// TODO: paracord and hooks
 // TODO: animate open/close?
 
 // finer faceting on small cylinders
@@ -26,6 +25,8 @@ innerDowels = 1;
 // how many dowels outside arm pivot points
 outerDowels = 4;
 
+paracordRadius = 0.3;
+
 // COMPUTED MEASUREMENTS
 dowelRadius = dowelDiameter / 2;
 shortDowelLength = longDowelLength - (squareStockThickness * 2);
@@ -39,16 +40,25 @@ middleLegDowelDistance = (topLegDowelDistance / (upperRatio + lowerRatio)) * low
 bottomLegDowelDistance = topLegDowelDistance / (upperRatio + lowerRatio);
 legShift = middleLegDowelDistance * cos(legAngle);
 
+// distance from arm-to-arm pivot to leg-to-leg pivot
+pivotVerticalSpan = heightToLegRatio*(topLegDowelDistance-middleLegDowelDistance);
+
+
 armPivotDowelSpan = (topLegDowelDistance - middleLegDowelDistance) * cos(legAngle);
 armHangDowelSpan = armPivotDowelSpan / (innerDowels + 1);
 armLength = armHangDowelSpan * (innerDowels + outerDowels + 1) + squareStockWidth;
 armDowelHoles = [for (i=[0:(innerDowels + outerDowels + 1)]) (squareStockWidth / 2) + i * armHangDowelSpan];
+
+hookWireRadius = paracordRadius/2;
+hookShaftLength = dowelDiameter * 2;
 
 // COLORS
 longDowelColor = [0.6, 0.6, 1];
 shortDowelColor = [0, 0, 1];
 legColor = [0.5, 1.0, 0.5];
 armColor = [0.9, 0.5, 0.8];
+paracordColor = [0, 0, 0];
+hookColor = [0.8, 0.8, 0.8];
 
 // COMPONENTS
 module dowel(length) {
@@ -93,6 +103,47 @@ module arm() {
     }
 }
 
+module paracordLine(length) {
+    color(paracordColor) cylinder(length, r=paracordRadius);
+}
+
+module paracordLoop() {
+    color(paracordColor) rotate([90, 0, 0]) rotate_extrude(convexity=10) translate([dowelRadius + paracordRadius, 0]) circle(paracordRadius);
+}
+
+module hook() {
+    hookLevel = -(paracordRadius*1.5 + dowelDiameter*2);
+    color(hookColor) {
+        // top loop
+        rotate([90, 0, 0]) rotate_extrude(convexity=10) translate([paracordRadius + hookWireRadius, 0]) circle(hookWireRadius);
+        // straight shaft
+        translate([0, 0, hookLevel]) cylinder(hookShaftLength, r=hookWireRadius);
+        // curve
+        translate([-(dowelRadius+hookWireRadius), 0, hookLevel]) rotate([90, 0, 0]) rotate_extrude(angle=-180, convexity=10) translate([dowelRadius + hookWireRadius, 0]) circle(hookWireRadius);
+        // end
+        translate([-(dowelDiameter + hookWireRadius*2), 0, hookLevel]) cylinder(dowelDiameter*0.5, r=hookWireRadius);
+    }
+}
+
+module lock() {
+    // hooks are asymetric, so cord has to run to the side of the dowel
+    paracordAngle = atan((dowelRadius+hookWireRadius)/pivotVerticalSpan);
+    // length of the unit, given the swing out of the way
+    hypLength = pivotVerticalSpan / cos(paracordAngle);
+        
+    rotate([0, -paracordAngle, 0]) {
+        paracordLoop();
+        
+        loopHalfHeight = dowelRadius+paracordRadius;
+        hookHalfHeight = hookWireRadius*1.5 + hookShaftLength;
+        lineLength = hypLength - loopHalfHeight - hookHalfHeight;
+        translate([0, 0, -(loopHalfHeight+lineLength)]) paracordLine(lineLength);
+        
+        translate([0, 0, -(loopHalfHeight+lineLength)]) hook();
+        
+    }
+}
+
 module sizeLabel(distance, over=false) {
     rotate([0, 90, 0]) color("grey") {
         cylinder(0.1, r=squareStockWidth/2);
@@ -122,7 +173,7 @@ module key() {
         translate([legLength/2, 0, -squareStockWidth*2.75])
             keytext("KEY", halign="center", valign="top", size=squareStockWidth*2);
 
-        partLabel("LEG");
+        partLabel("LEG (4)");
         leg();
         translate([0, 0, -squareStockWidth]) sizeLabel(legLength);
         translate([0, 0, -squareStockWidth*1.25]) sizeLabel(bottomLegDowelDistance);
@@ -132,7 +183,7 @@ module key() {
         translate([topLegDowelDistance, 0, squareStockWidth]) sizeLabel(legLength-topLegDowelDistance, over=true);
         
         translate([0, 0, squareStockWidth*4.5]){
-            partLabel("ARM");
+            partLabel("ARM (4)");
             arm();
             translate([0, 0, -squareStockWidth]) sizeLabel(armLength);
             translate([0, 0, squareStockWidth]) sizeLabel(squareStockWidth/2, over=true);
@@ -140,14 +191,27 @@ module key() {
             translate([armDowelHoles[len(armDowelHoles)-1], 0, squareStockWidth]) sizeLabel(squareStockWidth/2, over=true);
             
             translate([0, 0, squareStockWidth*4.5]) {
-                partLabel("LONG DOWEL");
+                // 5 = four pivots, plus one foot
+                partLabel(str("LONG DOWEL (",(5 + innerDowels + outerDowels),")"));
                 rotate([0, 0, -90]) longDowel();
                 translate([0, 0, -squareStockWidth]) sizeLabel(longDowelLength);
                 
                 translate([0, 0, squareStockWidth*3]) {
-                    partLabel("SHORT DOWEL");
+                    // 1 = just one of the feet
+                    partLabel(str("SHORT DOWEL (",(1 + innerDowels + outerDowels),")"));
                     rotate([0, 0, -90]) shortDowel();
                     translate([0, 0, -squareStockWidth]) sizeLabel(shortDowelLength);
+                    
+                    translate([0, 0, squareStockWidth*3]) {
+                        partLabel("PARACORD (2)");
+                        rotate([0, 90, 0]) paracordLine(round(pivotVerticalSpan * 1.25));
+                        translate([0, 0, -squareStockWidth]) sizeLabel(round(pivotVerticalSpan * 1.25));
+                    
+                        translate([0, 0, squareStockWidth*2.5]) {
+                            partLabel("HOOK (2)");
+                            rotate([0, -90, 0]) hook();
+                        }
+                    }
                 }
             }
         }
@@ -172,6 +236,11 @@ translate([legShift - squareStockThickness - (armHangDowelSpan * (len(armDowelHo
     arm();
     translate([0, longDowelLength - squareStockThickness]) arm();
     for (i = armDowelHoles) translate([i, 0]) longDowel();
+        
+    translate([armDowelHoles[len(armDowelHoles)-1], 0]) {
+        translate([0, squareStockThickness*2+paracordRadius]) lock();
+        translate([0, longDowelLength - squareStockThickness*2 - paracordRadius]) lock();
+    }
 }
 translate([legShift - squareStockThickness, 0, hangingHeight]) {
     translate([0, squareStockThickness]) arm();
