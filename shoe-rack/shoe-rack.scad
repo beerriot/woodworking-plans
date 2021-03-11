@@ -39,6 +39,10 @@ module endStock(length, addThickness=0, addWidth=0) {
     cube([length, endStockThickness+addThickness, endStockWidth+addWidth]);
 }
 
+module shelfStock(length) {
+    cube([length, shelfStockThickness, shelfStockWidth]);
+}
+
 module endPiece(length) {
     difference() {
         endStock(length);
@@ -88,8 +92,32 @@ module shelfSupport(bottom=false) {
 
 }
 
+module shelfCenter(bottom=false) {
+    color(shelfSlatColor)
+    rotate([-90, 0, 0])
+    difference() {
+        shelfStock(shelfDepth);
+        //cut off corner sticking out the front
+        rotate([0, 0, 90-shelfAngle]) 
+        translate([0, -err, -shelfStockWidth]) 
+        endStock(endStockWidth/cos(shelfAngle)+err, derr, sin(shelfAngle)+err);
+        //cut off corner sticking out the back
+        translate([shelfDepth+endStockThickness, -err, -err])
+        rotate([0, 0, 90+shelfAngle]) 
+        endStock(endStockWidth/cos(shelfAngle)+err, derr, sin(shelfAngle)+err);
+        
+        // slots for slats
+        for (x = shelfSlatPositions) if (x != 0) translate([x+shelfStockWidth+err, -shelfStockThickness/2, -err]) rotate([0, -90, 0]) shelfStock(shelfStockWidth+derr);
+
+        // remove the portion that hangs below the ends
+        if (bottom) {
+            rotate([0, 0, shelfAngle]) translate([-err, -err, -(shelfStockWidth-shelfHeights[0]+err)]) endStock(endDepth+derr, derr, err);
+        }
+    } 
+}
+
 module shelfSlat() {
-    color(shelfSlatColor) cube([length - endStockThickness*2, shelfStockThickness, shelfStockWidth]);
+    color(shelfSlatColor) shelfStock(length - endStockThickness*2);
 }
 
 // ASSEMBLY
@@ -107,6 +135,8 @@ module shelf(bottom=false) {
     rotate([shelfAngle, 0, 0]) translate([0, 0, -endStockWidth]) {
         translate([endStockThickness, 0]) rotate([0, 0, 90]) shelfSupport(bottom);
         translate([(length - endStockThickness*2), 0]) rotate([0, 0, 90]) shelfSupport(bottom);
+        
+        translate([(shelfStockThickness + length)/2, 0, endStockWidth]) rotate([0, 0, 90]) shelfCenter(bottom);
     
         // front slat sits higher than other slats, to provide a little ledge for heels/toes to rest against
         for (y = shelfSlatPositions) translate([0, y, endStockWidth - (y == 0 ? 0 : shelfStockThickness/2)]) rotate([-90, 0, 0]) translate([0, -shelfStockThickness]) shelfSlat();
