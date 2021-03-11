@@ -19,6 +19,10 @@ maxShelfSlats=6;
 // COMPUTED PARAMS
 endDepth=shelfDepth*cos(shelfAngle);
 
+shelfSlatCount = min(maxShelfSlats, floor(shelfDepth / (shelfStockWidth+minShelfSlatSpacing)));
+shelfSlatSpace = (shelfDepth - shelfStockWidth*shelfSlatCount) / (shelfSlatCount-1);
+shelfSlatPositions = [0 : (shelfStockWidth + shelfSlatSpace) : shelfDepth];
+
 // COLORS
 endTopBottomColor=[0.8, 0.8, 1];
 endFrontBackColor=[0.8, 1, 0.8];
@@ -73,18 +77,15 @@ module shelfSupport(bottom=false) {
         rotate([0, 90+shelfAngle, 0]) 
         endStock(endStockWidth/cos(shelfAngle)+err, derr, sin(shelfAngle)+err);
         
+        // slots for slats
+        for (x = shelfSlatPositions) if (x != 0) translate([x, endStockThickness+err, shelfStockThickness/2]) rotate([-90, 0, -90]) shelfSlat();
+
+        // remove the portion that hangs below the ends
         if (bottom) {
             rotate([0, shelfAngle, 0]) translate([-err, -err, -(endStockWidth-shelfHeights[0]+err)]) endStock(endDepth+derr, derr, err);
         }
     }    
-}
 
-module bottomShelfSupport() {
-    difference() {
-        shelfSupport();
-        
-        translate([-err, -err, -(endStockWidth+err)]) endStock(endDepth+derr, derr, err);
-    }
 }
 
 module shelfSlat() {
@@ -107,11 +108,8 @@ module shelf(bottom=false) {
         translate([endStockThickness, 0]) rotate([0, 0, 90]) shelfSupport(bottom);
         translate([(length - endStockThickness*2), 0]) rotate([0, 0, 90]) shelfSupport(bottom);
     
-        shelfSlatCount = min(maxShelfSlats, floor(shelfDepth / (shelfStockWidth+minShelfSlatSpacing)));
-        shelfSlatSpace = (shelfDepth - shelfStockWidth*shelfSlatCount) / (shelfSlatCount-1);
-        for (y = [0 : (shelfStockWidth + shelfSlatSpace) : shelfDepth]) {
-            translate([0, y, endStockWidth]) rotate([-90, 0, 0]) translate([0, -shelfStockThickness]) shelfSlat();
-        }
+        // front slat sits higher than other slats, to provide a little ledge for heels/toes to rest against
+        for (y = shelfSlatPositions) translate([0, y, endStockWidth - (y == 0 ? 0 : shelfStockThickness/2)]) rotate([-90, 0, 0]) translate([0, -shelfStockThickness]) shelfSlat();
     }
 }
 
