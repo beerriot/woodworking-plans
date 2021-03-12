@@ -39,8 +39,18 @@ module endStock(length, addThickness=0, addWidth=0) {
     cube([length, endStockThickness+addThickness, endStockWidth+addWidth]);
 }
 
-module slatStock(length, addThickness=0, addWidth=0) {
-    cube([length, slatStockThickness+addThickness, slatStockWidth+addWidth]);
+// The intention of `errs` is to make it easy to make pieces for slicing out of other pieces. Each element is expected to be 0, 1, -1, or 2, meaning:
+//   0: The faces at the ends of this axis will not conflict with the faces of the object being cut
+//   1: The face at the 0 end of this axis will not conflict...
+//   -1: The face at the non-zero end of this axis will not conflict...
+//   2: Neither face at the ends of this axis will will not conflict...
+module slatStock(length, errs=[0,0,0]) {
+    translate([errs.x == 2 || errs.x == -1 ? -err : 0,
+               errs.y == 2 || errs.y == -1 ? -err : 0,
+               errs.z == 2 || errs.z == -1 ? -err : 0])
+        cube([length + (err * abs(errs.x)),
+              slatStockThickness + (err * abs(errs.y)),
+              slatStockWidth + (err * abs(errs.z))]);
 }
 
 module endPiece(length) {
@@ -99,19 +109,18 @@ module shelfCenter(bottom=false) {
         slatStock(shelfDepth);
         //cut off corner sticking out the front
         rotate([0, 0, 90-shelfAngle]) 
-        translate([0, -err, -err]) 
-        slatStock(slatStockWidth/cos(shelfAngle)+err, derr, sin(shelfAngle)+err);
+        slatStock(slatStockWidth/cos(shelfAngle), [1, -1, 2]);
         //cut off corner sticking out the back
-        translate([shelfDepth+slatStockThickness, -err, -err])
+        translate([shelfDepth+slatStockThickness, 0])
         rotate([0, 0, 90+shelfAngle]) 
-        slatStock(slatStockWidth/cos(shelfAngle)+err, derr, sin(shelfAngle)+err);
+        slatStock(slatStockWidth/cos(shelfAngle), [1, 1, 2]);
         
         // slots for slats
-        for (x = slatPositions) if (x != 0) translate([x+slatStockWidth+err, -slatStockThickness/2, -err]) rotate([0, -90, 0]) slatStock(slatStockWidth+derr);
+        for (x = slatPositions) if (x != 0) translate([x+slatStockWidth, -slatStockThickness/2]) rotate([0, -90, 0]) slatStock(slatStockWidth, [2, 0, 2]);
 
         // remove the portion that hangs below the ends
         if (bottom) {
-            rotate([0, 0, shelfAngle]) translate([-err, -err, -err]) slatStock(endDepth+derr, derr, derr);
+            rotate([0, 0, shelfAngle]) slatStock(endDepth, [2,-1,2]);
         }
     } 
 }
