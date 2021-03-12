@@ -26,8 +26,8 @@ slatPositions = [0 : (slatStockWidth + slatSpace) : shelfDepth];
 // COLORS
 endTopBottomColor=[0.8, 0.8, 1];
 endFrontBackColor=[0.8, 1, 0.8];
-slatColor=[0.4, 0.8, 0.4];
-shelfSupportColor=[0.4, 0.4, 0.8];
+slatColor=[0.8, 0.8, 0.6];
+shelfSupportColor=[0.6, 0.8, 0.8];
 
 // COMPONENTS
 
