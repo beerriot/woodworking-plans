@@ -2,11 +2,10 @@
 
 // INPUT PARAMS
 length=84;
-endHeight=76;
+endHeight=60;
 endDepth=30;
 
-shelfHeights=[0,15,30,45,55,65];
-shelfAngle=15;
+shelfHeightsAndAngles=[[0,15],[15,15],[30,15],[45,0]];
 
 endStockWidth=5;
 endStockThickness=1.9;
@@ -17,11 +16,19 @@ minSlatSpacing=1.9;
 maxSlats=6;
 
 // COMPUTED PARAMS
-shelfDepth=endDepth/cos(shelfAngle);
+function shelfDepth(shelfAngle) =
+    endDepth/cos(shelfAngle);
 
-slatCount = min(maxSlats, floor(shelfDepth / (slatStockWidth+minSlatSpacing)));
-slatSpace = (shelfDepth - slatStockWidth*slatCount) / (slatCount-1);
-slatPositions = [0 : (slatStockWidth + slatSpace) : shelfDepth];
+function slatCount(shelfAngle) =
+    min(maxSlats, floor(shelfDepth(shelfAngle) / (slatStockWidth+minSlatSpacing)));
+    
+function slatSpace(shelfAngle) =
+    let (slats = slatCount(shelfAngle))
+    (shelfDepth(shelfAngle) - slatStockWidth*slats) / (slats-1);
+    
+function slatPositions(shelfAngle) =
+    let (depth = shelfDepth(shelfAngle), space = slatSpace(shelfAngle))
+    [0 : (slatStockWidth + space) : depth];
 
 // COLORS
 endTopBottomColor=[0.8, 0.8, 1];
@@ -85,47 +92,51 @@ module endFrontBack() {
     color(endFrontBackColor) render() endPiece(endHeight);
 }
 
-module shelfSupport(bottom=false) {
+module shelfSupport(shelfAngle, bottom=false) {
+    depth = shelfDepth(shelfAngle);
+    
     color(shelfSupportColor)
     render()
     translate([0, 0, endStockWidth])
     difference() {
-        translate([0, 0, -endStockWidth]) endStock(shelfDepth);
+        translate([0, 0, -endStockWidth]) endStock(depth);
         //cut off corner sticking out the front
         rotate([0, 90-shelfAngle, 0]) 
         translate([0, 0, -endStockWidth]) 
         endStock(endStockWidth/cos(shelfAngle), [1, 2, 1]);
         //cut off corner sticking out the back
-        translate([shelfDepth, 0])
+        translate([depth, 0])
         rotate([0, 90+shelfAngle, 0]) 
         endStock(endStockWidth/cos(shelfAngle), [1, 2, 1]);
         
         // slots for slats
-        for (x = slatPositions) if (x != 0) translate([x, endStockThickness, slatStockThickness/2]) rotate([-90, 0, -90]) slatStock(endStockThickness, [2, 0, 0]);
+        for (x = slatPositions(shelfAngle)) if (x != 0) translate([x, endStockThickness, slatStockThickness/2]) rotate([-90, 0, -90]) slatStock(endStockThickness, [2, 0, 0]);
 
         // remove the portion that hangs below the ends
         if (bottom) {
-            rotate([0, shelfAngle, 0]) translate([0, 0, -(endStockWidth-shelfHeights[0])]) endStock(endDepth, [2, 2, -1]);
+            rotate([0, shelfAngle, 0]) translate([0, 0, -(endStockWidth-shelfHeightsAndAngles[0][0])]) endStock(endDepth, [2, 2, -1]);
         }
     }    
 
 }
 
-module shelfCenter(bottom=false) {
+module shelfCenter(shelfAngle, bottom=false) {
+    depth = shelfDepth(shelfAngle);
+    
     color(slatColor)
     rotate([-90, 0, 0])
     difference() {
-        slatStock(shelfDepth);
+        slatStock(depth);
         //cut off corner sticking out the front
         rotate([0, 0, 90-shelfAngle]) 
         slatStock(slatStockWidth/cos(shelfAngle), [1, -1, 2]);
         //cut off corner sticking out the back
-        translate([shelfDepth+slatStockThickness, 0])
+        translate([depth+slatStockThickness, 0])
         rotate([0, 0, 90+shelfAngle]) 
         slatStock(slatStockWidth/cos(shelfAngle), [1, 1, 2]);
         
         // slots for slats
-        for (x = slatPositions) if (x != 0) translate([x+slatStockWidth, -slatStockThickness/2]) rotate([0, -90, 0]) slatStock(slatStockWidth, [2, 0, 2]);
+        for (x = slatPositions(shelfAngle)) if (x != 0) translate([x+slatStockWidth, -slatStockThickness/2]) rotate([0, -90, 0]) slatStock(slatStockWidth, [2, 0, 2]);
 
         // remove the portion that hangs below the ends
         if (bottom) {
@@ -149,21 +160,23 @@ module end() {
     }
 }
 
-module shelf(bottom=false) {
+module shelf(shelfAngle, bottom=false) {
     rotate([shelfAngle, 0, 0]) translate([0, 0, -endStockWidth]) {
-        translate([endStockThickness, 0]) rotate([0, 0, 90]) shelfSupport(bottom);
-        translate([(length - endStockThickness*2), 0]) rotate([0, 0, 90]) shelfSupport(bottom);
+        translate([endStockThickness, 0]) rotate([0, 0, 90]) shelfSupport(shelfAngle, bottom);
+        translate([(length - endStockThickness*2), 0]) rotate([0, 0, 90]) shelfSupport(shelfAngle, bottom);
         
-        translate([(slatStockThickness + length)/2, 0, endStockWidth]) rotate([0, 0, 90]) shelfCenter(bottom);
+        translate([(slatStockThickness + length)/2, 0, endStockWidth]) rotate([0, 0, 90]) shelfCenter(shelfAngle, bottom);
     
         // front slat sits higher than other slats, to provide a little ledge for heels/toes to rest against
-        for (y = slatPositions) translate([0, y, endStockWidth - (y == 0 ? 0 : slatStockThickness/2)]) rotate([-90, 0, 0]) translate([0, -slatStockThickness]) slat();
+        for (y = slatPositions(shelfAngle)) translate([0, y, endStockWidth - (y == 0 ? 0 : slatStockThickness/2)]) rotate([-90, 0, 0]) translate([0, -slatStockThickness]) slat();
     }
 }
 
 end();
 translate([length, 0]) mirror([1, 0,0]) end();
 
-for (i = [0:len(shelfHeights)-1], h=shelfHeights[i]) {
-    translate([endStockThickness, 0, h]) shelf(i == 0);
+for (i = [0:len(shelfHeightsAndAngles)-1],
+     h=shelfHeightsAndAngles[i][0],
+     a=shelfHeightsAndAngles[i][1]) {
+    translate([endStockThickness, 0, h]) shelf(a, i == 0);
 }
