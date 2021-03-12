@@ -39,8 +39,8 @@ module endStock(length, addThickness=0, addWidth=0) {
     cube([length, endStockThickness+addThickness, endStockWidth+addWidth]);
 }
 
-module slatStock(length) {
-    cube([length, slatStockThickness, slatStockWidth]);
+module slatStock(length, addThickness=0, addWidth=0) {
+    cube([length, slatStockThickness+addThickness, slatStockWidth+addWidth]);
 }
 
 module endPiece(length) {
@@ -99,19 +99,19 @@ module shelfCenter(bottom=false) {
         slatStock(shelfDepth);
         //cut off corner sticking out the front
         rotate([0, 0, 90-shelfAngle]) 
-        translate([0, -err, -slatStockWidth]) 
-        endStock(endStockWidth/cos(shelfAngle)+err, derr, sin(shelfAngle)+err);
+        translate([0, -err, -err]) 
+        slatStock(slatStockWidth/cos(shelfAngle)+err, derr, sin(shelfAngle)+err);
         //cut off corner sticking out the back
-        translate([shelfDepth+endStockThickness, -err, -err])
+        translate([shelfDepth+slatStockThickness, -err, -err])
         rotate([0, 0, 90+shelfAngle]) 
-        endStock(endStockWidth/cos(shelfAngle)+err, derr, sin(shelfAngle)+err);
+        slatStock(slatStockWidth/cos(shelfAngle)+err, derr, sin(shelfAngle)+err);
         
         // slots for slats
         for (x = slatPositions) if (x != 0) translate([x+slatStockWidth+err, -slatStockThickness/2, -err]) rotate([0, -90, 0]) slatStock(slatStockWidth+derr);
 
         // remove the portion that hangs below the ends
         if (bottom) {
-            rotate([0, 0, shelfAngle]) translate([-err, -err, -(slatStockWidth-shelfHeights[0]+err)]) endStock(endDepth+derr, derr, err);
+            rotate([0, 0, shelfAngle]) translate([-err, -err, -err]) slatStock(endDepth+derr, derr, derr);
         }
     } 
 }
