@@ -12,8 +12,11 @@ endStockThickness=1.9;
 
 slatStockWidth=1.9;
 slatStockThickness=1;
+
 minSlatSpacing=1.9;
 maxSlats=6;
+
+raisedFrontSlatMinAngle=5;
 
 // COMPUTED PARAMS
 function shelfDepth(shelfAngle) =
@@ -110,7 +113,7 @@ module shelfSupport(shelfAngle, bottom=false) {
         endStock(endStockWidth/cos(shelfAngle), [1, 2, 1]);
         
         // slots for slats
-        for (x = slatPositions(shelfAngle)) if (x != 0) translate([x, endStockThickness, slatStockThickness/2]) rotate([-90, 0, -90]) slatStock(endStockThickness, [2, 0, 0]);
+        for (x = slatPositions(shelfAngle)) if (x != 0|| (x == 0 && shelfAngle < raisedFrontSlatMinAngle)) translate([x, endStockThickness, slatStockThickness/2]) rotate([-90, 0, -90]) slatStock(endStockThickness, [2, 0, 0]);
 
         // remove the portion that hangs below the ends
         if (bottom) {
@@ -136,7 +139,7 @@ module shelfCenter(shelfAngle, bottom=false) {
         slatStock(slatStockWidth/cos(shelfAngle), [1, 1, 2]);
         
         // slots for slats
-        for (x = slatPositions(shelfAngle)) if (x != 0) translate([x+slatStockWidth, -slatStockThickness/2]) rotate([0, -90, 0]) slatStock(slatStockWidth, [2, 0, 2]);
+        for (x = slatPositions(shelfAngle)) if (x != 0 || (x == 0 && shelfAngle < raisedFrontSlatMinAngle)) translate([x+slatStockWidth, -slatStockThickness/2]) rotate([0, -90, 0]) slatStock(slatStockWidth, [2, 0, 2]);
 
         // remove the portion that hangs below the ends
         if (bottom) {
@@ -167,8 +170,12 @@ module shelf(shelfAngle, bottom=false) {
         
         translate([(slatStockThickness + length)/2, 0, endStockWidth]) rotate([0, 0, 90]) shelfCenter(shelfAngle, bottom);
     
-        // front slat sits higher than other slats, to provide a little ledge for heels/toes to rest against
-        for (y = slatPositions(shelfAngle)) translate([0, y, endStockWidth - (y == 0 ? 0 : slatStockThickness/2)]) rotate([-90, 0, 0]) translate([0, -slatStockThickness]) slat();
+        for (y = slatPositions(shelfAngle),
+             // do not sink the front slat if the shelf angle is low;
+             // keep it raised to provide a leg for heels/toes to rest against
+             sink = (y == 0 && shelfAngle >= raisedFrontSlatMinAngle ? 0 : slatStockThickness/2))
+            translate([0, y, endStockWidth - sink]) rotate([-90, 0, 0])
+            translate([0, -slatStockThickness]) slat();
     }
 }
 
