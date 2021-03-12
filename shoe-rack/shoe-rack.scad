@@ -18,9 +18,18 @@ maxSlats=6;
 
 raisedFrontSlatMinAngle=5;
 
+reduceUniqueParts=true;
+
 // COMPUTED PARAMS
+
+minShelfAngle = min([ for (ha = shelfHeightsAndAngles) ha[1] ]);
+maxShelfAngle = max([ for (ha = shelfHeightsAndAngles) ha[1] ]);
+
 function shelfDepth(shelfAngle) =
-    endDepth/cos(shelfAngle);
+    endDepth/cos(reduceUniqueParts ? minShelfAngle : shelfAngle);
+
+function shelfCutAngle(shelfAngle) =
+    reduceUniqueParts ? maxShelfAngle : shelfAngle;
 
 function slatCount(shelfAngle) =
     min(maxSlats, floor(shelfDepth(shelfAngle) / (slatStockWidth+minSlatSpacing)));
@@ -96,6 +105,7 @@ module endFrontBack() {
 }
 
 module shelfSupport(shelfAngle, bottom=false) {
+    cutAngle = shelfCutAngle(shelfAngle);
     depth = shelfDepth(shelfAngle);
     
     color(shelfSupportColor)
@@ -104,13 +114,13 @@ module shelfSupport(shelfAngle, bottom=false) {
     difference() {
         translate([0, 0, -endStockWidth]) endStock(depth);
         //cut off corner sticking out the front
-        rotate([0, 90-shelfAngle, 0]) 
+        rotate([0, 90-cutAngle, 0]) 
         translate([0, 0, -endStockWidth]) 
-        endStock(endStockWidth/cos(shelfAngle), [1, 2, 1]);
+        endStock(endStockWidth/cos(cutAngle), [1, 2, 1]);
         //cut off corner sticking out the back
         translate([depth, 0])
-        rotate([0, 90+shelfAngle, 0]) 
-        endStock(endStockWidth/cos(shelfAngle), [1, 2, 1]);
+        rotate([0, 90+cutAngle, 0]) 
+        endStock(endStockWidth/cos(cutAngle), [1, 2, 1]);
         
         // slots for slats
         for (x = slatPositions(shelfAngle)) if (x != 0|| (x == 0 && shelfAngle < raisedFrontSlatMinAngle)) translate([x, endStockThickness, slatStockThickness/2]) rotate([-90, 0, -90]) slatStock(endStockThickness, [2, 0, 0]);
@@ -124,6 +134,7 @@ module shelfSupport(shelfAngle, bottom=false) {
 }
 
 module shelfCenter(shelfAngle, bottom=false) {
+    cutAngle = shelfCutAngle(shelfAngle);
     depth = shelfDepth(shelfAngle);
     
     color(slatColor)
@@ -131,12 +142,12 @@ module shelfCenter(shelfAngle, bottom=false) {
     difference() {
         slatStock(depth);
         //cut off corner sticking out the front
-        rotate([0, 0, 90-shelfAngle]) 
-        slatStock(slatStockWidth/cos(shelfAngle), [1, -1, 2]);
+        rotate([0, 0, 90-cutAngle]) 
+        slatStock(slatStockWidth/cos(cutAngle), [1, -1, 2]);
         //cut off corner sticking out the back
         translate([depth+slatStockThickness, 0])
-        rotate([0, 0, 90+shelfAngle]) 
-        slatStock(slatStockWidth/cos(shelfAngle), [1, 1, 2]);
+        rotate([0, 0, 90+cutAngle]) 
+        slatStock(slatStockWidth/cos(cutAngle), [1, 1, 2]);
         
         // slots for slats
         for (x = slatPositions(shelfAngle)) if (x != 0 || (x == 0 && shelfAngle < raisedFrontSlatMinAngle)) translate([x+slatStockWidth, -slatStockThickness/2]) rotate([0, -90, 0]) slatStock(slatStockWidth, [2, 0, 2]);
