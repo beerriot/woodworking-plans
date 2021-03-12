@@ -3,9 +3,9 @@
 // INPUT PARAMS
 length=84;
 endHeight=76;
+endDepth=30;
 
 shelfHeights=[0,15,30,45,55,65];
-shelfDepth=31;
 shelfAngle=15;
 
 endStockWidth=5;
@@ -17,7 +17,7 @@ minSlatSpacing=1.9;
 maxSlats=6;
 
 // COMPUTED PARAMS
-endDepth=shelfDepth*cos(shelfAngle);
+shelfDepth=endDepth/cos(shelfAngle);
 
 slatCount = min(maxSlats, floor(shelfDepth / (slatStockWidth+minSlatSpacing)));
 slatSpace = (shelfDepth - slatStockWidth*slatCount) / (slatCount-1);
