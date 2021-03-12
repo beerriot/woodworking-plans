@@ -31,37 +31,46 @@ shelfSupportColor=[0.6, 0.8, 0.8];
 
 // COMPONENTS
 
-// avoid face interference when slicing
-err=0.01;
-derr=err*2;
-
-module endStock(length, addThickness=0, addWidth=0) {
-    cube([length, endStockThickness+addThickness, endStockWidth+addWidth]);
-}
-
-// The intention of `errs` is to make it easy to make pieces for slicing out of other pieces. Each element is expected to be 0, 1, -1, or 2, meaning:
-//   0: The faces at the ends of this axis will not conflict with the faces of the object being cut
-//   1: The face at the 0 end of this axis will not conflict...
-//   -1: The face at the non-zero end of this axis will not conflict...
-//   2: Neither face at the ends of this axis will will not conflict...
-module slatStock(length, errs=[0,0,0]) {
+// This is "cube" with two features:
+//   1. length=x, thickness=y, width=z
+//   2. errs vec for less noisy slicing
+//
+// Use errs to make pieces for slicing out of other pieces. The elements of the
+// vector apply to [length, thickness, width]. Each value should be 0, 1, -1, or 2.
+//   0: make the dimension exactly as specified
+//   1: add `err` to the dimension
+//  -1: add `err` to the dimension, but also shift the object -err
+//      (i.e. add err to the zero end of that dimension)
+//   2: add `2*err` to the dimension, but also shift the object -err
+//      (i.e. add err to each end)
+// Using errs prevents the need for +/-err to appear in object creation code.
+module squareStock(length, thickness, width, errs=[0,0,0]) {
+    err = 0.01;
     translate([errs.x == 2 || errs.x == -1 ? -err : 0,
                errs.y == 2 || errs.y == -1 ? -err : 0,
                errs.z == 2 || errs.z == -1 ? -err : 0])
         cube([length + (err * abs(errs.x)),
-              slatStockThickness + (err * abs(errs.y)),
-              slatStockWidth + (err * abs(errs.z))]);
+              thickness + (err * abs(errs.y)),
+              width + (err * abs(errs.z))]);
+}
+
+// default errs must be specified, or the call to squareStock will pass `undefined`, overriding the default there
+module endStock(length, errs=[0,0,0]) {
+    squareStock(length, endStockThickness, endStockWidth, errs);
+}
+
+module slatStock(length, errs=[0,0,0]) {
+    squareStock(length, slatStockThickness, slatStockWidth, errs);
 }
 
 module endPiece(length) {
     difference() {
         endStock(length);
         // halflap either end
-        translate([0, -endStockThickness/2, -err]) {
-            translate([-err, 0]) endStock(endStockWidth+err, 0, derr);
-
+        translate([0, -endStockThickness/2]) {
+            endStock(endStockWidth, [-1, 0, 2]);
             translate([length - endStockWidth, 0])
-                endStock(endStockWidth+err, 0, derr);
+                endStock(endStockWidth, [1, 0, 2]);
         }
     }
 }
@@ -84,19 +93,19 @@ module shelfSupport(bottom=false) {
         translate([0, 0, -endStockWidth]) endStock(shelfDepth);
         //cut off corner sticking out the front
         rotate([0, 90-shelfAngle, 0]) 
-        translate([0, -err, -endStockWidth]) 
-        endStock(endStockWidth/cos(shelfAngle)+err, derr, sin(shelfAngle)+err);
+        translate([0, 0, -endStockWidth]) 
+        endStock(endStockWidth/cos(shelfAngle), [1, 2, 1]);
         //cut off corner sticking out the back
-        translate([shelfDepth, -err])
+        translate([shelfDepth, 0])
         rotate([0, 90+shelfAngle, 0]) 
-        endStock(endStockWidth/cos(shelfAngle)+err, derr, sin(shelfAngle)+err);
+        endStock(endStockWidth/cos(shelfAngle), [1, 2, 1]);
         
         // slots for slats
-        for (x = slatPositions) if (x != 0) translate([x, endStockThickness+err, slatStockThickness/2]) rotate([-90, 0, -90]) slat();
+        for (x = slatPositions) if (x != 0) translate([x, endStockThickness, slatStockThickness/2]) rotate([-90, 0, -90]) slatStock(endStockThickness, [2, 0, 0]);
 
         // remove the portion that hangs below the ends
         if (bottom) {
-            rotate([0, shelfAngle, 0]) translate([-err, -err, -(endStockWidth-shelfHeights[0]+err)]) endStock(endDepth+derr, derr, err);
+            rotate([0, shelfAngle, 0]) translate([0, 0, -(endStockWidth-shelfHeights[0])]) endStock(endDepth, [2, 2, -1]);
         }
     }    
 
@@ -120,7 +129,7 @@ module shelfCenter(bottom=false) {
 
         // remove the portion that hangs below the ends
         if (bottom) {
-            rotate([0, 0, shelfAngle]) slatStock(endDepth, [2,-1,2]);
+            rotate([0, 0, shelfAngle]) slatStock(endDepth, [2, -1, 2]);
         }
     } 
 }
