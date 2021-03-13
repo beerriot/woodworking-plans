@@ -1,6 +1,7 @@
 // Folding Laundy Rack
 
 use <../common/common.scad>
+use <../common/labeling.scad>
 
 // TODO: animate open/close?
 
@@ -146,19 +147,6 @@ module lock() {
         translate([0, 0, -(loopHalfHeight+lineLength)]) hook();
         
     }
-}
-
-module sizeLabel(distance, over=false) {
-    rotate([0, 90, 0]) color("grey") {
-        cylinder(0.1, r=squareStockWidth/2);
-        // translated in Z, because this is unrotated, and cylinder height is in Z
-        translate([0, 0, distance-0.1]) cylinder(0.1, r=squareStockThickness);
-        cylinder(distance, r=0.1);
-    }
-    translate([distance/2, 0, (over ? 1 : -1) * squareStockWidth/4])
-        rotate([90, 0, 0])
-        color("grey")
-        text(str(distance), halign="center", valign=(over ? "bottom" : "top"), size=squareStockWidth/2);
 }
 
 // KEY
