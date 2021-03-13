@@ -1,5 +1,7 @@
 // Folding Laundy Rack
 
+use <../common/common.scad>
+
 // TODO: animate open/close?
 
 // finer faceting on small cylinders
@@ -61,13 +63,13 @@ paracordColor = [0, 0, 0];
 hookColor = [0.8, 0.8, 0.8];
 
 // COMPONENTS
-module dowel(length) {
-    rotate([-90, 0, 0]) cylinder(h = length, r = dowelRadius);
+module dowel(length, errs=[0,0]) {
+    rotate([0, 0, 90]) roundStock(length, dowelRadius, errs);
 }
 
-module squareStock(length) {
+module armLegStock(length, errs=[0,0,0]) {
     translate([0, 0, -squareStockWidth / 2])
-        cube([length, squareStockThickness, squareStockWidth]);
+    squareStock(length, squareStockThickness, squareStockWidth, errs);
 }
 
 module longDowel() {
@@ -82,25 +84,25 @@ module shortDowel() {
 
 // subtract this from arm & leg
 module dowelHole(distance) {
-    translate([distance, -0.1]) dowel(squareStockThickness + 0.2);
+    translate([distance, 0]) dowel(squareStockThickness, [2, 0]);
 }
 
 module leg() {
     color(legColor)
     difference() {
-        squareStock(legLength);
+        armLegStock(legLength);
         dowelHole(bottomLegDowelDistance);
         dowelHole(middleLegDowelDistance);
         dowelHole(topLegDowelDistance);
         
-        translate([0, -0.1, 0]) rotate([0, -legAngle, 0]) cube([squareStockWidth, squareStockThickness+0.2, squareStockWidth]);
+        rotate([0, legAngle, 0]) translate([0,0,-squareStockWidth/2]) armLegStock(squareStockWidth, [-1, 2, 0]);
     }
 }
 
 module arm() {
     color(armColor)
     difference() {
-        squareStock(armLength);
+        armLegStock(armLength);
         for (i=armDowelHoles) dowelHole(i);
     }
 }
@@ -223,15 +225,16 @@ key();
 
 // ASSEMBLY
 rotate([0, -legAngle, 0]) {
-    rotate([180, 0, 0]) leg();
+    leg();
     translate([bottomLegDowelDistance, 0]) longDowel();
     translate([middleLegDowelDistance, 0]) longDowel();
-    translate([0, longDowelLength - squareStockThickness]) rotate([180, 0, 0]) leg();
+    translate([0, longDowelLength - squareStockThickness]) leg();
 }
-translate([legShift*2, 0]) rotate([0, legAngle - 180, 0]) {
-    translate([0, squareStockThickness]) leg();
-    translate([0, longDowelLength - (squareStockThickness * 2)]) leg();
-    translate([bottomLegDowelDistance, squareStockThickness]) shortDowel();
+    
+translate([legShift*2, 0]) rotate([0, legAngle, 0]) {
+    translate([0, squareStockThickness]) mirror([1, 0, 0]) leg();
+    translate([0, shortDowelLength]) mirror([1, 0, 0]) leg();
+    translate([-bottomLegDowelDistance, squareStockThickness]) shortDowel();
 }
 
 endOfLeftArm = legShift - squareStockThickness - (armHangDowelSpan * (len(armDowelHoles)-1));

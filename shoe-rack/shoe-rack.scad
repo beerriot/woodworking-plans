@@ -1,4 +1,5 @@
 // Shoe Rack
+use <../common/common.scad>
 
 // INPUT PARAMS
 length=84;
@@ -49,29 +50,6 @@ slatColor=[0.8, 0.8, 0.6];
 shelfSupportColor=[0.6, 0.8, 0.8];
 
 // COMPONENTS
-
-// This is "cube" with two features:
-//   1. length=x, thickness=y, width=z
-//   2. errs vec for less noisy slicing
-//
-// Use errs to make pieces for slicing out of other pieces. The elements of the
-// vector apply to [length, thickness, width]. Each value should be 0, 1, -1, or 2.
-//   0: make the dimension exactly as specified
-//   1: add `err` to the dimension
-//  -1: add `err` to the dimension, but also shift the object -err
-//      (i.e. add err to the zero end of that dimension)
-//   2: add `2*err` to the dimension, but also shift the object -err
-//      (i.e. add err to each end)
-// Using errs prevents the need for +/-err to appear in object creation code.
-module squareStock(length, thickness, width, errs=[0,0,0]) {
-    err = 0.01;
-    translate([errs.x == 2 || errs.x == -1 ? -err : 0,
-               errs.y == 2 || errs.y == -1 ? -err : 0,
-               errs.z == 2 || errs.z == -1 ? -err : 0])
-        cube([length + (err * abs(errs.x)),
-              thickness + (err * abs(errs.y)),
-              width + (err * abs(errs.z))]);
-}
 
 // default errs must be specified, or the call to squareStock will pass `undefined`, overriding the default there
 module endStock(length, errs=[0,0,0]) {
