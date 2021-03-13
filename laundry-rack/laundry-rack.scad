@@ -73,14 +73,22 @@ module armLegStock(length, errs=[0,0,0]) {
     squareStock(length, squareStockThickness, squareStockWidth, errs);
 }
 
-module longDowel() {
+module longDowel(includeLabels=false) {
     color(longDowelColor)
     dowel(longDowelLength);
+    
+    if (includeLabels) {
+        translate([0, 0, -squareStockWidth]) rotate([0, 0, 90]) sizeLabel(longDowelLength);
+    }
 }
 
-module shortDowel() {
+module shortDowel(includeLabels=false) {
     color(shortDowelColor)
     dowel(shortDowelLength);
+    
+    if (includeLabels) {
+        translate([0, 0, -squareStockWidth]) rotate([0, 0, 90]) sizeLabel(shortDowelLength);
+    }
 }
 
 // subtract this from arm & leg
@@ -88,7 +96,7 @@ module dowelHole(distance) {
     translate([distance, 0]) dowel(squareStockThickness, [2, 0]);
 }
 
-module leg() {
+module leg(includeLabels=false) {
     color(legColor)
     difference() {
         armLegStock(legLength);
@@ -98,18 +106,38 @@ module leg() {
         
         rotate([0, legAngle, 0]) translate([0,0,-squareStockWidth/2]) armLegStock(squareStockWidth, [-1, 2, 0]);
     }
+    
+    if (includeLabels) {
+        translate([0, 0, -squareStockWidth]) sizeLabel(legLength);
+        translate([0, 0, -squareStockWidth*1.25]) sizeLabel(bottomLegDowelDistance);
+
+        translate([0, 0, squareStockWidth]) sizeLabel(middleLegDowelDistance, over=true);
+        translate([middleLegDowelDistance, 0, squareStockWidth]) sizeLabel(topLegDowelDistance-middleLegDowelDistance, over=true);
+        translate([topLegDowelDistance, 0, squareStockWidth]) sizeLabel(legLength-topLegDowelDistance, over=true);
+    }
 }
 
-module arm() {
+module arm(includeLabels=false) {
     color(armColor)
     difference() {
         armLegStock(armLength);
         for (i=armDowelHoles) dowelHole(i);
     }
+    
+    if (includeLabels) {
+        translate([0, 0, -squareStockWidth]) sizeLabel(armLength);
+        translate([0, 0, squareStockWidth]) sizeLabel(squareStockWidth/2, over=true);
+        for (i=[1:len(armDowelHoles)-1]) translate([armDowelHoles[i-1], 0, squareStockWidth]) sizeLabel(armHangDowelSpan, over=true);
+        translate([armDowelHoles[len(armDowelHoles)-1], 0, squareStockWidth]) sizeLabel(squareStockWidth/2, over=true);
+    }
 }
 
-module paracordLine(length) {
+module paracordLine(length, includeLabels=false) {
     color(paracordColor) cylinder(length, r=paracordRadius);
+    
+    if (includeLabels) {
+        rotate([0, -90, 0])  translate([0, 0, -squareStockWidth]) sizeLabel(round(pivotVerticalSpan * 1.25));
+    }
 }
 
 module paracordLoop() {
@@ -150,66 +178,31 @@ module lock() {
 }
 
 // KEY
-module key() {
-    module keytext(string, halign="right", valign="center", size=squareStockWidth) {
+module partsKey() {
+    translate([0, 0, (hangingHeight+squareStockWidth) * 1.5]) {
+        translate([legLength/2, 0])
         rotate([90, 0, 0])
         color("black")
-        text(string, halign=halign, valign=valign, size=size);
-    }
-    
-    module partLabel(string) {
-        translate([-squareStockWidth, 0, 0]) keytext(string);
-    }
-
-    translate([0, 0, (hangingHeight+squareStockWidth) * 1.5]) {
-        translate([legLength/2, 0, -squareStockWidth*2.75])
-            keytext("KEY", halign="center", valign="top", size=squareStockWidth*2);
-
-        partLabel("LEG (4)");
-        leg();
-        translate([0, 0, -squareStockWidth]) sizeLabel(legLength);
-        translate([0, 0, -squareStockWidth*1.25]) sizeLabel(bottomLegDowelDistance);
-
-        translate([0, 0, squareStockWidth]) sizeLabel(middleLegDowelDistance, over=true);
-        translate([middleLegDowelDistance, 0, squareStockWidth]) sizeLabel(topLegDowelDistance-middleLegDowelDistance, over=true);
-        translate([topLegDowelDistance, 0, squareStockWidth]) sizeLabel(legLength-topLegDowelDistance, over=true);
+        text("KEY", halign="center", valign="top", size=squareStockWidth*2);
         
-        translate([0, 0, squareStockWidth*4.5]){
-            partLabel("ARM (4)");
-            arm();
-            translate([0, 0, -squareStockWidth]) sizeLabel(armLength);
-            translate([0, 0, squareStockWidth]) sizeLabel(squareStockWidth/2, over=true);
-            for (i=[1:len(armDowelHoles)-1]) translate([armDowelHoles[i-1], 0, squareStockWidth]) sizeLabel(armHangDowelSpan, over=true);
-            translate([armDowelHoles[len(armDowelHoles)-1], 0, squareStockWidth]) sizeLabel(squareStockWidth/2, over=true);
-            
-            translate([0, 0, squareStockWidth*4.5]) {
-                // 5 = four pivots, plus one foot
-                partLabel(str("LONG DOWEL (",(5 + innerDowels + outerDowels),")"));
-                rotate([0, 0, -90]) longDowel();
-                translate([0, 0, -squareStockWidth]) sizeLabel(longDowelLength);
-                
-                translate([0, 0, squareStockWidth*3]) {
-                    // 1 = just one of the feet
-                    partLabel(str("SHORT DOWEL (",(1 + innerDowels + outerDowels),")"));
-                    rotate([0, 0, -90]) shortDowel();
-                    translate([0, 0, -squareStockWidth]) sizeLabel(shortDowelLength);
-                    
-                    translate([0, 0, squareStockWidth*3]) {
-                        partLabel("PARACORD (2)");
-                        rotate([0, 90, 0]) paracordLine(round(pivotVerticalSpan * 1.25));
-                        translate([0, 0, -squareStockWidth]) sizeLabel(round(pivotVerticalSpan * 1.25));
-                    
-                        translate([0, 0, squareStockWidth*2.5]) {
-                            partLabel("HOOK (2)");
-                            rotate([0, -90, 0]) hook();
-                        }
-                    }
-                }
-            }
-        }
-    }
+        space = squareStockWidth + defaultMarkerRadius()*2;
+        
+        key([keyChildInfo("LEG", 4, space, space*1.5),
+             keyChildInfo("ARM", 4, space, space),
+             keyChildInfo("LONG DOWEL", 5 + innerDowels + outerDowels, space/2, space),
+             keyChildInfo("SHORT DOWEL", 1 + innerDowels + outerDowels, space/2, space),
+             keyChildInfo("PARACORD", 2, space/2, space),
+             keyChildInfo("HOOK", 2, space/2, space)]) {
+            leg(includeLabels=true);
+            arm(includeLabels=true);
+            rotate([0, 0, -90]) longDowel(includeLabels=true);
+            rotate([0, 0, -90]) shortDowel(includeLabels=true);
+            rotate([0, 90, 0]) paracordLine(round(pivotVerticalSpan * 1.25), includeLabels=true);
+            rotate([0, -90, 0]) hook();
+         }
+    }    
 }
-key();
+partsKey();
 
 // ASSEMBLY
 rotate([0, -legAngle, 0]) {
