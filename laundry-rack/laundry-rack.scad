@@ -185,7 +185,7 @@ module partsKey() {
         color("black")
         text("KEY", halign="center", valign="top", size=squareStockWidth*2);
         
-        space = squareStockWidth + defaultMarkerRadius()*2;
+        space = squareStockWidth + sizeLabelHeight();
         
         key([keyChildInfo("LEG", 4, space, space*1.5),
              keyChildInfo("ARM", 4, space, space),

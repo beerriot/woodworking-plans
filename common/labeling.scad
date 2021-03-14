@@ -1,8 +1,10 @@
 // Labeling library
 
-function defaultMarkerRadius() = 1.5;
+defaultMarkerRadius = 1.5;
 
-module sizeLabel(distance, over=false, markerRadius=defaultMarkerRadius(), lineRadius=0.1, color="grey") {
+function sizeLabelHeight(markerRadius=defaultMarkerRadius) = markerRadius*2;
+
+module sizeLabel(distance, over=false, markerRadius=defaultMarkerRadius, lineRadius=0.1, color="grey") {
     module sizeEnd() {
         cylinder(0.1, markerRadius, markerRadius * 0.75);
     }

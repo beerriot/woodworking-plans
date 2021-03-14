@@ -1,5 +1,6 @@
 // Shoe Rack
 use <../common/common.scad>
+use <../common/labeling.scad>
 
 // INPUT PARAMS
 length=84;
@@ -140,6 +141,32 @@ module shelfCenter(shelfAngle, bottom=false) {
 module slat() {
     color(slatColor) slatStock(length - endStockThickness*2);
 }
+
+// KEY
+module partsKey() {
+    function totalSlats(i=0, total=0) =
+        (i == len(shelfHeightsAndAngles)) ? total : totalSlats(i+1, total + slatCount(i));
+    
+    translate([0, 0, endHeight * 1.5]) {
+        translate([length/2, 0])
+        rotate([90, 0, 0])
+        color("black")
+        text("KEY", halign="center", valign="top", size=endStockWidth*2);
+        
+        key([keyChildInfo("END FRONT/BACK", 4, endStockWidth, (endStockWidth+sizeLabelHeight())*1.5),
+             keyChildInfo("END TOP/BOTTOM", 4, endStockWidth, endStockWidth+sizeLabelHeight()),
+             keyChildInfo("SHELF SLAT", totalSlats(), slatStockWidth, slatStockWidth+sizeLabelHeight()),
+             keyChildInfo("SHELF SUPPORT", len(shelfHeightsAndAngles)*2, endStockWidth, endStockWidth+sizeLabelHeight()),
+             keyChildInfo("SHELF CENTER", len(shelfHeightsAndAngles)*2, slatStockWidth, slatStockWidth+sizeLabelHeight())]) {
+            translate([0, 0, -endStockWidth/2]) endFrontBack();
+            translate([0, 0, -endStockWidth/2]) endTopBottom();
+            translate([0, 0, -slatStockWidth/2]) slat();
+            translate([0, 0, -endStockWidth/2]) shelfSupport(maxShelfAngle);
+            translate([0, 0, -slatStockWidth/2]) shelfCenter(maxShelfAngle);
+        }
+    }
+}
+partsKey();
 
 // ASSEMBLY
 
