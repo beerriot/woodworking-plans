@@ -20,7 +20,7 @@ maxSlats=6;
 
 raisedFrontSlatMinAngle=5;
 
-reduceUniqueParts=true;
+reduceUniqueParts=false;
 
 // COMPUTED PARAMS
 
@@ -147,6 +147,27 @@ module partsKey() {
     function totalSlats(i=0, total=0) =
         (i == len(shelfHeightsAndAngles)) ? total : totalSlats(i+1, total + slatCount(i));
     
+    function rest(list, fromi) =
+        (fromi > len(list)-1) ? [] : [ for (j=[(fromi+1):(len(list)-1)]) list[j] ];
+    function addShelfAngle(angle, angles, i=0) =
+        (i == len(angles) ? [[angle, 1]] :
+            (angle == angles[i][0] ?
+                concat([[angle, angles[i][1]+1]], rest(angles, i+1)) :
+                concat([angles[0]], addShelfAngle(angle, angles, i+1))));
+    function uniqueShelfAngles(i=0, angles=[]) =
+        (i == len(shelfHeightsAndAngles)) ? angles :
+            uniqueShelfAngles(i+1,
+                addShelfAngle(shelfHeightsAndAngles[i][1], angles));
+    shelfAngles=reduceUniqueParts ? [[maxShelfAngle, len(shelfHeightsAndAngles)]] : uniqueShelfAngles();
+        
+    module labeledShelfPiece(i, height) {
+        function distanceTo(i) = i == 0 ? 0 : shelfDepth(shelfAngles[i-1][0])+endStockWidth*1.5+distanceTo(i-1);
+        translate([distanceTo(i),  0, 0]) {
+            translate([0, 0, -height/2]) children();
+            translate([shelfDepth(shelfAngles[i][0])+endStockWidth*0.1, 0, 0]) rotate([90, 0, 0]) text(str("(", shelfAngles[i][1]*2, ")"), size=endStockWidth/2, valign="center");
+        }
+    }
+    
     translate([0, 0, endHeight * 1.5]) {
         translate([length/2, 0])
         rotate([90, 0, 0])
@@ -161,8 +182,8 @@ module partsKey() {
             translate([0, 0, -endStockWidth/2]) endFrontBack();
             translate([0, 0, -endStockWidth/2]) endTopBottom();
             translate([0, 0, -slatStockWidth/2]) slat();
-            translate([0, 0, -endStockWidth/2]) shelfSupport(maxShelfAngle);
-            translate([0, 0, -slatStockWidth/2]) shelfCenter(maxShelfAngle);
+            for (i=[0:len(shelfAngles)-1]) labeledShelfPiece(i, endStockWidth) shelfSupport(shelfAngles[i][0]);
+            for (i=[0:len(shelfAngles)-1]) labeledShelfPiece(i, slatStockThickness) shelfCenter(shelfAngles[i][0]);
         }
     }
 }
