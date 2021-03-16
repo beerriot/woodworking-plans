@@ -164,11 +164,11 @@ module shelfCenter(shelfAngle, bottom=false, includeLabels=false) {
 
 module slat(includeLabels=false) {
     slatLength = length - endStockThickness*2;
-    color(slatColor) slatStock(slatLength);
+    color(slatColor) translate([0, 0, slatStockThickness]) rotate([-90, 0, 0]) slatStock(slatLength);
     
     if (includeLabels) {
         translate([0, 0, -sizeLabelHeight()/2]) sizeLabel(slatLength);
-        translate([slatLength+sizeLabelHeight()/2, 0, 0]) rotate([0, -90, 0]) sizeLabel(slatStockWidth);
+        translate([slatLength+sizeLabelHeight()/2, 0, 0]) rotate([0, -90, 0]) sizeLabel(slatStockThickness);
     }
 }
 
@@ -241,8 +241,7 @@ module shelf(shelfAngle, bottom=false) {
              // do not sink the front slat if the shelf angle is low;
              // keep it raised to provide a leg for heels/toes to rest against
              sink = (y == 0 && shelfAngle >= raisedFrontSlatMinAngle ? 0 : slatStockThickness/2))
-            translate([0, y, endStockWidth - sink]) rotate([-90, 0, 0])
-            translate([0, -slatStockThickness]) slat();
+            translate([0, y, endStockWidth - sink]) slat();
     }
 }
 
