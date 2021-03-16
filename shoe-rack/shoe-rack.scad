@@ -92,7 +92,7 @@ module shelfSupportLabels(shelfAngle, height) {
     cutAngle = shelfCutAngle(shelfAngle);
     depth = shelfDepth(shelfAngle);
 
-    cutDistance = endStockWidth * tan(cutAngle);
+    cutDistance = height * tan(cutAngle);
     translate([cutDistance, 0, -sizeLabelHeight()/2]) sizeLabel(depth - cutDistance*2);
     
     if (cutAngle != 0) translate([0, 0, height+sizeLabelHeight()*1.5]) sizeLabel(depth, over=true);
@@ -159,7 +159,7 @@ module shelfCenter(shelfAngle, bottom=false, includeLabels=false) {
         }
     } 
     
-    if (includeLabels) shelfSupportLabels(shelfAngle, slatStockThickness);
+    if (includeLabels) translate([0, 0, -slatStockThickness]) shelfSupportLabels(shelfAngle, slatStockThickness);
 }
 
 module slat(includeLabels=false) {
@@ -213,7 +213,7 @@ module partsKey() {
             translate([0, 0, -endStockWidth/2]) endTopBottom(includeLabels=true);
             translate([0, 0, -slatStockWidth/2]) slat(includeLabels=true);
             for (i=[0:len(shelfAngles)-1]) labeledShelfPiece(i, endStockWidth) shelfSupport(shelfAngles[i][0], includeLabels=true);
-            for (i=[0:len(shelfAngles)-1]) labeledShelfPiece(i, slatStockThickness) shelfCenter(shelfAngles[i][0], includeLabels=true);
+            for (i=[0:len(shelfAngles)-1]) labeledShelfPiece(i, slatStockThickness) translate([0, 0, slatStockThickness]) shelfCenter(shelfAngles[i][0], includeLabels=true);
         }
     }
 }
