@@ -61,8 +61,10 @@ module slatStock(length, errs=[0,0,0]) {
     squareStock(length, slatStockThickness, slatStockWidth, errs);
 }
 
-module endPiece(length) {
-    difference() {
+module endPiece(length, includeLabels=false) {
+    // `render()` is necessary to prevent z-index conflicts
+    // on the ends of the half-laps when put together
+    render() difference() {
         endStock(length);
         // halflap either end
         translate([0, -endStockThickness/2]) {
@@ -71,19 +73,38 @@ module endPiece(length) {
                 endStock(endStockWidth, [1, 0, 2]);
         }
     }
+    
+    if (includeLabels) {
+        translate([0, 0, -sizeLabelHeight()/2]) sizeLabel(length);
+        translate([length + sizeLabelHeight()/2, 0]) rotate([0, -90, 0]) sizeLabel(endStockWidth);
+    }
 }
 
-// these `render()` calls are necessary to prevent z-index conflicts
-// on the ends of the half-laps when put together
-module endTopBottom() {
-    color(endTopBottomColor) endPiece(endDepth);
+module endTopBottom(includeLabels=false) {
+    color(endTopBottomColor) endPiece(endDepth, includeLabels);
 }
 
-module endFrontBack() {
-    color(endFrontBackColor) render() endPiece(endHeight);
+module endFrontBack(includeLabels=false) {
+    color(endFrontBackColor) endPiece(endHeight, includeLabels);
 }
 
-module shelfSupport(shelfAngle, bottom=false) {
+module shelfSupportLabels(shelfAngle, height) {
+    cutAngle = shelfCutAngle(shelfAngle);
+    depth = shelfDepth(shelfAngle);
+
+    cutDistance = endStockWidth * tan(cutAngle);
+    translate([cutDistance, 0, -sizeLabelHeight()/2]) sizeLabel(depth - cutDistance*2);
+    
+    if (cutAngle != 0) translate([0, 0, height+sizeLabelHeight()*1.5]) sizeLabel(depth, over=true);
+
+    sp = [ for (x = slatPositions(shelfAngle)) x ];
+    for (x = [1:len(sp)-1]) {
+        translate([sp[x-1], 0, height+sizeLabelHeight()/2]) sizeLabel(sp[x]-sp[x-1], over=true);
+    }
+    translate([sp[len(sp)-1], 0, height+sizeLabelHeight()/2]) sizeLabel(slatStockWidth, over=true);
+}
+
+module shelfSupport(shelfAngle, bottom=false, includeLabels=false) {
     cutAngle = shelfCutAngle(shelfAngle);
     depth = shelfDepth(shelfAngle);
     
@@ -102,7 +123,7 @@ module shelfSupport(shelfAngle, bottom=false) {
         endStock(endStockWidth/cos(cutAngle), [1, 2, 1]);
         
         // slots for slats
-        for (x = slatPositions(shelfAngle)) if (x != 0|| (x == 0 && shelfAngle < raisedFrontSlatMinAngle)) translate([x, endStockThickness, slatStockThickness/2]) rotate([-90, 0, -90]) slatStock(endStockThickness, [2, 0, 0]);
+        for (x = slatPositions(shelfAngle)) if (x != 0 || (x == 0 && shelfAngle < raisedFrontSlatMinAngle)) translate([x, endStockThickness, slatStockThickness/2]) rotate([-90, 0, -90]) slatStock(endStockThickness, [2, 0, 0]);
 
         // remove the portion that hangs below the ends
         if (bottom) {
@@ -110,9 +131,10 @@ module shelfSupport(shelfAngle, bottom=false) {
         }
     }    
 
+    if (includeLabels) shelfSupportLabels(shelfAngle, endStockWidth);
 }
 
-module shelfCenter(shelfAngle, bottom=false) {
+module shelfCenter(shelfAngle, bottom=false, includeLabels=false) {
     cutAngle = shelfCutAngle(shelfAngle);
     depth = shelfDepth(shelfAngle);
     
@@ -136,10 +158,18 @@ module shelfCenter(shelfAngle, bottom=false) {
             rotate([0, 0, shelfAngle]) slatStock(endDepth, [2, -1, 2]);
         }
     } 
+    
+    if (includeLabels) shelfSupportLabels(shelfAngle, slatStockThickness);
 }
 
-module slat() {
-    color(slatColor) slatStock(length - endStockThickness*2);
+module slat(includeLabels=false) {
+    slatLength = length - endStockThickness*2;
+    color(slatColor) slatStock(slatLength);
+    
+    if (includeLabels) {
+        translate([0, 0, -sizeLabelHeight()/2]) sizeLabel(slatLength);
+        translate([slatLength+sizeLabelHeight()/2, 0, 0]) rotate([0, -90, 0]) sizeLabel(slatStockWidth);
+    }
 }
 
 // KEY
@@ -177,13 +207,13 @@ module partsKey() {
         key([keyChildInfo("END FRONT/BACK", 4, endStockWidth, (endStockWidth+sizeLabelHeight())*1.5),
              keyChildInfo("END TOP/BOTTOM", 4, endStockWidth, endStockWidth+sizeLabelHeight()),
              keyChildInfo("SHELF SLAT", totalSlats(), slatStockWidth, slatStockWidth+sizeLabelHeight()),
-             keyChildInfo("SHELF SUPPORT", len(shelfHeightsAndAngles)*2, endStockWidth, endStockWidth+sizeLabelHeight()),
+             keyChildInfo("SHELF SUPPORT", len(shelfHeightsAndAngles)*2, endStockWidth+sizeLabelHeight()*2, endStockWidth+sizeLabelHeight()),
              keyChildInfo("SHELF CENTER", len(shelfHeightsAndAngles)*2, slatStockWidth, slatStockWidth+sizeLabelHeight())]) {
-            translate([0, 0, -endStockWidth/2]) endFrontBack();
-            translate([0, 0, -endStockWidth/2]) endTopBottom();
-            translate([0, 0, -slatStockWidth/2]) slat();
-            for (i=[0:len(shelfAngles)-1]) labeledShelfPiece(i, endStockWidth) shelfSupport(shelfAngles[i][0]);
-            for (i=[0:len(shelfAngles)-1]) labeledShelfPiece(i, slatStockThickness) shelfCenter(shelfAngles[i][0]);
+            translate([0, 0, -endStockWidth/2]) endFrontBack(includeLabels=true);
+            translate([0, 0, -endStockWidth/2]) endTopBottom(includeLabels=true);
+            translate([0, 0, -slatStockWidth/2]) slat(includeLabels=true);
+            for (i=[0:len(shelfAngles)-1]) labeledShelfPiece(i, endStockWidth) shelfSupport(shelfAngles[i][0], includeLabels=true);
+            for (i=[0:len(shelfAngles)-1]) labeledShelfPiece(i, slatStockThickness) shelfCenter(shelfAngles[i][0], includeLabels=true);
         }
     }
 }

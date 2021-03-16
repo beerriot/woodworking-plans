@@ -4,10 +4,12 @@ defaultMarkerRadius = 1.5;
 
 function sizeLabelHeight(markerRadius=defaultMarkerRadius) = markerRadius*2;
 
-module sizeLabel(distance, over=false, markerRadius=defaultMarkerRadius, lineRadius=0.1, color="grey") {
+module sizeLabel(distance, over=false, markerRadius=defaultMarkerRadius, lineRadius=0.1, color="grey", sigfig=2) {
     module sizeEnd() {
         cylinder(0.1, markerRadius, markerRadius * 0.75);
     }
+    
+    rounded = is_num(distance) ? round(pow(10, sigfig) * distance) / pow(10, sigfig) : distance;
     
     color(color) {
         rotate([0, 90, 0]) {
@@ -18,7 +20,7 @@ module sizeLabel(distance, over=false, markerRadius=defaultMarkerRadius, lineRad
         }
         translate([distance/2, 0, (over ? 1 : -1) * markerRadius/2])
             rotate([90, 0, 0])
-            text(str(distance), halign="center", valign=(over ? "bottom" : "top"), size=markerRadius);
+            text(str(rounded), halign="center", valign=(over ? "bottom" : "top"), size=markerRadius);
     }
 }
 
