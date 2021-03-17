@@ -78,7 +78,7 @@ module longDowel(includeLabels=false) {
     dowel(longDowelLength);
     
     if (includeLabels) {
-        translate([0, 0, -squareStockWidth]) rotate([0, 0, 90]) sizeLabel(longDowelLength);
+        translate([0, 0, -dowelRadius]) rotate([0, 0, 90]) sizeLabel(longDowelLength);
     }
 }
 
@@ -87,7 +87,7 @@ module shortDowel(includeLabels=false) {
     dowel(shortDowelLength);
     
     if (includeLabels) {
-        translate([0, 0, -squareStockWidth]) rotate([0, 0, 90]) sizeLabel(shortDowelLength);
+        translate([0, 0, -dowelRadius]) rotate([0, 0, 90]) sizeLabel(shortDowelLength);
     }
 }
 
@@ -108,12 +108,12 @@ module leg(includeLabels=false) {
     }
     
     if (includeLabels) {
-        translate([0, 0, -squareStockWidth]) sizeLabel(legLength);
-        translate([0, 0, -squareStockWidth*1.25]) sizeLabel(bottomLegDowelDistance);
+        translate([0, 0, -squareStockWidth/2]) sizeLabel(legLength);
+        translate([0, 0, -squareStockWidth*0.75]) sizeLabel(bottomLegDowelDistance);
 
-        translate([0, 0, squareStockWidth]) sizeLabel(middleLegDowelDistance, over=true);
-        translate([middleLegDowelDistance, 0, squareStockWidth]) sizeLabel(topLegDowelDistance-middleLegDowelDistance, over=true);
-        translate([topLegDowelDistance, 0, squareStockWidth]) sizeLabel(legLength-topLegDowelDistance, over=true);
+        translate([0, 0, squareStockWidth/2]) sizeLabel(middleLegDowelDistance, over=true);
+        translate([middleLegDowelDistance, 0, squareStockWidth/2]) sizeLabel(topLegDowelDistance-middleLegDowelDistance, over=true);
+        translate([topLegDowelDistance, 0, squareStockWidth/2]) sizeLabel(legLength-topLegDowelDistance, over=true);
     }
 }
 
@@ -125,10 +125,10 @@ module arm(includeLabels=false) {
     }
     
     if (includeLabels) {
-        translate([0, 0, -squareStockWidth]) sizeLabel(armLength);
-        translate([0, 0, squareStockWidth]) sizeLabel(squareStockWidth/2, over=true);
-        for (i=[1:len(armDowelHoles)-1]) translate([armDowelHoles[i-1], 0, squareStockWidth]) sizeLabel(armHangDowelSpan, over=true);
-        translate([armDowelHoles[len(armDowelHoles)-1], 0, squareStockWidth]) sizeLabel(squareStockWidth/2, over=true);
+        translate([0, 0, -squareStockWidth/2]) sizeLabel(armLength);
+        translate([0, 0, squareStockWidth/2]) sizeLabel(squareStockWidth/2, over=true);
+        for (i=[1:len(armDowelHoles)-1]) translate([armDowelHoles[i-1], 0, squareStockWidth/2]) sizeLabel(armHangDowelSpan, over=true);
+        translate([armDowelHoles[len(armDowelHoles)-1], 0, squareStockWidth/2]) sizeLabel(squareStockWidth/2, over=true);
     }
 }
 
@@ -136,7 +136,7 @@ module paracordLine(length, includeLabels=false) {
     color(paracordColor) cylinder(length, r=paracordRadius);
     
     if (includeLabels) {
-        rotate([0, -90, 0])  translate([0, 0, -squareStockWidth]) sizeLabel(round(pivotVerticalSpan * 1.25));
+        rotate([0, -90, 0])  translate([0, 0, -squareStockWidth/2]) sizeLabel(round(pivotVerticalSpan * 1.25));
     }
 }
 
@@ -240,12 +240,12 @@ translate([legShift - squareStockThickness, 0, hangingHeight]) {
 // ASSEMBLED SIZES
 translate([endOfLeftArm, 0, 0]) {
     // front sizes
-    translate([-squareStockWidth*1.5, 0]) rotate([0, -90, 0]) sizeLabel(hangingHeight, over=true);
-    translate([0, 0, hangingHeight + squareStockWidth*1.5]) sizeLabel(armLength*2 - squareStockWidth, over=true);
+    translate([-squareStockWidth, 0]) rotate([0, -90, 0]) sizeLabel(hangingHeight, over=true);
+    translate([0, 0, hangingHeight + squareStockWidth]) sizeLabel(armLength*2 - squareStockWidth, over=true);
     
     // top sizes
-    translate([0, longDowelLength + squareStockWidth*1.5, hangingHeight + squareStockWidth*1.5]) rotate([-90, 0, 0]) sizeLabel(armLength*2 - squareStockWidth, over=true);
-    translate([-squareStockWidth*1.5, 0, hangingHeight + squareStockWidth*1.5]) rotate([-90, 0, 90]) sizeLabel(longDowelLength, over=true);
-    translate([armLength*2 + squareStockWidth*0.5, squareStockThickness+shortDowelLength, hangingHeight + squareStockWidth*1.5]) rotate([-90, 0, -90]) sizeLabel(shortDowelLength, over=true);
+    translate([0, longDowelLength + squareStockWidth, hangingHeight + squareStockWidth]) rotate([-90, 0, 0]) sizeLabel(armLength*2 - squareStockWidth, over=true);
+    translate([-squareStockWidth, 0, hangingHeight + squareStockWidth]) rotate([-90, 0, 90]) sizeLabel(longDowelLength, over=true);
+    translate([armLength*2 + squareStockWidth*0.5, squareStockThickness+shortDowelLength, hangingHeight + squareStockWidth]) rotate([-90, 0, -90]) sizeLabel(shortDowelLength, over=true);
 }
 
