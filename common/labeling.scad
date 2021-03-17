@@ -78,7 +78,7 @@ module thirdAngle(xSize, ySize, zSize,
     assert($children >= 3 && $children <=4,
            str("thirdAngle requires 3 or 4 children ",
                "- object, front, right [top] - but passed ", $children))
-    
+
     // Front view
     children([0:1]);
     
@@ -106,6 +106,11 @@ function thirdAngleKeyChildInfoSpace(xSize, ySize, zSize,
                                      rightLabels=[0, 1, 1],
                                      topLabels=[0, 1, 0]) =
     let (height = 1 + zSize + ySize + sizeLabelHeight() * (1 + frontLabels[0] + frontLabels[2] + topLabels[0] + topLabels[2])) [height/2, height/2];
+
+function thirdAngleWidth(xSize, ySize,
+                         frontLabels=[0, 0, 1],
+                         rightLabels=[0, 1, 1]) =
+    xSize + ySize + sizeLabelHeight() * (frontLabels[2] + rightLabels[2]);
 
 // test
 sizeLabel(50);
