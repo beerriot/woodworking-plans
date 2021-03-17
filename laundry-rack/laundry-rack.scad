@@ -74,20 +74,40 @@ module armLegStock(length, errs=[0,0,0]) {
 }
 
 module longDowel(includeLabels=false) {
-    color(longDowelColor)
-    dowel(longDowelLength);
+    module part() {
+        color(longDowelColor)
+        dowel(longDowelLength);
+    }
     
     if (includeLabels) {
-        translate([0, 0, -dowelRadius]) rotate([0, 0, 90]) sizeLabel(longDowelLength);
+        thirdAngle(longDowelLength, dowelRadius*2, dowelRadius*2) {
+            rotate([0, 0, -90]) part();
+
+            translate([0, 0, -dowelRadius]) sizeLabel(longDowelLength);
+            
+            translate([longDowelLength, dowelRadius, -dowelRadius]) rotate([0, -90, 90]) sizeLabel(dowelRadius*2);
+        }
+    } else {
+        part();
     }
 }
 
 module shortDowel(includeLabels=false) {
-    color(shortDowelColor)
-    dowel(shortDowelLength);
+    module part() {
+        color(shortDowelColor)
+        dowel(shortDowelLength);
+    }
     
     if (includeLabels) {
-        translate([0, 0, -dowelRadius]) rotate([0, 0, 90]) sizeLabel(shortDowelLength);
+        thirdAngle(shortDowelLength, dowelRadius*2, dowelRadius*2) {
+            rotate([0, 0, -90]) part();
+
+            translate([0, 0, -dowelRadius]) sizeLabel(shortDowelLength);
+            
+            translate([shortDowelLength, dowelRadius, -dowelRadius]) rotate([0, -90, 90]) sizeLabel(dowelRadius*2);
+        }
+    } else {
+        part();
     }
 }
 
@@ -97,38 +117,68 @@ module dowelHole(distance) {
 }
 
 module leg(includeLabels=false) {
-    color(legColor)
-    difference() {
-        armLegStock(legLength);
-        dowelHole(bottomLegDowelDistance);
-        dowelHole(middleLegDowelDistance);
-        dowelHole(topLegDowelDistance);
-        
-        rotate([0, legAngle, 0]) translate([0,0,-squareStockWidth/2]) armLegStock(squareStockWidth, [-1, 2, 0]);
+    module part() {
+        color(legColor)
+        difference() {
+            armLegStock(legLength);
+            dowelHole(bottomLegDowelDistance);
+            dowelHole(middleLegDowelDistance);
+            dowelHole(topLegDowelDistance);
+            
+            rotate([0, legAngle, 0]) translate([0,0,-squareStockWidth/2]) armLegStock(squareStockWidth, [-1, 2, 0]);
+        }
     }
     
     if (includeLabels) {
-        translate([0, 0, -squareStockWidth/2]) sizeLabel(legLength);
-        translate([0, 0, -squareStockWidth*0.75]) sizeLabel(bottomLegDowelDistance);
+        thirdAngle(legLength, squareStockThickness, squareStockWidth, frontLabels=[1,0,1]) {
+            part();
+            
+            union() {
+                translate([0, 0, -squareStockWidth/2]) sizeLabel(legLength);
+                translate([0, 0, -squareStockWidth*0.75]) sizeLabel(bottomLegDowelDistance);
 
-        translate([0, 0, squareStockWidth/2]) sizeLabel(middleLegDowelDistance, over=true);
-        translate([middleLegDowelDistance, 0, squareStockWidth/2]) sizeLabel(topLegDowelDistance-middleLegDowelDistance, over=true);
-        translate([topLegDowelDistance, 0, squareStockWidth/2]) sizeLabel(legLength-topLegDowelDistance, over=true);
+                translate([0, 0, squareStockWidth/2]) sizeLabel(middleLegDowelDistance, over=true);
+                translate([middleLegDowelDistance, 0, squareStockWidth/2]) sizeLabel(topLegDowelDistance-middleLegDowelDistance, over=true);
+                translate([topLegDowelDistance, 0, squareStockWidth/2]) sizeLabel(legLength-topLegDowelDistance, over=true);
+            }
+ 
+            translate([armLength, 0]) rotate([0, 0, 90]) {
+                translate([0, 0, -squareStockWidth/2]) sizeLabel(squareStockThickness);
+                translate([squareStockThickness, 0, -squareStockWidth/2]) rotate([0, -90, 0]) sizeLabel(squareStockWidth);
+            }
+       }
+    } else {
+        part();
     }
 }
 
 module arm(includeLabels=false) {
-    color(armColor)
-    difference() {
-        armLegStock(armLength);
-        for (i=armDowelHoles) dowelHole(i);
+    module part() {
+        color(armColor)
+        difference() {
+            armLegStock(armLength);
+            for (i=armDowelHoles) dowelHole(i);
+        }
     }
     
     if (includeLabels) {
-        translate([0, 0, -squareStockWidth/2]) sizeLabel(armLength);
-        translate([0, 0, squareStockWidth/2]) sizeLabel(squareStockWidth/2, over=true);
-        for (i=[1:len(armDowelHoles)-1]) translate([armDowelHoles[i-1], 0, squareStockWidth/2]) sizeLabel(armHangDowelSpan, over=true);
-        translate([armDowelHoles[len(armDowelHoles)-1], 0, squareStockWidth/2]) sizeLabel(squareStockWidth/2, over=true);
+        thirdAngle(armLength, squareStockThickness, squareStockWidth, frontLabels=[1,0,1]) {
+            part();
+
+            union() {
+                translate([0, 0, -squareStockWidth/2]) sizeLabel(armLength);
+                translate([0, 0, squareStockWidth/2]) sizeLabel(squareStockWidth/2, over=true);
+                for (i=[1:len(armDowelHoles)-1]) translate([armDowelHoles[i-1], 0, squareStockWidth/2]) sizeLabel(armHangDowelSpan, over=true);
+                translate([armDowelHoles[len(armDowelHoles)-1], 0, squareStockWidth/2]) sizeLabel(squareStockWidth/2, over=true);
+            }
+            
+            translate([armLength, 0]) rotate([0, 0, 90]) {
+                translate([0, 0, -squareStockWidth/2]) sizeLabel(squareStockThickness);
+                translate([squareStockThickness, 0, -squareStockWidth/2]) rotate([0, -90, 0]) sizeLabel(squareStockWidth);
+            }
+        }
+    } else {
+        part();
     }
 }
 
@@ -195,8 +245,8 @@ module partsKey() {
              keyChildInfo("HOOK", 2, space/2, space)]) {
             leg(includeLabels=true);
             arm(includeLabels=true);
-            rotate([0, 0, -90]) longDowel(includeLabels=true);
-            rotate([0, 0, -90]) shortDowel(includeLabels=true);
+            longDowel(includeLabels=true);
+            shortDowel(includeLabels=true);
             rotate([0, 90, 0]) paracordLine(round(pivotVerticalSpan * 1.25), includeLabels=true);
             rotate([0, -90, 0]) hook();
          }
