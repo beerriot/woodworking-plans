@@ -206,7 +206,7 @@ module shelfCenter(shelfAngle, bottom=false, includeLabels=false) {
     }
     
     if (includeLabels) {
-        shelfSupportLabels(shelfAngle, slatStockThickness, slatStockWidth) translate([0, 0, -slatStockThickness]) part();
+        shelfSupportLabels(shelfAngle, slatStockThickness, slatStockWidth) translate([0, 0, slatStockThickness]) part();
     } else {
         part();
     }
