@@ -1,0 +1,10 @@
+# Paths use during build. Multiple Makefiles may need to agree on
+# these, so they are consolidated here.
+
+OPENSCAD=/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD
+
+# These should all end in /, or the cp in the top-level release target
+# won't work right.
+RELEASE_DIR=release/
+BUILD_DIR=build/
+DEPS_DIR=deps/

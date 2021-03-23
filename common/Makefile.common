@@ -1,0 +1,29 @@
+# Common definitions that each project's Makefile can use.
+#
+# Builds all view-*.scad into build/view-*.png.
+# Generates make deps files at deps/view-*.png.deps.
+
+include ../Makefile.paths
+
+# explicit wildcard expansion suppresses errors when no files are found
+TARGETS=$(shell ls view-*.scad | sed -e 's/\.scad/\.png/g' -e "s,^,${BUILD_DIR},g")
+
+.PHONY: all make_directories
+all: make_directories ${TARGETS}
+
+make_directories:
+	-@mkdir -p ${BUILD_DIR}
+	-@mkdir -p ${DEPS_DIR}
+
+${BUILD_DIR}%.png: %.scad
+	${OPENSCAD} -m make -o $@ -d ${DEPS_DIR}$(@F).deps --colorscheme Nature ${EXTRA_OPTS} $<
+
+%.png: EXTRA_OPTS=$(shell grep "//cmdline:" $< | sed -e "s,//cmdline:,,g")
+
+
+clean:
+	-@rm -r ${BUILD_DIR} ${DEPS_DIR}
+
+include $(wildcard ${DEPS_DIR}*.deps)
+
+

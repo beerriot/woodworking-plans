@@ -265,58 +265,83 @@ module partsKey() {
     supportSpace = labeledShelfSupportKeyChildInfoSpace(endStockWidth, endStockThickness);
     centerSpace = labeledShelfSupportKeyChildInfoSpace(slatStockThickness, slatStockWidth);
     
-    translate([0, 0, endHeight * 1.5]) {
-        translate([length/2, 0])
-        rotate([90, 0, 0])
-        color("black")
-        text("KEY", halign="center", valign="top", size=endStockWidth*2);
-        
-        key([keyChildInfo("END FRONT/BACK", 4, endsSpace[0], endsSpace[1]),
-             keyChildInfo("END TOP/BOTTOM", 4, endsSpace[0], endsSpace[1]),
-             keyChildInfo("SHELF SLAT", totalSlats(), slatStockWidth, slatStockWidth+sizeLabelHeight()),
-             keyChildInfo("SHELF SUPPORT", len(shelfHeightsAndAngles)*2, supportSpace[0], supportSpace[1]),
-             keyChildInfo("SHELF CENTER", len(shelfHeightsAndAngles)*2, centerSpace[0], centerSpace[1])]) {
-            translate([0, 0, -endStockWidth/2]) endFrontBack(includeLabels=true);
-            translate([0, 0, -endStockWidth/2]) endTopBottom(includeLabels=true);
-            translate([0, 0, -slatStockWidth/2]) slat(includeLabels=true);
-            for (i=[0:len(shelfAngles)-1]) labeledShelfPiece(i, endStockWidth, endStockThickness) shelfSupport(shelfAngles[i][0], includeLabels=true);
-            for (i=[0:len(shelfAngles)-1]) labeledShelfPiece(i, slatStockThickness, slatStockWidth) translate([0, 0, slatStockThickness]) shelfCenter(shelfAngles[i][0], includeLabels=true);
-        }
+    key([keyChildInfo("END FRONT/BACK", 4, endsSpace[0], endsSpace[1]),
+         keyChildInfo("END TOP/BOTTOM", 4, endsSpace[0], endsSpace[1]),
+         keyChildInfo("SHELF SLAT", totalSlats(), slatStockWidth, slatStockWidth+sizeLabelHeight()),
+         keyChildInfo("SHELF SUPPORT", len(shelfHeightsAndAngles)*2, supportSpace[0], supportSpace[1]),
+         keyChildInfo("SHELF CENTER", len(shelfHeightsAndAngles)*2, centerSpace[0], centerSpace[1])]) {
+        translate([0, 0, -endStockWidth/2]) endFrontBack(includeLabels=true);
+        translate([0, 0, -endStockWidth/2]) endTopBottom(includeLabels=true);
+        translate([0, 0, -slatStockWidth/2]) slat(includeLabels=true);
+        for (i=[0:len(shelfAngles)-1]) labeledShelfPiece(i, endStockWidth, endStockThickness) shelfSupport(shelfAngles[i][0], includeLabels=true);
+        for (i=[0:len(shelfAngles)-1]) labeledShelfPiece(i, slatStockThickness, slatStockWidth) translate([0, 0, slatStockThickness]) shelfCenter(shelfAngles[i][0], includeLabels=true);
     }
 }
-partsKey();
+
+translate([0, 0, endHeight * 1.5]) {
+    translate([length/2, 0])
+    rotate([90, 0, 0])
+    color("black")
+    text("KEY", halign="center", valign="top", size=endStockWidth*2);
+        
+    partsKey();
+}
 
 // ASSEMBLY
 
-module end() {
-    translate([endStockThickness, 0]) rotate([0, 0, 90]) {
-        endTopBottom();
-        translate([0, 0, endHeight-endStockWidth]) endTopBottom();
-        translate([0, endStockThickness]) rotate([180, -90, 0]) endFrontBack();
-        translate([endDepth-endStockWidth, endStockThickness]) rotate([180, -90, 0]) endFrontBack();
-    }
-}
+module assembly(includeLabels=false) {
+    module whole() {
+        module end() {
+            translate([endStockThickness, 0]) rotate([0, 0, 90]) {
+                endTopBottom();
+                translate([0, 0, endHeight-endStockWidth]) endTopBottom();
+                translate([0, endStockThickness]) rotate([180, -90, 0]) endFrontBack();
+                translate([endDepth-endStockWidth, endStockThickness]) rotate([180, -90, 0]) endFrontBack();
+            }
+        }
 
-module shelf(shelfAngle, bottom=false) {
-    rotate([shelfAngle, 0, 0]) translate([0, 0, -endStockWidth]) {
-        translate([endStockThickness, 0]) rotate([0, 0, 90]) shelfSupport(shelfAngle, bottom);
-        translate([(length - endStockThickness*2), 0]) rotate([0, 0, 90]) shelfSupport(shelfAngle, bottom);
-        
-        translate([(slatStockThickness + length)/2, 0, endStockWidth]) rotate([0, 0, 90]) shelfCenter(shelfAngle, bottom);
+        module shelf(shelfAngle, bottom=false) {
+            rotate([shelfAngle, 0, 0]) translate([0, 0, -endStockWidth]) {
+                translate([endStockThickness, 0]) rotate([0, 0, 90]) shelfSupport(shelfAngle, bottom);
+                translate([(length - endStockThickness*2), 0]) rotate([0, 0, 90]) shelfSupport(shelfAngle, bottom);
+                
+                translate([(slatStockThickness + length)/2, 0, endStockWidth]) rotate([0, 0, 90]) shelfCenter(shelfAngle, bottom);
+            
+                for (y = slatPositions(shelfAngle),
+                     // do not sink the front slat if the shelf angle is low;
+                     // keep it raised to provide a leg for heels/toes to rest against
+                     sink = (y == 0 && shelfAngle >= raisedFrontSlatMinAngle ? 0 : slatStockThickness/2))
+                    translate([0, y, endStockWidth - sink]) slat();
+            }
+        }
+
+        end();
+        translate([length, 0]) mirror([1, 0,0]) end();
+
+        for (i = [0:len(shelfHeightsAndAngles)-1],
+             h=shelfHeightsAndAngles[i][0],
+             a=shelfHeightsAndAngles[i][1]) {
+            translate([endStockThickness, 0, h]) shelf(a, i == 0);
+        }
+    }
     
-        for (y = slatPositions(shelfAngle),
-             // do not sink the front slat if the shelf angle is low;
-             // keep it raised to provide a leg for heels/toes to rest against
-             sink = (y == 0 && shelfAngle >= raisedFrontSlatMinAngle ? 0 : slatStockThickness/2))
-            translate([0, y, endStockWidth - sink]) slat();
+    if (includeLabels) {
+        thirdAngle(length, endDepth, endHeight) {
+            whole();
+            
+            sizeLabel(length);
+            
+            translate([length, 0]) rotate([0, 0, 90]) {
+                sizeLabel(endDepth);
+                translate([endDepth, 0]) rotate([0, -90, 0]) sizeLabel(endHeight);
+            }
+            
+            union() {}
+        }
+    } else {
+        whole();
     }
 }
+assembly();
 
-end();
-translate([length, 0]) mirror([1, 0,0]) end();
-
-for (i = [0:len(shelfHeightsAndAngles)-1],
-     h=shelfHeightsAndAngles[i][0],
-     a=shelfHeightsAndAngles[i][1]) {
-    translate([endStockThickness, 0, h]) shelf(a, i == 0);
-}
+translate([length*1.5, 0]) assembly(includeLabels=true);
