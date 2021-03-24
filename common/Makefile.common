@@ -25,7 +25,7 @@ ${BUILD_DIR}%.png: %.scad
 
 %.png: EXTRA_OPTS=$(shell grep "//cmdline:" $< | sed -e "s,//cmdline:,,g")
 
-${BUILD_DIR}%.html: %.html
+${BUILD_DIR}%.html: %.html ../common/project.html ../common/template.html
 	tail +2 $< | sed -e '/{{body}}/r /dev/stdin' -e 's/{{body}}//' -e 's/{{title}}/${TITLE}/' ../common/project.html | sed -e '/{{body}}/r /dev/stdin' -e 's/{{body}}//' -e 's/{{subtitle}}/: ${TITLE}/' ../common/template.html > $@
 
 ${BUILD_DIR}%.html: TITLE=$(shell head -1 $<)

@@ -8,7 +8,7 @@ all:
 		$(MAKE) -C $$dir all; \
 	done
 
-${RELEASE_DIR}%.html: %.html
+${RELEASE_DIR}%.html: %.html common/template.html
 	-@mkdir -p ${RELEASE_DIR}
 	tail +2 $< | sed -e '/{{body}}/r /dev/stdin' -e 's/{{body}}//' -e 's/{{subtitle}}/${TITLE}/' common/template.html > $@
 
@@ -25,6 +25,7 @@ release: all ${TARGETS_HTML}
 	@for dir in $(dir $(wildcard */Makefile)); do \
 		cp -R $${dir}${BUILD_DIR} ${RELEASE_DIR}$$dir; \
 	done
+	@cp -R site ${RELEASE_DIR}
 
 release-clean:
 	-@rm -r ${RELEASE_DIR}
