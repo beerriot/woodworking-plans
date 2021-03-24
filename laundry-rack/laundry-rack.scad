@@ -229,73 +229,104 @@ module lock() {
 
 // KEY
 module partsKey() {
-    translate([0, 0, (hangingHeight+squareStockWidth) * 1.5]) {
-        translate([legLength/2, 0])
-        rotate([90, 0, 0])
-        color("black")
-        text("KEY", halign="center", valign="top", size=squareStockWidth*2);
         
-        space = squareStockWidth + sizeLabelHeight();
-        
-        key([keyChildInfo("LEG", 4, space, space*1.5),
-             keyChildInfo("ARM", 4, space, space),
-             keyChildInfo("LONG DOWEL", 5 + innerDowels + outerDowels, space/2, space),
-             keyChildInfo("SHORT DOWEL", 1 + innerDowels + outerDowels, space/2, space),
-             keyChildInfo("PARACORD", 2, space/2, space),
-             keyChildInfo("HOOK", 2, space/2, space)]) {
-            leg(includeLabels=true);
-            arm(includeLabels=true);
-            longDowel(includeLabels=true);
-            shortDowel(includeLabels=true);
-            rotate([0, 90, 0]) paracordLine(round(pivotVerticalSpan * 1.25), includeLabels=true);
-            rotate([0, -90, 0]) hook();
-         }
-    }    
+    space = squareStockWidth + sizeLabelHeight();
+    
+    key([keyChildInfo("LEG", 4, space, space*1.5),
+         keyChildInfo("ARM", 4, space, space),
+         keyChildInfo("LONG DOWEL", 5 + innerDowels + outerDowels, space/2, space),
+         keyChildInfo("SHORT DOWEL", 1 + innerDowels + outerDowels, space/2, space),
+         keyChildInfo("PARACORD", 2, space/2, space),
+         keyChildInfo("HOOK", 2, space/2, space)]) {
+        leg(includeLabels=true);
+        arm(includeLabels=true);
+        longDowel(includeLabels=true);
+        shortDowel(includeLabels=true);
+        rotate([0, 90, 0]) paracordLine(round(pivotVerticalSpan * 1.25), includeLabels=true);
+        rotate([0, -90, 0]) hook();
+     }
 }
-partsKey();
+
+translate([0, 0, (hangingHeight+squareStockWidth) * 1.5]) {
+    translate([legLength/2, 0])
+    rotate([90, 0, 0])
+    color("black")
+    text("KEY", halign="center", valign="top", size=squareStockWidth*2);
+
+    partsKey();
+}
 
 // ASSEMBLY
-rotate([0, -legAngle, 0]) {
-    leg();
-    translate([bottomLegDowelDistance, 0]) longDowel();
-    translate([middleLegDowelDistance, 0]) longDowel();
-    translate([0, longDowelLength - squareStockThickness]) leg();
-}
-    
-translate([legShift*2, 0]) rotate([0, legAngle, 0]) {
-    translate([0, squareStockThickness]) mirror([1, 0, 0]) leg();
-    translate([0, shortDowelLength]) mirror([1, 0, 0]) leg();
-    translate([-bottomLegDowelDistance, squareStockThickness]) shortDowel();
-}
+module assembly(includeLabels=false) {
+    endOfLeftArm = legShift - squareStockThickness - (armHangDowelSpan * (len(armDowelHoles)-1));
 
-endOfLeftArm = legShift - squareStockThickness - (armHangDowelSpan * (len(armDowelHoles)-1));
-translate([endOfLeftArm, 0, hangingHeight]) {
-    arm();
-    translate([0, longDowelLength - squareStockThickness]) arm();
-    for (i = armDowelHoles) translate([i, 0]) longDowel();
-        
-    translate([armDowelHoles[len(armDowelHoles)-1], 0]) {
-        translate([0, squareStockThickness*2+paracordRadius]) lock();
-        translate([0, longDowelLength - squareStockThickness*2 - paracordRadius]) lock();
+    module whole() {
+        rotate([0, -legAngle, 0]) {
+            leg();
+            translate([bottomLegDowelDistance, 0]) longDowel();
+            translate([middleLegDowelDistance, 0]) longDowel();
+            translate([0, longDowelLength - squareStockThickness]) leg();
+        }
+            
+        translate([legShift*2, 0]) rotate([0, legAngle, 0]) {
+            translate([0, squareStockThickness]) mirror([1, 0, 0]) leg();
+            translate([0, shortDowelLength]) mirror([1, 0, 0]) leg();
+            translate([-bottomLegDowelDistance, squareStockThickness]) shortDowel();
+        }
+
+        translate([endOfLeftArm, 0, hangingHeight]) {
+            arm();
+            translate([0, longDowelLength - squareStockThickness]) arm();
+            for (i = armDowelHoles) translate([i, 0]) longDowel();
+                
+            translate([armDowelHoles[len(armDowelHoles)-1], 0]) {
+                translate([0, squareStockThickness*2+paracordRadius]) lock();
+                translate([0, longDowelLength - squareStockThickness*2 - paracordRadius]) lock();
+            }
+        }
+        translate([legShift - squareStockThickness, 0, hangingHeight]) {
+            translate([0, squareStockThickness]) arm();
+            translate([0, longDowelLength - squareStockThickness*2]) arm();
+            translate([armDowelHoles[1], squareStockThickness]) shortDowel();
+            translate([armDowelHoles[2], 0]) longDowel();
+            for (i = [3:len(armDowelHoles)-1]) translate([armDowelHoles[i], squareStockThickness]) shortDowel();
+        }
+    }
+    
+    if (includeLabels) {
+        thirdAngle(legShift+armLength, longDowelLength*1.25, hangingHeight, frontLabels=[1, 1, 1], topLabels=[0,1,1]) {
+            whole();
+            
+            union() {
+                // top length
+                translate([endOfLeftArm, 0, hangingHeight + squareStockWidth/2]) sizeLabel(armLength*2 - squareStockWidth, over=true);
+
+                // hanging height
+                translate([legShift + armLength - squareStockWidth/2, 0]) rotate([0, -90, 0]) sizeLabel(hangingHeight);
+
+                // paracord length
+                translate([legShift, 0, hangingHeight-pivotVerticalSpan]) rotate([0, -90, 0]) sizeLabel(pivotVerticalSpan);
+                
+                // bottom length
+                sizeLabel(legShift*2);
+            }
+            
+            // total depth
+            translate([legShift + armLength, 0, hangingHeight + squareStockWidth/2]) rotate([0, 0, 90]) sizeLabel(longDowelLength, over=true);
+
+            
+            union() {
+                // long inner dowel length
+                translate([endOfLeftArm, squareStockThickness, hangingHeight + squareStockWidth/2]) rotate([-90, 0, 90]) sizeLabel(longDowelLength - squareStockThickness*2, over=true);
+                
+                // short inner dowel length
+                translate([legShift + armLength - squareStockWidth/2, squareStockThickness*2, hangingHeight + squareStockWidth/2]) rotate([-90, 0, 90]) sizeLabel(shortDowelLength - squareStockThickness*2);
+            }
+        }
+    } else {
+        whole();
     }
 }
-translate([legShift - squareStockThickness, 0, hangingHeight]) {
-    translate([0, squareStockThickness]) arm();
-    translate([0, longDowelLength - squareStockThickness*2]) arm();
-    translate([armDowelHoles[1], squareStockThickness]) shortDowel();
-    translate([armDowelHoles[2], 0]) longDowel();
-    for (i = [3:len(armDowelHoles)-1]) translate([armDowelHoles[i], squareStockThickness]) shortDowel();
-}
+assembly();
 
-// ASSEMBLED SIZES
-translate([endOfLeftArm, 0, 0]) {
-    // front sizes
-    translate([-squareStockWidth, 0]) rotate([0, -90, 0]) sizeLabel(hangingHeight, over=true);
-    translate([0, 0, hangingHeight + squareStockWidth]) sizeLabel(armLength*2 - squareStockWidth, over=true);
-    
-    // top sizes
-    translate([0, longDowelLength + squareStockWidth, hangingHeight + squareStockWidth]) rotate([-90, 0, 0]) sizeLabel(armLength*2 - squareStockWidth, over=true);
-    translate([-squareStockWidth, 0, hangingHeight + squareStockWidth]) rotate([-90, 0, 90]) sizeLabel(longDowelLength, over=true);
-    translate([armLength*2 + squareStockWidth*0.5, squareStockThickness+shortDowelLength, hangingHeight + squareStockWidth]) rotate([-90, 0, -90]) sizeLabel(shortDowelLength, over=true);
-}
-
+translate([(legShift+armLength)*2, 0]) assembly(includeLabels=true);
