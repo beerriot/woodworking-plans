@@ -3,3 +3,5 @@
 *.png
 *.deps
 build/
+release/
+
