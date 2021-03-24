@@ -2,14 +2,18 @@
 #
 # Builds all view-*.scad into build/view-*.png.
 # Generates make deps files at deps/view-*.png.deps.
+#
+# Builds an index.html by inserting the contents of the project's
+# index.html into the template.html file in this directory. The first
+# line is inserted wherever `{{title}}` appears in the template, and
+# the rest is inserted where `{{body}}` appears.
 
 include ../Makefile.paths
 
-# explicit wildcard expansion suppresses errors when no files are found
 TARGETS=$(shell ls view-*.scad | sed -e 's/\.scad/\.png/g' -e "s,^,${BUILD_DIR},g")
 
 .PHONY: all make_directories
-all: make_directories ${TARGETS}
+all: make_directories ${TARGETS} ${BUILD_DIR}index.html
 
 make_directories:
 	-@mkdir -p ${BUILD_DIR}
@@ -20,10 +24,15 @@ ${BUILD_DIR}%.png: %.scad
 
 %.png: EXTRA_OPTS=$(shell grep "//cmdline:" $< | sed -e "s,//cmdline:,,g")
 
+${BUILD_DIR}index.html: index.html
+	tail +2 index.html | sed -e '/{{body}}/r /dev/stdin' -e 's/{{body}}//' -e 's/{{title}}/${TITLE}/' ../common/template.html > ${BUILD_DIR}index.html
+
+${BUILD_DIR}index.html: TITLE=$(shell head -1 index.html)
+
+
 
 clean:
 	-@rm -r ${BUILD_DIR} ${DEPS_DIR}
 
+# explicit wildcard expansion suppresses errors when no files are found
 include $(wildcard ${DEPS_DIR}*.deps)
-
-
