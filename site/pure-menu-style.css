@@ -1,5 +1,6 @@
 body {
     color: #777;
+    background: #fafafa; /* background color of OpenSCAD's Nature theme */
 }
 
 .pure-img-responsive {
