@@ -123,6 +123,7 @@ module shelfSupportLabels(shelfAngle, height, thickness) {
             }
         
             translate([sp[len(sp)-1], 0, height]) sizeLabel(slatStockWidth, over=true);
+            if (cutAngle > 0) translate([0, 0, height]) angleLabel(cutAngle, -90, height);
         }
 
         translate([depth, 0, 0]) {

@@ -24,6 +24,22 @@ module sizeLabel(distance, over=false, markerRadius=defaultMarkerRadius, lineRad
     }
 }
 
+//TODO: currently only works for 0 <= angle <= 180
+module angleLabel(angle, referenceAngle, size, color="grey") {
+    color(color) {
+        rotate([0, -referenceAngle, 0]) {
+            cube([size, 0.1, 0.1]);
+            difference() {
+                rotate([90, 0, 0]) cylinder(h=0.1, r=size*2/3, center=true);
+                rotate([90, 0, 0]) cylinder(h=0.12, r=size*2/3 - 0.1, center=true);
+                translate([-size, -0.06, -size*2]) cube([size*2, 0.12, size*2]);
+                rotate([0, -angle, 0]) translate([-size, -0.06, 0]) cube([size*2, 0.12, size]);
+            }
+        }
+        translate([cos(referenceAngle + angle/2) * size * 7/8, 0, sin(referenceAngle + angle/2) * size *7/8]) rotate([90, 0, 0]) text(str(angle, "º"), halign="center", valign="center", size=sin(angle)*size*0.45);
+    }
+}
+
 function keyChildInfo(name, count, spaceAbove, spaceBelow) =
     [name, count, spaceAbove, spaceBelow];
 
@@ -147,3 +163,8 @@ translate([0, 0, 70]) thirdAngle(5, 2, 3, topLabels=[1, 0, 1]) {
         rotate([-90, 0, 0]) sizeLabel(5);
     }
 }
+
+translate([10, 0]) angleLabel(30, 0, 20);
+translate([10, 0]) angleLabel(30, 30, 20);
+translate([10, 0]) angleLabel(30, -30, 20);
+translate([10, 0]) angleLabel(15, -90, 20);
