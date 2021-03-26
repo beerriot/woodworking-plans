@@ -13,6 +13,8 @@ include ../Makefile.paths
 TARGETS_PNG=$(shell ls view-*.scad | sed -e 's/\.scad/\.png/g' -e "s,^,${BUILD_DIR},g")
 TARGETS_HTML=$(shell ls *.html | sed -e "s,^,${BUILD_DIR},g")
 
+MODEL_SCAD=$(notdir $(basename $(CURDIR))).scad
+
 .PHONY: all make_directories
 all: make_directories ${TARGETS_PNG} ${TARGETS_HTML}
 
@@ -25,8 +27,17 @@ ${BUILD_DIR}%.png: %.scad
 
 %.png: EXTRA_OPTS=$(shell grep "//cmdline:" $< | sed -e "s,//cmdline:,,g")
 
-${BUILD_DIR}%.html: %.html ../common/project.html ../common/template.html
-	tail +2 $< | sed -e '/{{body}}/r /dev/stdin' -e 's/{{body}}//' -e 's/{{title}}/${TITLE}/' ../common/project.html | sed -e '/{{body}}/r /dev/stdin' -e 's/{{body}}//' -e 's/{{subtitle}}/: ${TITLE}/' ../common/template.html > $@
+# First create a dummy scad that calls all the zero-arg parameters and
+# echos their names and values to the log, as sed commands to replace
+# {{name}} with value.  Then actually run that scad, and save those
+# outputs to parameters.sed.
+${DEPS_DIR}parameters.sed: ${MODEL_SCAD}
+	echo "use <../${MODEL_SCAD}>" > ${DEPS_DIR}parameters.scad
+	grep -E "^function.*()" ${MODEL_SCAD} | sed -e 's+function \([a-zA-Z0-9_]*\).*+echo(str("s/{{\1}}/", \1(), "/g"));+' >> ${DEPS_DIR}parameters.scad
+	${OPENSCAD} -o ${DEPS_DIR}parameters.png ${DEPS_DIR}parameters.scad 2>&1 | grep ECHO | sed -e 's/.*"\(.*\)"/\1/' > ${DEPS_DIR}parameters.sed
+
+${BUILD_DIR}%.html: %.html ../common/project.html ../common/template.html ${DEPS_DIR}parameters.sed
+	tail +2 $< | sed -f ${DEPS_DIR}parameters.sed | sed -e '/{{body}}/r /dev/stdin' -e 's/{{body}}//' -e 's/{{title}}/${TITLE}/' ../common/project.html | sed -e '/{{body}}/r /dev/stdin' -e 's/{{body}}//' -e 's/{{subtitle}}/: ${TITLE}/' ../common/template.html > $@
 
 ${BUILD_DIR}%.html: TITLE=$(shell head -1 $<)
 
