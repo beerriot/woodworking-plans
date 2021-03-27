@@ -83,6 +83,11 @@ function armDowelHoles() =
 // HTML insertion.
 function armDowelHoleCount() = len(armDowelHoles());
 
+// 5: the four pivots, plus the foot of the wide legs
+function longDowelCount() = 5 + innerDowels() + outerDowels();
+// 1: the foot of the narrow legs
+function shortDowelCount() = 1 + innerDowels() + outerDowels();
+
 function hookWireRadius() = paracordRadius() / 2;
 function hookShaftLength() = dowelDiameter() * 2;
 
