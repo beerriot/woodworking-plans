@@ -87,6 +87,7 @@ function armDowelHoleCount() = len(armDowelHoles());
 // 5: the four pivots, plus the foot of the wide legs
 function longDowelCount() = 5 + innerDowels() + outerDowels();
 function nonPivotLongDowelCount() = longDowelCount() - 4;
+function nonPivotHangingDowelCount() = innerDowels() + outerDowels();
     
 // 1: the foot of the narrow legs
 function shortDowelCount() = 1 + innerDowels() + outerDowels();
@@ -341,6 +342,14 @@ module narrowArms() {
             shortDowel();
 }
 
+module wideArms(includeTop=true, includePivot=true) {
+    if (includeTop) arm();
+    translate([0, longDowelLength() - squareStockThickness()]) arm();
+    for (i = [0 : len(armDowelHoles()) - 2])
+       if (i != outerDowels() || includePivot)
+           translate([armDowelHoles()[i], 0]) longDowel();
+}
+
 module assembly(includeLabels=false) {
     endOfLeftArm = legShift() - squareStockThickness() -
         (armHangDowelSpan() * (len(armDowelHoles()) - 1));
@@ -361,11 +370,8 @@ module assembly(includeLabels=false) {
         }
 
         translate([endOfLeftArm, 0, hangingHeight()]) {
-            arm();
-            translate([0, longDowelLength() - squareStockThickness()]) arm();
-            for (i = [0 : len(armDowelHoles()) - 2])
-               translate([armDowelHoles()[i], 0]) longDowel();
-                
+            wideArms();
+                    
             translate([armDowelHoles()[len(armDowelHoles())-1], 0]) {
                 translate([0, squareStockThickness() * 2 + paracordRadius()])
                     lock();
