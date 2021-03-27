@@ -35,6 +35,7 @@ function dowelRadius() = dowelDiameter() / 2;
 function shortDowelLength() = longDowelLength() - (squareStockThickness() * 2);
 
 function dowelInset() = squareStockWidth() / 2;
+function doubleSquareStockThickness() = squareStockThickness() * 2;
 
 function heightToLegRatio() = sin(legAngle());
 
@@ -85,6 +86,8 @@ function armDowelHoleCount() = len(armDowelHoles());
 
 // 5: the four pivots, plus the foot of the wide legs
 function longDowelCount() = 5 + innerDowels() + outerDowels();
+function nonPivotLongDowelCount() = longDowelCount() - 4;
+    
 // 1: the foot of the narrow legs
 function shortDowelCount() = 1 + innerDowels() + outerDowels();
 
