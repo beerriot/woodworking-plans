@@ -34,6 +34,8 @@ function paracordRadius() = 0.3;
 function dowelRadius() = dowelDiameter() / 2;
 function shortDowelLength() = longDowelLength() - (squareStockThickness() * 2);
 
+function dowelInset() = squareStockWidth() / 2;
+
 function heightToLegRatio() = sin(legAngle());
 
 // Complement is not used in the model, but is used in the diagrams and
@@ -76,6 +78,10 @@ function armLength() =
 function armDowelHoles() =
     [for (i = [0 : (innerDowels() + outerDowels() + 1)])
         (squareStockWidth() / 2) + i * armHangDowelSpan()];
+
+// Defining this may seem extraneous, but it makes the value available for
+// HTML insertion.
+function armDowelHoleCount() = len(armDowelHoles());
 
 function hookWireRadius() = paracordRadius() / 2;
 function hookShaftLength() = dowelDiameter() * 2;
@@ -136,9 +142,13 @@ module shortDowel(includeLabels=false) {
 module dowelHole(distance)
     translate([distance, 0]) dowel(squareStockThickness(), [2, 0]);
 
+module legBlank() {
+    legColor() armLegStock(legLength());
+}
+
 module leg(includeLabels=false) {
-    module part() legColor() difference() {
-        armLegStock(legLength());
+    module part() difference() {
+        legBlank();
         dowelHole(bottomLegDowelDistance());
         dowelHole(middleLegDowelDistance());
         dowelHole(topLegDowelDistance());
@@ -179,9 +189,13 @@ module leg(includeLabels=false) {
     }
 }
 
+module armBlank() {
+    armColor() armLegStock(armLength());
+}
+
 module arm(includeLabels=false) {
     module part() armColor() difference() {
-        armLegStock(armLength());
+        armBlank();
         for (i = armDowelHoles()) dowelHole(i);
     }
     
