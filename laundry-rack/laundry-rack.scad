@@ -328,6 +328,19 @@ translate([0, 0, (hangingHeight() + squareStockWidth()) * 1.5]) {
 }
 
 // ASSEMBLY
+module narrowArms() {
+    translate([0, squareStockThickness()]) arm();
+    translate([0, longDowelLength() - squareStockThickness() * 2]) arm();
+    translate([armDowelHoles()[0], 0]) longDowel();
+    for (i = [0 : innerDowels() - 1])
+        translate([armDowelHoles()[1 + i], squareStockThickness()]) shortDowel();
+    translate([armDowelHoles()[1 + innerDowels()], 0]) longDowel();
+    for (i = [0 : outerDowels() - 1])
+        translate([armDowelHoles()[2 + innerDowels() + i],
+                   squareStockThickness()])
+            shortDowel();
+}
+
 module assembly(includeLabels=false) {
     endOfLeftArm = legShift() - squareStockThickness() -
         (armHangDowelSpan() * (len(armDowelHoles()) - 1));
@@ -350,7 +363,8 @@ module assembly(includeLabels=false) {
         translate([endOfLeftArm, 0, hangingHeight()]) {
             arm();
             translate([0, longDowelLength() - squareStockThickness()]) arm();
-            for (i = armDowelHoles()) translate([i, 0]) longDowel();
+            for (i = [0 : len(armDowelHoles()) - 2])
+               translate([armDowelHoles()[i], 0]) longDowel();
                 
             translate([armDowelHoles()[len(armDowelHoles())-1], 0]) {
                 translate([0, squareStockThickness() * 2 + paracordRadius()])
@@ -361,15 +375,8 @@ module assembly(includeLabels=false) {
                 lock();
             }
         }
-        translate([legShift() - squareStockThickness(), 0, hangingHeight()]) {
-            translate([0, squareStockThickness()]) arm();
-            translate([0, longDowelLength() - squareStockThickness() * 2]) arm();
-            translate([armDowelHoles()[1], squareStockThickness()]) shortDowel();
-            translate([armDowelHoles()[2], 0]) longDowel();
-            for (i = [3:len(armDowelHoles())-1])
-                translate([armDowelHoles()[i], squareStockThickness()])
-                    shortDowel();
-        }
+        translate([legShift() - squareStockThickness(), 0, hangingHeight()])
+            narrowArms();
     }
     
     if (includeLabels) {
