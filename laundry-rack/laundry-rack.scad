@@ -56,6 +56,9 @@ function bottomLegDowelDistance() =
 
 // How far across the floor the middle pivot is, when the leg is standing
 function legShift() = middleLegDowelDistance() * cos(legAngle());
+function endOfLeftArm() =
+    legShift() - squareStockThickness() -
+        (armHangDowelSpan() * (len(armDowelHoles()) - 1));
 
 // distance from arm-to-arm pivot to leg-to-leg pivot
 function pivotVerticalSpan() =
@@ -368,13 +371,10 @@ module legs(includeTop=true) {
 }
 
 module assembly(includeLabels=false) {
-    endOfLeftArm = legShift() - squareStockThickness() -
-        (armHangDowelSpan() * (len(armDowelHoles()) - 1));
-
     module whole() {
         legs();
 
-        translate([endOfLeftArm, 0, hangingHeight()]) {
+        translate([endOfLeftArm(), 0, hangingHeight()]) {
             wideArms();
                     
             translate([armDowelHoles()[len(armDowelHoles())-1], 0]) {
@@ -399,7 +399,7 @@ module assembly(includeLabels=false) {
             
             union() {
                 // top length
-                translate([endOfLeftArm,
+                translate([endOfLeftArm(),
                            0,
                            hangingHeight() + squareStockWidth() / 2])
                     sizeLabel(armLength() * 2 - squareStockWidth(), over=true);
@@ -428,7 +428,7 @@ module assembly(includeLabels=false) {
             
             union() {
                 // long inner dowel length
-                translate([endOfLeftArm,
+                translate([endOfLeftArm(),
                            squareStockThickness(),
                            hangingHeight() + squareStockWidth() / 2])
                     rotate([-90, 0, 90])
