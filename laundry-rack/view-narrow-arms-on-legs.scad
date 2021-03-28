@@ -9,7 +9,7 @@ $vpt=[ 16.83, 58.80, 64.40 ];
 $vpf=22.50;
 $vpd=351.91;
 
-legs(includeTop=false);
+legs(includeInnerTop=false, includeOuterTop=false);
 translate([endOfLeftArm(), 0, hangingHeight()])
     wideArms(includeTop=false, includePivot=true);
 translate([legShift() - dowelInset(), 0, hangingHeight()]) narrowArms();

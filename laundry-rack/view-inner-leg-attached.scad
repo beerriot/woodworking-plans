@@ -1,4 +1,4 @@
-// View of legs of one side assembled
+// View of second inner leg attached
 //cmdline: --imgsize=800,600
 
 use <laundry-rack.scad>
@@ -9,6 +9,7 @@ $vpt=[ 16.83, 58.80, 64.40 ];
 $vpf=22.50;
 $vpd=351.91;
 
-legs(includeInnerTop=false, includeOuterTop=false);
+legs(includeOuterTop=false);
 translate([endOfLeftArm(), 0, hangingHeight()])
     wideArms(includeTop=false, includePivot=true);
+translate([legShift() - dowelInset(), 0, hangingHeight()]) narrowArms();

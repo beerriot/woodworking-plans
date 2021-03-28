@@ -9,4 +9,4 @@ $vpt=[ 32.29, 61.72, 39.65 ];
 $vpf=22.50;
 $vpd=340.36;
 
-legs(includeTop=false);
+legs(includeInnerTop=false, includeOuterTop=false);

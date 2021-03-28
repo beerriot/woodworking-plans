@@ -353,16 +353,16 @@ module wideArms(includeTop=true, includePivot=true) {
            translate([armDowelHoles()[i], 0]) longDowel();
 }
 
-module legs(includeTop=true) {
+module legs(includeInnerTop=true, includeOuterTop=true) {
     rotate([0, -legAngle(), 0]) {
-        if (includeTop) leg();
+        if (includeOuterTop) leg();
         translate([bottomLegDowelDistance(), 0]) longDowel();
         translate([middleLegDowelDistance(), 0]) longDowel();
         translate([0, longDowelLength() - squareStockThickness()]) leg();
     }
         
     translate([legShift() * 2, 0]) rotate([0, legAngle(), 0]) {
-        if (includeTop) translate([0, squareStockThickness()])
+        if (includeInnerTop) translate([0, squareStockThickness()])
             mirror([1, 0, 0]) leg();
         translate([0, shortDowelLength()]) mirror([1, 0, 0]) leg();
         translate([-bottomLegDowelDistance(), squareStockThickness()])
