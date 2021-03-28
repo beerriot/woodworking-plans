@@ -386,7 +386,7 @@ module assembly(includeLabels=false) {
                 lock();
             }
         }
-        translate([legShift() - squareStockThickness(), 0, hangingHeight()])
+        translate([legShift() - dowelInset(), 0, hangingHeight()])
             narrowArms();
     }
     
