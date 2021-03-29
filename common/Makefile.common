@@ -33,7 +33,8 @@ ${BUILD_DIR}%.png: %.scad
 # outputs to parameters.sed.
 ${DEPS_DIR}parameters.sed: ${MODEL_SCAD}
 	echo "use <../${MODEL_SCAD}>" > ${DEPS_DIR}parameters.scad
-	grep -E "^function.*()" ${MODEL_SCAD} | sed -e 's+function \([a-zA-Z0-9_]*\).*+echo(str("s/{{\1}}/", \1(), "/g"));+' >> ${DEPS_DIR}parameters.scad
+	echo "function sigfig2(x) = is_num(x) ? round(100 * x) / 100 : x;" >> ${DEPS_DIR}parameters.scad
+	grep -E "^function.*()" ${MODEL_SCAD} | sed -e 's+function \([a-zA-Z0-9_]*\).*+echo(str("s/{{\1}}/", sigfig2(\1()), "/g"));+' >> ${DEPS_DIR}parameters.scad
 	${OPENSCAD} -o ${DEPS_DIR}parameters.png ${DEPS_DIR}parameters.scad 2>&1 | grep ECHO | sed -e 's/.*"\(.*\)"/\1/' > ${DEPS_DIR}parameters.sed
 
 ${BUILD_DIR}%.html: %.html ../common/project.html ../common/template.html ${DEPS_DIR}parameters.sed
