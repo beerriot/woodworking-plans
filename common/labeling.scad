@@ -4,23 +4,43 @@ defaultMarkerRadius = 1.5;
 
 function sizeLabelHeight(markerRadius=defaultMarkerRadius) = markerRadius*2;
 
-module sizeLabel(distance, over=false, markerRadius=defaultMarkerRadius, lineRadius=0.1, color="grey", sigfig=2) {
+module sizeLabel(distance, over=false, markerRadius=defaultMarkerRadius, lineRadius=0.1, color="grey", sigfig=2, rotation=0) {
     module sizeEnd() {
         cylinder(0.1, markerRadius, markerRadius * 0.75);
     }
     
     rounded = is_num(distance) ? round(pow(10, sigfig) * distance) / pow(10, sigfig) : distance;
     
-    translate([0, 0, (over ? 1 : -1) * markerRadius + 0.01]) color(color) {
+    rotate([0, rotation, 0]) translate([0, 0, (over ? 1 : -1) * markerRadius + 0.01]) color(color) {
         rotate([0, 90, 0]) {
             sizeEnd();
             // translated in Z, because this is unrotated, and cylinder height is in Z
             translate([0, 0, distance]) mirror([0, 0, 1]) sizeEnd();
             cylinder(distance, r=lineRadius);
         }
+        
+        assert(abs(rotation) >= 0 && abs(rotation) <= 360,
+               str("sizeLabel rotation must be between 0 and 360 (found ",
+                   rotation, ")"));
+        
+        // center text left-to-right at low angles, but move it to the side above 30º
+        halign = (abs(rotation) <= 30 ||
+                  (abs(rotation) >= 150 && abs(rotation) <= 210) ||
+                  abs(rotation) >= 330) ? "center"
+                 : ((rotation < -30 && rotation > -150) ||
+                    (rotation > 210 && rotation < 330))
+                     ? (over ? "right" : "left") : (over ? "left" : "right");
+        
+        // move the text below or above at low angles, but put it right in the middle above 45º
+        valign = (abs(rotation) <= 45 || abs(rotation) >= 315)
+                 ? (over ? "bottom" : "top")
+                 : (abs(rotation) >= 135 && abs(rotation) <= 225)
+                   ? (over ? "top" : "bottom")
+                   : "center";
+
         translate([distance/2, 0, (over ? 1 : -1) * markerRadius/2])
-            rotate([90, 0, 0])
-            text(str(rounded), halign="center", valign=(over ? "bottom" : "top"), size=markerRadius);
+            rotate([90, -rotation, 0])
+            text(str(rounded), halign=halign, valign=valign, size=markerRadius);
     }
 }
 
@@ -58,12 +78,11 @@ module key(childrenInfo=[], textColor="black") {
                     i < $children;
                     i=i+1, h = h + (i < $children ? below(i) : 0) + above(i-1)) h];
     
-    textSize = 1.5 * min(concat([for (i=[0:$children-1]) below(i)],
-                                [for (i=[0:$children-1]) above(i)]));
+    textSize = 0.5 * min([for (i=[0:$children-1]) below(i) + above(i)]);
 
     for (i = [0:len(childrenInfo)-1]) {
         translate([0, 0, heights[i]]) {
-            translate([-textSize/2, 0]) rotate([90, 0, 0]) color(textColor) text(str(name(i), " (", count(i), ")"), halign="right", valign="center", size=textSize);
+            translate([-textSize/2, 0, (above(i) - below(i)) / 2]) rotate([90, 0, 0]) color(textColor) text(str(name(i), " (", count(i), ")"), halign="right", valign="center", size=textSize);
             children(i);
         }
     }
@@ -117,6 +136,14 @@ module thirdAngle(xSize, ySize, zSize,
     }
 }
 
+module taRightSide(xSize) {
+    translate([xSize, 0, 0]) rotate([0, 0, 90]) children();
+}
+
+module taTopSide(zSize) {
+    translate([0, 0, zSize]) rotate([-90, 0, 0]) children();
+}
+
 function thirdAngleKeyChildInfoSpace(xSize, ySize, zSize,
                                      frontLabels=[0, 0, 1],
                                      rightLabels=[0, 1, 1],
@@ -138,7 +165,7 @@ translate([0, 0, 50]) thirdAngle(5, 2, 3) {
     
     sizeLabel(5);
     
-    translate([5, 0]) rotate([0, 0, 90]) {
+    taRightSide(5) {
         sizeLabel(2);
         translate([2, 0]) rotate([0, -90, 0]) sizeLabel(3);
     }
@@ -153,14 +180,14 @@ translate([0, 0, 70]) thirdAngle(5, 2, 3, topLabels=[1, 0, 1]) {
     
     sizeLabel(5);
     
-    translate([5, 0]) rotate([0, 0, 90]) {
+    taRightSide(5) {
         translate([0, 0, 3]) sizeLabel(2, over=true);
         translate([2, 0]) rotate([0, -90, 0]) sizeLabel(3);
     }
  
-    translate([0, 0, 3]) {
-        translate([1.5, 2, 0]) rotate([-90, 0, 0]) sizeLabel(2, over=true);
-        rotate([-90, 0, 0]) sizeLabel(5);
+    taTopSide(3) {
+        translate([1.5, 0, 2]) sizeLabel(2, over=true);
+        sizeLabel(5);
     }
 }
 
@@ -168,3 +195,18 @@ translate([10, 0]) angleLabel(30, 0, 20);
 translate([10, 0]) angleLabel(30, 30, 20);
 translate([10, 0]) angleLabel(30, -30, 20);
 translate([10, 0]) angleLabel(15, -90, 20);
+
+translate([50, 0, 40]) {
+    rotate([90, 0, 0]) text("under, neg", size=2, halign="right");
+    translate([0, 0, 15]) rotate([90, 0, 0]) text("under, pos", size=2, halign="right");
+    translate([0, 0, 30]) rotate([90, 0, 0]) text("over, neg", size=2, halign="right");
+    translate([0, 0, 45]) rotate([90, 0, 0]) text("over, pos", size=2, halign="right");
+    
+    for (a = [0 : 15 : 360]) {
+        translate([a+5, 0, -10]) rotate([90, 0, 0]) text(str(a), size=2, halign="center", valign="top");
+        translate([a, 0, 0]) sizeLabel(10, over=false, rotation=-a);
+        translate([a, 0, 15]) sizeLabel(10, over=false, rotation=a);
+        translate([a, 0, 30]) sizeLabel(10, over=true, rotation=-a);
+        translate([a, 0, 45]) sizeLabel(10, over=true, rotation=a);
+    }
+}

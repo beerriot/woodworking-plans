@@ -13,4 +13,5 @@ $fs = 0.1;
 
 leg();
 angleLabel(legAngleComplement(), -90, squareStockWidth());
-translate([0, 0, squareStockWidth() / 2]) rotate([0, 90, 0]) sizeLabel(squareStockWidth() / 2);
+translate([0, 0, squareStockWidth() / 2])
+    sizeLabel(squareStockWidth() / 2, rotation=90);

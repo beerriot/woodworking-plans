@@ -15,8 +15,8 @@ module legArmExample() {
 
     sizeLabel(squareStockThickness());
 
-    translate([squareStockThickness(), 0]) rotate([0, -90, 0])
-        sizeLabel(squareStockWidth());
+    translate([squareStockThickness(), 0])
+        sizeLabel(squareStockWidth(), rotation=-90);
     translate([squareStockThickness()/2, 0, -sizeLabelHeight() * 1.5])
         rotate([90, 0, 0])
         text("LEG / ARM", size=squareStockThickness(), halign="center", valign="top");

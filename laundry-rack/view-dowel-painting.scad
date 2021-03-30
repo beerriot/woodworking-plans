@@ -7,7 +7,7 @@ use <../common/labeling.scad>
 $vpr=[ 90.00, 0.00, 0.00 ];
 $vpt=[ -7.08, -108.00, 9.74 ];
 $vpf=22.50;
-$vpd=62.41;
+$vpd=70.41;
 
 space = dowelDiameter() + sizeLabelHeight();
 
