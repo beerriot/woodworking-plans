@@ -91,10 +91,9 @@ module key(childrenInfo=[], textColor="black") {
 // Create a third-angle projection of the piece, when viewed from the front
 // (looking in the positive-Y direction).
 //
-// The first three module arguments are the rough size of the object. The
-// second three are vec3 denoting [N, E, S] how many sizeLabels are
-// stacked on that side. These are used to determine how far to move each
-// projected view.
+// The first arguments is the rough size of the object. The next three are
+// vec3 denoting [N, E, S] how many sizeLabels are stacked on that side. These
+// are used to determine how far to move each projected view.
 //
 // The module expects either 3 or 4 children. They are:
 //    1: The object to be projected
@@ -106,7 +105,7 @@ module key(childrenInfo=[], textColor="black") {
 // All additional elements should be created around the object, oriented such that they would display correctly if the view were simply rotated. This module will rotate them to face forward as it creates each projection view.
 //
 // The resulting third-angle projection should be viewed in Orthogonal mode.
-module thirdAngle(xSize, ySize, zSize,
+module thirdAngle(size,
                   frontLabels=[0, 0, 1],
                   rightLabels=[0, 1, 1],
                   topLabels=[0, 1, 0]) {
@@ -118,18 +117,18 @@ module thirdAngle(xSize, ySize, zSize,
     children([0:1]);
     
     // Right view
-    translate([1 + xSize + sizeLabelHeight() * frontLabels[1], 0, 0])
+    translate([1 + size.x + sizeLabelHeight() * frontLabels[1], 0, 0])
     rotate([0, 0, -90])
-    translate([-xSize, 0, 0]) {
+    translate([-size.x, 0, 0]) {
         children(0);
         children(2);
     }
     
     if ($children > 3) {
         // Top view
-        translate([0, 0, 1 + zSize + sizeLabelHeight() * (frontLabels[0] + topLabels[2])])
+        translate([0, 0, 1 + size.z + sizeLabelHeight() * (frontLabels[0] + topLabels[2])])
         rotate([90, 0, 0])
-        translate([0, 0, -zSize]) {
+        translate([0, 0, -size.z]) {
             children(0);
             children(3);
         }
@@ -160,7 +159,7 @@ sizeLabel(50);
 
 key([keyChildInfo("foo", 1, 3, 5), keyChildInfo("bar", 2, 4, 6)]) { translate([0, 0, -0.5]) cube([1,1,1]); translate([0, 0, -1]) cube([2,2,2]); }
 
-translate([0, 0, 50]) thirdAngle(5, 2, 3) {
+translate([0, 0, 50]) thirdAngle([5, 2, 3]) {
     cube([5, 2, 3]);
     
     sizeLabel(5);
@@ -172,7 +171,7 @@ translate([0, 0, 50]) thirdAngle(5, 2, 3) {
         
 }
 
-translate([0, 0, 70]) thirdAngle(5, 2, 3, topLabels=[1, 0, 1]) {
+translate([0, 0, 70]) thirdAngle([5, 2, 3], topLabels=[1, 0, 1]) {
     difference() {
         cube([5, 2, 3]);
         translate([2.5, 2, -0.01]) cylinder(3.02, r=1);

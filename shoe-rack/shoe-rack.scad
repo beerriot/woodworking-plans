@@ -77,7 +77,7 @@ module endPiece(length, pieceColor="red", includeLabels=false) {
     }
     
     if (includeLabels) {
-        thirdAngle(length, endStockThickness, endStockWidth) {
+        thirdAngle([length, endStockThickness, endStockWidth]) {
             part();
             
             sizeLabel(length);
@@ -111,7 +111,7 @@ module shelfSupportLabels(shelfAngle, height, thickness) {
 
     cutDistance = height * tan(cutAngle);
 
-    thirdAngle(depth, thickness, height, frontLabels=[1,0,1], topLabels=[1,0,0]) {
+    thirdAngle([depth, thickness, height], frontLabels=[1,0,1], topLabels=[1,0,0]) {
         children();
     
         union() {
@@ -221,7 +221,7 @@ module slat(includeLabels=false) {
     }
     
     if (includeLabels) {
-        thirdAngle(slatLength, slatStockWidth, slatStockThickness) {
+        thirdAngle([slatLength, slatStockWidth, slatStockThickness]) {
             part();
             
             sizeLabel(slatLength);
@@ -327,7 +327,7 @@ module assembly(includeLabels=false) {
     }
     
     if (includeLabels) {
-        thirdAngle(length, endDepth, endHeight) {
+        thirdAngle([length, endDepth, endHeight]) {
             whole();
             
             sizeLabel(length);

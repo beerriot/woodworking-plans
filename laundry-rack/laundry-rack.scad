@@ -120,7 +120,7 @@ module longDowel(includeLabels=false) {
     module part() longDowelColor() dowel(longDowelLength());
     
     if (includeLabels) {
-        thirdAngle(longDowelLength(), dowelRadius() * 2, dowelRadius() * 2) {
+        thirdAngle([longDowelLength(), dowelRadius() * 2, dowelRadius() * 2]) {
             translate([0, 0, dowelRadius()]) rotate([0, 0, -90]) part();
 
             sizeLabel(longDowelLength());
@@ -137,7 +137,7 @@ module shortDowel(includeLabels=false) {
     module part() shortDowelColor() dowel(shortDowelLength());
     
     if (includeLabels) {
-        thirdAngle(shortDowelLength(), dowelRadius() * 2, dowelRadius() * 2) {
+        thirdAngle([shortDowelLength(), dowelRadius() * 2, dowelRadius() * 2]) {
             translate([0, 0, dowelRadius()]) rotate([0, 0, -90]) part();
 
             sizeLabel(shortDowelLength());
@@ -170,7 +170,7 @@ module leg(includeLabels=false) {
     }
     
     if (includeLabels) {
-        thirdAngle(legLength(), squareStockThickness(), squareStockWidth(),
+        thirdAngle([legLength(), squareStockThickness(), squareStockWidth()],
                    frontLabels=[1,0,1]) {
             translate([0, 0, squareStockWidth() / 2]) part();
             
@@ -210,7 +210,7 @@ module arm(includeLabels=false) {
     }
     
     if (includeLabels) {
-        thirdAngle(armLength(), squareStockThickness(), squareStockWidth(),
+        thirdAngle([armLength(), squareStockThickness(), squareStockWidth()],
                    frontLabels=[1,0,1]) {
             translate([0, 0, squareStockWidth() / 2]) part();
 
@@ -389,9 +389,9 @@ module assembly(includeLabels=false) {
     }
     
     if (includeLabels) {
-        thirdAngle(legShift() + armLength(),
-                   longDowelLength() * 1.25,
-                   hangingHeight(),
+        thirdAngle([legShift() + armLength(),
+                    longDowelLength() * 1.25,
+                    hangingHeight()],
                    frontLabels=[1, 1, 1], topLabels=[0,1,1]) {
             whole();
             

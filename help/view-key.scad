@@ -38,11 +38,11 @@ module pencil() {
 
 key([keyChildInfo("PENCIL", 3, pencilRadius, pencilRadius),
      keyChildInfo("BOOK", 1, 5, 10)]) {
-         thirdAngle(pencilLength*1.1, pencilRadius*2, pencilRadius*2) {
+         thirdAngle([pencilLength*1.1, pencilRadius*2, pencilRadius*2]) {
              pencil();
              union() {} union() {} // no labels for this example
          }
-         translate([0.65, 0, -7.5]) thirdAngle(10, 5, 15) {
+         translate([0.65, 0, -7.5]) thirdAngle([10, 5, 15]) {
              book();
              union() {} union() {} union() {}
          }
