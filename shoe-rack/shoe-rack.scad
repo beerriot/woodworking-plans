@@ -76,7 +76,8 @@ module endPiece(length, pieceColor="red")
     }
     
 module endPieceKey(length)
-    thirdAngle([length, endStockThickness, endStockWidth]) {
+    thirdAngle([length, endStockThickness, endStockWidth],
+               topLabels=[0,1,1]) {
         children();
         
         sizeLabel(length);
@@ -87,12 +88,16 @@ module endPieceKey(length)
             sizeLabel(endStockThickness);
         }
 
-        taTopSide(endStockWidth) 
-            translate([length, 0, endStockThickness/2])
-            sizeLabel(endStockThickness/2, rotation=-90);
+        taTopSide(endStockWidth) {
+            translate([length, 0, 0])
+                sizeLabel(endStockThickness/2, rotation=-90);
+            translate([length - endStockWidth, 0, 0])
+                sizeLabel(endStockWidth);
+        }
     }
 function endPieceKeySize(length) =
-    thirdAngleSize([length, endStockThickness, endStockWidth]);
+    thirdAngleSize([length, endStockThickness, endStockWidth],
+                   topLabels=[0,1,1]);
 
 module endTopBottom() {
     endPiece(endDepth, pieceColor=endTopBottomColor);
