@@ -8,4 +8,4 @@ $vpt=[ 103.69, -137.37, 118.04 ];
 $vpf=22.50;
 $vpd=620.12;
 
-assembly(includeLabels=true);
+assemblyKey();

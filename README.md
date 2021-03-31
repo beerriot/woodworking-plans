@@ -84,23 +84,15 @@ one file. This makes creating the model in the OpenSCAD editor easier,
 because only one file needs to be saved and rendered to see any
 change.
 
-For use in the webpages, "view" models are created. These "use" the
-main model file (in OpenSCAD terminology), and render only the
-components they want to show, from the perspective they want to show
-them.
+But to further aid in debugging and development, I've found it useful
+to include additional views, often with labels, in the main model file
+as well. This makes the main model file unfit for rendering as a
+preview of just the project. Additional "view" models solve the
+issue. These view models, "use" the main model file (in OpenSCAD
+terminology), and render only the components they want to show, from
+the perspective they want to show them.
 
-Guidance on exactly what belongs in the main model file is still
-evolving. The "Shoe Rack" project took the path of including
-everything, including informational markers, in the main model file,
-so that a view only specified whether or not to include the markers
-when including a component. This made it possible to keep everything
-about each component in one place. When breaking down the step-by-step
-process of building the "Laundry Rack" project, however, it felt like
-markers that were only relevant to each view should not be defined in
-the main model file, and should instead be defined in that view's
-file.
-
-In either case, the most important guidelines discovered are these:
+Two guidelines help support this organization:
 
  1. When adding something to the scene, always create a module for it,
     and then call that module. This includes the key and the final
@@ -163,7 +155,7 @@ specified.
 
 This section is where the specification of the parts of the project
 live. In general, components should build on each other, and each of
-those components should be a separate OpenSCAD model. An example
+those components should be a separate OpenSCAD module. An example
 progression for a bookcase might be:
 
  1. Modules defining the general pieces of wood to be used - 2x4s,
@@ -171,11 +163,22 @@ progression for a bookcase might be:
  2. Modules defining each piece of shaped wood - end cap, shelf plank,
     shelf support, shelf rib, etc.
 
-For the "Shoe Rack" style project, each component should also include
-code for rendering itself in a "key". The purpose of this is described
-in the KEY section, but it should include extra objects that
-illustrate things like sizes and angles. The tools in
-`common/labeling.scad` are likely to be useful here.
+I've found it useful to include a "<component>Key" module near the
+component definition as well, to add measurement labels around the
+component. Rendering this in the scene has been very useful for
+debugging. Looking at a component on its own, with some notes around
+it, often makes problems clearer.
+
+Tools for adding these measurements can be found in
+`common/labeling.scad`. The `sizeLabel`, `angleLabel` modules add
+markers and text numbers to the scene to display lengths and
+angles. The `thirdAngle` tool renders three copies of the component,
+oriented so that it's possible to see the top of one, the front of
+another, and the right side of the third at the same time. When
+rendered looking in the direction of the positive Y axis, in
+orthogonal projection, this has the effect if creating a [third-angle
+projection](https://en.wikipedia.org/wiki/Multiview_projection#Third-angle_projection),
+similar to an architectural drawing.
 
 ### KEY
 
@@ -183,26 +186,8 @@ This section is not necessary to render a 3D model of the completed
 project. This section is for displaying each component
 individually. This part of the rendering is where it's possible to see
 rabbets cut, holes drilled, etc. before assembly. The name and number
-of each components is displayed as well.
-
-The additional objects mentioned in the COMPONENTS section are
-rendered here. For example, the `sizeLabel` tool from
-`common/labeling.scad` can be used to show the dimensions of a
-component.
-
-For use outside of OpenSCAD, in a flat image on a website, the
-`thirdAngle` tool in `common/labeling.scad` is useful. It renders
-three copies of the component, oriented so that it's possible to see
-the top of one, the front of another, and the right side of the third
-at the same time. When rendered looking in the direction of the
-positive Y axis, in orthogonal projection, this has the effect if
-creating a [third-angle
-projection](https://en.wikipedia.org/wiki/Multiview_projection#Third-angle_projection),
-similar to an architectural drawing.
-
-I've found the KEY section to be useful in debugging. Looking at one
-component on its own, especially with labels, often makes problems
-clearer.
+of each components is displayed as well. This brings all of the extra
+"<component>Key" modules together in one place.
 
 ### ASSEMBLY
 

@@ -9,4 +9,4 @@ $vpf=22.50;
 $vpd=325.80;
 
 
-assembly(includeLabels=true);
+assemblyKey();

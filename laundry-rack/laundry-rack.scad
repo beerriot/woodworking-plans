@@ -352,78 +352,74 @@ module legs(includeInnerTop=true, includeOuterTop=true) {
     }
 }
 
-module assembly(includeLabels=false) {
-    module whole() {
-        legs();
+module assembly() {
+    legs();
 
-        translate([endOfLeftArm(), 0, hangingHeight()]) {
-            wideArms();
-                    
-            translate([armDowelHoles()[len(armDowelHoles())-1], 0]) {
-                translate([0, squareStockThickness() * 2 + paracordRadius()])
-                    lock();
-                translate([0,
-                           longDowelLength() - squareStockThickness() * 2 -
-                               paracordRadius()])
+    translate([endOfLeftArm(), 0, hangingHeight()]) {
+        wideArms();
+                
+        translate([armDowelHoles()[len(armDowelHoles())-1], 0]) {
+            translate([0, squareStockThickness() * 2 + paracordRadius()])
                 lock();
-            }
+            translate([0,
+                       longDowelLength() - squareStockThickness() * 2 -
+                           paracordRadius()])
+            lock();
         }
-        translate([legShift() - dowelInset(), 0, hangingHeight()])
-            narrowArms();
+    }
+    translate([legShift() - dowelInset(), 0, hangingHeight()])
+        narrowArms();
+}
+    
+module assemblyKey()
+thirdAngle([legShift() + armLength(),
+            longDowelLength() * 1.25,
+            hangingHeight()],
+           frontLabels=[1, 1, 1], topLabels=[0,1,1]) {
+    assembly();
+    
+    union() {
+        // top length
+        translate([endOfLeftArm(),
+                   0,
+                   hangingHeight() + squareStockWidth() / 2])
+            sizeLabel(armLength() * 2 - squareStockWidth(), over=true);
+
+        // hanging height
+        translate([endOfLeftArm(), 0])
+            sizeLabel(hangingHeight(), rotation=-90, over=true);
+
+        // paracord length
+        translate([legShift(),
+                   0,
+                   hangingHeight() - pivotVerticalSpan()])
+            sizeLabel(pivotVerticalSpan(), rotation=-90);
+        
+        // bottom length
+        sizeLabel(legShift() * 2);
     }
     
-    if (includeLabels) {
-        thirdAngle([legShift() + armLength(),
-                    longDowelLength() * 1.25,
-                    hangingHeight()],
-                   frontLabels=[1, 1, 1], topLabels=[0,1,1]) {
-            whole();
-            
-            union() {
-                // top length
-                translate([endOfLeftArm(),
-                           0,
-                           hangingHeight() + squareStockWidth() / 2])
-                    sizeLabel(armLength() * 2 - squareStockWidth(), over=true);
+    // total depth
+    taRightSide(legShift() + armLength())
+        translate([0, 0, hangingHeight() + squareStockWidth() / 2])
+        sizeLabel(longDowelLength(), over=true);
 
-                // hanging height
-                translate([endOfLeftArm(), 0])
-                    sizeLabel(hangingHeight(), rotation=-90, over=true);
-
-                // paracord length
-                translate([legShift(),
-                           0,
-                           hangingHeight() - pivotVerticalSpan()])
-                    sizeLabel(pivotVerticalSpan(), rotation=-90);
-                
-                // bottom length
-                sizeLabel(legShift() * 2);
-            }
-            
-            // total depth
-            taRightSide(legShift() + armLength())
-                translate([0, 0, hangingHeight() + squareStockWidth() / 2])
-                sizeLabel(longDowelLength(), over=true);
-
-            
-            taTopSide(hangingHeight() + squareStockWidth() / 2) {
-                // long inner dowel length
-                translate([endOfLeftArm(), 0, squareStockThickness()])
-                    sizeLabel(longDowelLength() - squareStockThickness() * 2,
-                              over=true, rotation=-90);
-                
-                // short inner dowel length
-                translate([legShift() + armLength() - squareStockWidth() / 2,
-                           0,
-                           squareStockThickness() * 2])
-                    sizeLabel(shortDowelLength() - squareStockThickness() * 2,
-                              rotation=-90);
-            }
-        }
-    } else {
-        whole();
+    
+    taTopSide(hangingHeight() + squareStockWidth() / 2) {
+        // long inner dowel length
+        translate([endOfLeftArm(), 0, squareStockThickness()])
+            sizeLabel(longDowelLength() - squareStockThickness() * 2,
+                      over=true, rotation=-90);
+        
+        // short inner dowel length
+        translate([legShift() + armLength() - squareStockWidth() / 2,
+                   0,
+                   squareStockThickness() * 2])
+            sizeLabel(shortDowelLength() - squareStockThickness() * 2,
+                      rotation=-90);
     }
 }
+
 assembly();
 
-translate([(legShift() + armLength()) * 2, 0]) assembly(includeLabels=true);
+translate([(legShift() + armLength()) * 2, 0]) assemblyKey();
