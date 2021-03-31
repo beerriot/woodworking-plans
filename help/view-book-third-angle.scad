@@ -67,7 +67,7 @@ module book() {
     }
 }
 
-thirdAngle([coverWidth, bookThickness, coverHeight]) {
+thirdAngle([coverWidth, bookThickness, coverHeight], frontLabels=[0,0,0]) {
     book();
     
     union() {}

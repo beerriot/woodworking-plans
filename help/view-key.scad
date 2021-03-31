@@ -12,6 +12,7 @@ $vpf=22.50;
 $fs=0.1;
 
 pencilRadius = 1;
+pencilDiameter = pencilRadius * 2;
 eraserLength = 2;
 bodyLength = 10;
 pointLength = 2;
@@ -19,8 +20,8 @@ leadRatio = 0.2;
 pencilLength = eraserLength + bodyLength + pointLength;
 
 module pencil() {
-    //eraser
     rotate([0, 90, 0]) {
+        //eraser
         color("#ffdddd") cylinder(h=eraserLength, r=pencilRadius);
         translate([0, 0, eraserLength]) {
             //main body
@@ -36,13 +37,15 @@ module pencil() {
     }
 }
 
-key([keyChildInfo("PENCIL", 3, pencilRadius, pencilRadius),
-     keyChildInfo("BOOK", 1, 5, 10)]) {
-         thirdAngle([pencilLength*1.1, pencilRadius*2, pencilRadius*2]) {
-             pencil();
+key([keyChildInfo("PENCIL", 3, [pencilLength, pencilDiameter, pencilDiameter]),
+     keyChildInfo("BOOK", 1, [10,5,15])]) {
+         thirdAngle([pencilLength, pencilDiameter, pencilDiameter],
+                    frontLabels=undef,
+                    spacing=pencilLength * 0.1) {
+             translate([0, 0, pencilRadius]) pencil();
              union() {} union() {} // no labels for this example
          }
-         translate([0.65, 0, -7.5]) thirdAngle([10, 5, 15]) {
+         translate([0.65, 0]) thirdAngle([10, 5, 15], frontLabels=[0,0,0]) {
              book();
              union() {} union() {} union() {}
          }

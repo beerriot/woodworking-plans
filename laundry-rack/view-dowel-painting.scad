@@ -16,24 +16,30 @@ module paint() {
         dowel(longDowelLength(), errs=[0.01, 0]);
 }
 
-key([keyChildInfo("LONG DOWEL", 4, dowelDiameter(), space),
+key([keyChildInfo("LONG DOWEL", 4, [0, 0, space]),
      keyChildInfo("LONG DOWEL", nonPivotLongDowelCount(),
-                  dowelDiameter(), space),
+                  [0, 0, space]),
      keyChildInfo("SHORT DOWEL", shortDowelCount(),
-                  dowelDiameter(), space)]) {
-    union() {
-        rotate([0, 0, -90]) longDowel();
-        translate([doubleSquareStockThickness(), 0]) paint();
-        translate([0, 0, -dowelRadius()]) sizeLabel(doubleSquareStockThickness());
+                  [0, 0, space])]) {
+    translate([0,0,sizeLabelHeight()]) {
+        translate([0, 0, dowelRadius()]) {
+            rotate([0, 0, -90]) longDowel();
+            translate([doubleSquareStockThickness(), 0]) paint();
+        }
+        sizeLabel(doubleSquareStockThickness());
     }
-    union() {
-        rotate([0, 0, -90]) longDowel();
-        translate([squareStockThickness(), 0]) paint();
-        translate([0, 0, -dowelRadius()]) sizeLabel(squareStockThickness());
+    translate([0,0,sizeLabelHeight()]) {
+        translate([0, 0, dowelRadius()]) {
+            rotate([0, 0, -90]) longDowel();
+            translate([squareStockThickness(), 0]) paint();
+        }
+        sizeLabel(squareStockThickness());
     }
-    union() {
-        rotate([0, 0, -90]) shortDowel();
-        translate([squareStockThickness(), 0]) paint();
-        translate([0, 0, -dowelRadius()]) sizeLabel(squareStockThickness());
+    translate([0,0,sizeLabelHeight()]) {
+        translate([0, 0, dowelRadius()]) {
+            rotate([0, 0, -90]) shortDowel();
+            translate([squareStockThickness(), 0]) paint();
+        }
+        sizeLabel(squareStockThickness());
     }
 }

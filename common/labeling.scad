@@ -60,78 +60,94 @@ module angleLabel(angle, referenceAngle, size, color="grey") {
     }
 }
 
-function keyChildInfo(name, count, spaceAbove, spaceBelow) =
-    [name, count, spaceAbove, spaceBelow];
+function keyChildInfo(name, count, size) =
+    [name, count, size];
 
-module key(childrenInfo=[], textColor="black") {
+module key(childrenInfo=[], textColor="black", spacing=sizeLabelHeight() / 2) {
     function name(i) = childrenInfo[i][0];
     function count(i) = childrenInfo[i][1];
-    function above(i) = childrenInfo[i][2];
-    function below(i) = childrenInfo[i][3];
+    function size(i) = childrenInfo[i][2];
 
     assert(len(childrenInfo) == $children,
            str("Length of key children (", $children,
                ") and info (", len(childrenInfo), ") do not match."));
     
     // midpoints for each child
-    heights = [ for(i = 0, h=below(i);
+    heights = [ for(i = 0, h = 0;
                     i < $children;
-                    i=i+1, h = h + (i < $children ? below(i) : 0) + above(i-1)) h];
+                    h = h + size(i).z + spacing, i = i + 1) h];
     
-    textSize = 0.5 * min([for (i=[0:$children-1]) below(i) + above(i)]);
+    textSize = 0.5 * min([for (i=[0:$children-1]) size(i).z]);
 
     for (i = [0:len(childrenInfo)-1]) {
         translate([0, 0, heights[i]]) {
-            translate([-textSize/2, 0, (above(i) - below(i)) / 2]) rotate([90, 0, 0]) color(textColor) text(str(name(i), " (", count(i), ")"), halign="right", valign="center", size=textSize);
+            translate([-textSize/2, 0, size(i).z / 2])
+                rotate([90, 0, 0])
+                color(textColor)
+                text(str(name(i), " (", count(i), ")"),
+                     halign="right",
+                     valign="center",
+                     size=textSize);
             children(i);
         }
     }
 }
 
 // Create a third-angle projection of the piece, when viewed from the front
-// (looking in the positive-Y direction).
+// (looking in the positive-Y direction). The object to be viewed should be
+// entirely in the +X+Y+Z octant.
 //
 // The first arguments is the rough size of the object. The next three are
 // vec3 denoting [N, E, S] how many sizeLabels are stacked on that side. These
 // are used to determine how far to move each projected view.
 //
-// The module expects either 3 or 4 children. They are:
+// The module expects either 2, 3 or 4 children. They are:
 //    1: The object to be projected
 //    2: Additional elements (e.g. sizes) to be shown in the front projection
-//    3: Additional elements for the right-side projection
+//    3: Additional elements for the right-side projection. If omitted, no
+//       right projection or top projection will be created (use an empty node,
+//       and set rightLabels=undef if you want a top view but not a right view).
 //    4: Additional elements for the top projection. If omitted, no top
 //       projection will be created.
 //
-// All additional elements should be created around the object, oriented such that they would display correctly if the view were simply rotated. This module will rotate them to face forward as it creates each projection view.
+// All additional elements should be created around the object, oriented such
+// that they would display correctly if the view were simply rotated. This
+// module will rotate them to face forward as it creates each projection view.
+// The taRightSide and taTopSide modules do the correct translation, to allow
+// you to specify positioning along X and Z axes, as they will be seen.
 //
 // The resulting third-angle projection should be viewed in Orthogonal mode.
+taDefaultFrontLabels = [0,0,1];
+taDefaultRightLabels = [0,1,1];
+taDefaultTopLabels = [0,1,0];
+taDefaultSpacing = 1;
 module thirdAngle(size,
-                  frontLabels=[0, 0, 1],
-                  rightLabels=[0, 1, 1],
-                  topLabels=[0, 1, 0]) {
-    assert($children >= 3 && $children <=4,
-           str("thirdAngle requires 3 or 4 children ",
-               "- object, front, right [top] - but passed ", $children))
-
-    // Front view
-    children([0:1]);
-    
-    // Right view
-    translate([1 + size.x + sizeLabelHeight() * frontLabels[1], 0, 0])
-    rotate([0, 0, -90])
-    translate([-size.x, 0, 0]) {
-        children(0);
-        children(2);
-    }
-    
-    if ($children > 3) {
+                  frontLabels=taDefaultFrontLabels,
+                  rightLabels=taDefaultRightLabels,
+                  topLabels=taDefaultTopLabels,
+                  spacing=taDefaultSpacing) {
+    assert($children >= 2 && $children <=4,
+           str("thirdAngle requires 2 - 4 children ",
+               "- object, front, [right, top] - but passed ", $children))
+                      
+    // make the bottom of the bottom front label sit at zero
+    translate([0, 0, sizeLabelHeight() * (frontLabels == undef ? 0 : frontLabels[2])]) {
+        // Front view
+        children([0:1]);
+        
+        // Right view
+        frontRightLabelSpace = sizeLabelHeight() * (frontLabels == undef ? 0 : frontLabels[1]);
+        if ($children > 2 && rightLabels != undef)
+            translate([spacing + size.x + frontRightLabelSpace, 0, 0])
+                rotate([0, 0, -90]) translate([-size.x, 0, 0]) children([0,2]);
+        
         // Top view
-        translate([0, 0, 1 + size.z + sizeLabelHeight() * (frontLabels[0] + topLabels[2])])
-        rotate([90, 0, 0])
-        translate([0, 0, -size.z]) {
-            children(0);
-            children(3);
-        }
+        frontTopLabelSpace = sizeLabelHeight() *
+            ((frontLabels == undef ? 0 : frontLabels[0]) + 
+             (topLabels == undef ? 0 : topLabels[2]));
+        if ($children > 3 && topLabels != undef)
+            translate([0, 0, spacing + size.z + frontTopLabelSpace])
+                rotate([90, 0, 0]) translate([0, 0, -size.z]) children([0,3]);
     }
 }
 
@@ -143,21 +159,27 @@ module taTopSide(zSize) {
     translate([0, 0, zSize]) rotate([-90, 0, 0]) children();
 }
 
-function thirdAngleKeyChildInfoSpace(xSize, ySize, zSize,
-                                     frontLabels=[0, 0, 1],
-                                     rightLabels=[0, 1, 1],
-                                     topLabels=[0, 1, 0]) =
-    let (height = 1 + zSize + ySize + sizeLabelHeight() * (1 + frontLabels[0] + frontLabels[2] + topLabels[0] + topLabels[2])) [height/2, height/2];
-
-function thirdAngleWidth(xSize, ySize,
-                         frontLabels=[0, 0, 1],
-                         rightLabels=[0, 1, 1]) =
-    xSize + ySize + sizeLabelHeight() * (frontLabels[2] + rightLabels[2]);
+function thirdAngleSize(size,
+                        frontLabels=taDefaultFrontLabels,
+                        rightLabels=taDefaultRightLabels,
+                        topLabels=taDefaultTopLabels,
+                        spacing=taDefaultSpacing) =
+    [size.x + spacing + (rightLabels == undef ? 0 : size.y) +
+        sizeLabelHeight() *
+            (frontLabels[1] + (rightLabels == undef ? 0 : rightLabels[1])),
+     max(size.x, size.y, size.z),
+     size.z + spacing + (topLabels == undef ? 0 : size.y) +
+        sizeLabelHeight() *
+            (frontLabels[0] + frontLabels[2] +
+             (topLabels == undef ? 0 : (topLabels[0] + topLabels[2])))];
 
 // test
 sizeLabel(50);
 
-key([keyChildInfo("foo", 1, 3, 5), keyChildInfo("bar", 2, 4, 6)]) { translate([0, 0, -0.5]) cube([1,1,1]); translate([0, 0, -1]) cube([2,2,2]); }
+key([keyChildInfo("foo", 1, [1,1,1]), keyChildInfo("bar", 2, [2,2,2])]) {
+   cube([1,1,1]);
+   cube([2,2,2]);
+}
 
 translate([0, 0, 50]) thirdAngle([5, 2, 3]) {
     cube([5, 2, 3]);
