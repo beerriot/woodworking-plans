@@ -1,5 +1,6 @@
 // Example third-angle
 //cmdline: --projection=o --imgsize=400,400
+include <../common/echo-camera-arg.scad>
 
 use <../common/labeling.scad>
 

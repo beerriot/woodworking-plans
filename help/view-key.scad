@@ -1,5 +1,6 @@
 // Example of a key
 //cmdline: --projection=o --imgsize=600,400
+include <../common/echo-camera-arg.scad>
 
 use <view-book-third-angle.scad>
 use <../common/labeling.scad>

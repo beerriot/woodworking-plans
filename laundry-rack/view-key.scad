@@ -1,5 +1,6 @@
 // Components Key
 //cmdline: --projection=o --imgsize=2048,1024
+include <../common/echo-camera-arg.scad>
 
 use <laundry-rack.scad>
 

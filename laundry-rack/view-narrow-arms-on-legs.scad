@@ -1,5 +1,6 @@
 // View of narrow arms attached to wide arms and half legs
 //cmdline: --imgsize=800,600
+include <../common/echo-camera-arg.scad>
 
 use <laundry-rack.scad>
 use <../common/labeling.scad>

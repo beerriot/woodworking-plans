@@ -26,7 +26,7 @@ ${BUILD_DIR}%.png: %.scad
 	${OPENSCAD} --hardwarnings -m make -o $@ -d ${DEPS_DIR}$(@F).deps --colorscheme Nature ${EXTRA_OPTS} ${CAMERA_OPT} $<
 
 %.png: EXTRA_OPTS=$(shell grep "//cmdline:" $< | sed -e "s,//cmdline:,,g")
-%.png: CAMERA_OPT=$(shell ../common/choose_camera.zsh $<)
+%.png: CAMERA_OPT=$(shell ${OPENSCAD} --export-format echo -o - $< | grep "camera" | sed -e 's/.*"\(.*\)"/\1/')
 
 # First create a dummy scad that calls all the zero-arg parameters and
 # echos their names and values to the log, as sed commands to replace

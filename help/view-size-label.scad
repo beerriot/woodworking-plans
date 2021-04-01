@@ -1,5 +1,6 @@
 // Example sizeLabel
 //cmdline: --projection=o --imgsize=400,200
+include <../common/echo-camera-arg.scad>
 
 use <../common/labeling.scad>
 

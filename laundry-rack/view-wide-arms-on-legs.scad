@@ -1,5 +1,6 @@
 // View of legs of one side assembled
 //cmdline: --imgsize=800,600
+include <../common/echo-camera-arg.scad>
 
 use <laundry-rack.scad>
 use <../common/labeling.scad>

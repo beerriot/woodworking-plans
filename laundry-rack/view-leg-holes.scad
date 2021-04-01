@@ -1,5 +1,6 @@
 // View of where the holes in the leg are drilled.
 //cmdline: --projection=o --imgsize=1600,400
+include <../common/echo-camera-arg.scad>
 
 use <laundry-rack.scad>
 use <../common/labeling.scad>

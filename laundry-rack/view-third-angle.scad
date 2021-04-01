@@ -1,5 +1,6 @@
 // Third-angle view of assembly
 //cmdline: --projection=o --imgsize=2048,1536
+include <../common/echo-camera-arg.scad>
 
 use <laundry-rack.scad>
 

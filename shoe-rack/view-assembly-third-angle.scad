@@ -1,5 +1,6 @@
 // Third Angle view of Assembly
 //cmdline: --projection=o --imgsize=2048,2048
+include <../common/echo-camera-arg.scad>
 
 include <params.scad>
 use <shoe-rack.scad>

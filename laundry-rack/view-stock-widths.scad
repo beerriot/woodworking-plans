@@ -1,5 +1,6 @@
 // End-on views of the stock to be used.
 //cmdline: --projection=o --imgsize=400,200
+include <../common/echo-camera-arg.scad>
 
 use <laundry-rack.scad>
 use <../common/labeling.scad>

@@ -1,5 +1,6 @@
 // Just the key
 //cmdline: --projection=o --imgsize=2048,1024
+include <../common/echo-camera-arg.scad>
 
 include <params.scad>
 use <shoe-rack.scad>

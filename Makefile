@@ -5,6 +5,7 @@ TARGETS_HTML=$(shell ls *.html | sed -e "s,^,${RELEASE_DIR},g")
 .PHONY: all clean release release-clean
 all:
 	@for dir in $(dir $(wildcard */Makefile)); do \
+		echo "****** Making $$dir ******"; \
 		$(MAKE) -C $$dir all; \
 	done
 

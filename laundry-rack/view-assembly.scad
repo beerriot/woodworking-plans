@@ -1,5 +1,6 @@
 // Above and to the side perspective view
 //cmdline: --imgsize=2048,1536
+include <../common/echo-camera-arg.scad>
 
 use <laundry-rack.scad>
 

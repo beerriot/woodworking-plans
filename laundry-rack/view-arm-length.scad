@@ -1,5 +1,6 @@
 // View of an arm blank
 //cmdline: --projection=o --imgsize=800,200
+include <../common/echo-camera-arg.scad>
 
 use <laundry-rack.scad>
 use <../common/labeling.scad>
