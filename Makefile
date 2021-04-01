@@ -1,13 +1,14 @@
 include Makefile.paths
 
 TARGETS_HTML=$(shell ls *.html | sed -e "s,^,${RELEASE_DIR},g")
+PROJECT_DIRS=$(dir $(wildcard */Makefile))
 
-.PHONY: all clean release release-clean
-all:
-	@for dir in $(dir $(wildcard */Makefile)); do \
-		echo "****** Making $$dir ******"; \
-		$(MAKE) -C $$dir all; \
-	done
+.PHONY: all clean release release-clean $(PROJECT_DIRS)
+
+all: $(PROJECT_DIRS)
+
+$(PROJECT_DIRS):
+	$(MAKE) -C $@ all
 
 ${RELEASE_DIR}%.html: %.html common/template.html
 	-@mkdir -p ${RELEASE_DIR}
@@ -17,7 +18,7 @@ ${RELEASE_DIR}%.html: TITLE=$(shell head -1 $<)
 
 
 clean: release-clean
-	@for dir in $(dir $(wildcard */Makefile)); do \
+	@for dir in $(PROJECT_DIRS); do \
 		$(MAKE) -C $$dir clean; \
 	done
 
