@@ -22,6 +22,7 @@ make_directories:
 	-@mkdir -p ${BUILD_DIR}
 	-@mkdir -p ${DEPS_DIR}
 
+# TODO: add --hardwarnings here, but have to covert $vp* settings to --camera first, or the warning about ignoring viewall and autocenter stops the build
 ${BUILD_DIR}%.png: %.scad
 	${OPENSCAD} -m make -o $@ -d ${DEPS_DIR}$(@F).deps --colorscheme Nature ${EXTRA_OPTS} $<
 
