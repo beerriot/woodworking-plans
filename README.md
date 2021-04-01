@@ -24,21 +24,29 @@ The files in this repository are:
   * `Makefile.paths`: file paths for the build script
   * `common/`: resources that the projects share
   * `site/`: support files for the associated project website
-  * `release/`: created when building the website
   * other subdirectories: one subdirectory per project
 
-Each project subdirectory contains one or more files:
+Each project subdirectory contains at least three files:
 
-  * `<project name>.scad`: The 3D model(s) of the project.
+  * `Makefile`: Automation for building this project's piece of the
+    website.
+
+  * `<project name>.scad`: The 3D model of the project.
+
+  * `params.scad`: The base input parameters from which the model's
+    measurements are derived.
+
+  * `view-assembly.scad`: The view of the project to show at the top
+    of its page. (Only required if using `common/Makefile.common` and
+    the `common/project.html`.)
+
+Each project subdirectory may also contain any of the following file:
+
+  * `index.html`: This project's page on the website.
 
   * `view-<description>.scad`: A particular arrangement of project
     pieces and camera positioning, used to export images that will
     appear on the project website.
-
-  * `Makefile`: The automation for creating this project's piece of
-    the website.
-
-  * `index.html`: This project's page on the website.
 
   * `README.md`: Particular details about this project's code or
     webpage build.
@@ -76,80 +84,61 @@ computer can transform this model into a picture is a wonderful thing
 for prototyping and explaining. But the purpose of these models is to
 help a person build the project.
 
-While it may be indicative of a problem with the tools, the model
-files are organized differently than most software. Instead of
-defining each component in its own file, and including those files in
-a unifying model, all components and the unified model are defined in
-one file. This makes creating the model in the OpenSCAD editor easier,
-because only one file needs to be saved and rendered to see any
-change.
+The projects here are simple enough that all of their components can
+be defined in one file, along with the assembly of those components
+into the final project. This may not be the case in the future, but
+for now it keeps the basic model together in one place.
 
-But to further aid in debugging and development, I've found it useful
-to include additional views, often with labels, in the main model file
-as well. This makes the main model file unfit for rendering as a
-preview of just the project. Additional "view" models solve the
-issue. These view models, "use" the main model file (in OpenSCAD
-terminology), and render only the components they want to show, from
-the perspective they want to show them.
+Models are divided into three sections: parameters, components, and
+assembly.
 
-Two guidelines help support this organization:
+### PARAMETERS
 
- 1. When adding something to the scene, always create a module for it,
-    and then call that module. This includes the key and the final
-    assembly. This makes it easy to create a rendering of only that
-    thing in a separate `.scad` (e.g. `view-assembly.scad`) that calls
-    only that module.
+The parameters section should define all measurements of the
+project. There are two kinds of parameters to consider: those that are
+inputs from someone planning to build the project, and those that are
+derived from the first set. For example, a bookshelf might expect
+inputs of the width of the unit, and the thickness of its end pieces,
+and then might derive the length of the shelves from those numbers.
 
- 2. When using a value that might be relevant to multiple components,
-    define it at the top level, and use a function instead of a
-    variable. Functions are available to files that "use" other files,
-    while variables are not.
+Input parameters break the rule of everything being defined in the
+model file. They should instead be defined in `params.scad`, and they
+should be defined as simple variables. Defining them as variables
+makes them easy to override at the commandline
+(`-Dparameter=value`). Placing them in a separate file makes it easier
+for view files to use them (`include <params.scad>`) while still
+allowing the main model file to render objects in the scene.
 
-Defining parameters as functions serves an additional purpose: it
-makes it possible to use their values when rendering the HTML
-page. The shared `common/Makefile.common` defines a target that
-creates a `sed` script, which will replace `{{parameterName}}` with
-the value of that parameter in any of the project's .html files.
+Derived, or computed, parameters should be the first entries in the
+main model file, and they should be derived as functions. Defining
+them as functions allows view files to use them (`use <project.scad>`)
+while still allowing the main model file to render objects in the
+scene.
 
-In an attempt to give some amount of organization to the main model
-file, it is broken into six sections: input parameters, computed
-parameters, colors, components, key, and assembly. Each section is
-described below.
+That bookshelf project mentioned earlier might have a `params.scad`
+like so:
 
-### INPUT PARAMETERS
+```
+width=100
+endThickness=10
+```
 
-This section captures expected adjustment knobs. For example, when
-building a shelving unit, this section should include parameters for
-the length, depth, and height of the case, as well as the number
-and/or spacing of the shelves. This is also where options for how
-thick/wide/long the stock to be used is.
+And a main `bookshelf.scad` like so:
 
-Parameters that are defined as no-parameter functions will be made
-available for HTML replacement, as described above.
+```
+function shelfLength() = width - endThickness * 2;
+```
 
-### COMPUTED PARAMETERS
+If `common/Makefile.common` is used as the project's Makefile,
+arranging parameters in this way has an additional benefit: their
+values can be inserted into the project's `index.html` by surrounding
+the parameter name with two opening and closing curly braces,
+e.g. `{{width}}` or `{{shelfLength}}`.
 
-This section captures parameters of the project that are derived from
-the input parameters. For example, instead of specifying the height of
-each shelf of a bookcase as an input parameter, those heights might be
-computed by dividing the input parameters of case height by shelf
-count.
-
-Parameters that are defined as no-parameter functions will be made
-available for HTML replacement, as described above.
-
-The dividing line between input and computed parameters is whether or
-not someone should be changing it, if they are only intending to build
-the project, and not change the underlying model. In general, someone
-only building the project should not edit computed parameters - they
-should only change input parameters.
-
-### COLORS
-
-Because this model is intended to guide someone through building the
-project, it is often helpful to display different components in
-different colors. This section is where those colors should be
-specified.
+In general, it makes sense to define parameters for nearly every value
+used to construct the model and its components. It makes it possible
+to create views and instructions that all update automatically to show
+the correct values.
 
 ### COMPONENTS
 
@@ -163,13 +152,64 @@ progression for a bookcase might be:
  2. Modules defining each piece of shaped wood - end cap, shelf plank,
     shelf support, shelf rib, etc.
 
-I've found it useful to include a "<component>Key" module near the
-component definition as well, to add measurement labels around the
-component. Rendering this in the scene has been very useful for
-debugging. Looking at a component on its own, with some notes around
-it, often makes problems clearer.
+For documenting the build later, I've found that it's useful to think
+of component modules in terms of the steps needed to build them. Being
+able to show a view of a component only partially finished can be
+useful.
 
-Tools for adding these measurements can be found in
+### ASSEMBLY
+
+This is where the project comes together. In this section, components
+should be assembled to create the final project.
+
+The line dividing COMPONENTS from ASSEMBLY is a bit fuzzy. A shelf
+might be made of slats, but a bookcase is made of shelves. The slats
+not assembly, and the bookcase is not components, but what are the
+shelves? So far, I've erred on the side of modules in components are
+subtractive (cutting shapes, drilling holes, etc.), while modules in
+assembly are additive (gluing or otherwise joining). This won't hold
+for projects that glue to pieces together, and then cut the assembly,
+but we'll figure out what that should look like when we have some of
+those.
+
+As with component modules, it's useful to think of assembly modules in
+terms of the steps needed to build them. The laundry rack project, for
+example, shows the arm assembly without one side attached in several
+views.
+
+## Views
+
+Only one view is required in a project, and ony if it's using the
+common Makefile and project page template (which it should). That is
+`view-assembly.scad`. This view should be a 3D perspective view of the
+finished object, that would allow someone to get a basic idea of what
+the project is.
+
+All other views are up to you. Any `view-*.scad` file will be rendered
+into a `view-*.png` during the common build process.
+
+A view file can specify commandline arguments that should be passed to
+openscad when building it, by including a comment that starts
+"//cmdline:". One comment only is allowed, and all arguments must be
+on that one line of the file. Most views use this to specify the
+projection type and final image size.
+
+To avoid warnings that will stop the build process, if you set the
+viewpoint of the scene using `$vpt`, `$vpr`, and `$vpd`, also add
+`include <../common/echo-camera-arg.scad>` to the file. This will
+allow the common Makefile to append a `--camera` commandline argument
+to the openscad execution, which silences the warning.
+
+### Key
+
+I've found it useful for one of the views to be a "key". Like a key on
+a map, this shows an example of each component. The components name,
+the number of instances of that component, and some information about
+its size are displayed as well. This can be a great aid for debugging:
+looking at a component on its own, with some notes around it, often
+makes problems clearer.
+
+Tools for creating the key, and adding measurements can be found in
 `common/labeling.scad`. The `sizeLabel`, `angleLabel` modules add
 markers and text numbers to the scene to display lengths and
 angles. The `thirdAngle` tool renders three copies of the component,
@@ -180,26 +220,9 @@ orthogonal projection, this has the effect if creating a [third-angle
 projection](https://en.wikipedia.org/wiki/Multiview_projection#Third-angle_projection),
 similar to an architectural drawing.
 
-### KEY
+### Third-Angle
 
-This section is not necessary to render a 3D model of the completed
-project. This section is for displaying each component
-individually. This part of the rendering is where it's possible to see
-rabbets cut, holes drilled, etc. before assembly. The name and number
-of each components is displayed as well. This brings all of the extra
-"<component>Key" modules together in one place.
-
-### ASSEMBLY
-
-This is where the project comes together. In this section, components
-should be assembled to create the final project.
-
-The line dividing COMPONENTS from ASSEMBLY is a bit fuzzy. A shelf
-might be made of slats, but a bookcase is made of shelves. The slats
-not assembly, and the bookcase is not components, but what are the
-shelves? Use your best judgement as to what is clearest to a
-person in context. This organization can evolve.
-
-Something to keep in mind when creating a step-by-step build project
-like the "Laundry Rack", is trying to define assembly in such a way
-that its modules can be used to make specific views for each step.
+In addition to rendering components in the key as third-angle
+drawings, adding a view of the assembled project in third-angle
+projection can also be useful. It gives a good place to label
+assembled sizes, as well as distances between pieces.
