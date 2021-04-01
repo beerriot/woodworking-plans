@@ -157,7 +157,7 @@ module shelf(shelfAngle, bottom=false)
             rotate([0, 0, 90])
             shelfSupport(shelfAngle, bottom);
         
-        translate([(slatStockThickness + length) / 2, 0, endStockWidth])
+        translate([(slatLength() + slatStockWidth) / 2, 0, endStockWidth])
             rotate([0, 0, 90])
             shelfCenter(shelfAngle, bottom);
     
