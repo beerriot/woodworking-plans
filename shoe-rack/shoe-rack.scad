@@ -1,6 +1,5 @@
 // Shoe Rack
 use <../common/common.scad>
-use <../common/labeling.scad>
 
 // INPUT PARAMETERS
 include <params.scad>
