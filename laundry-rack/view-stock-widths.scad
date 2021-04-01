@@ -2,8 +2,10 @@
 //cmdline: --projection=o --imgsize=400,200
 include <../common/echo-camera-arg.scad>
 
-use <laundry-rack.scad>
 use <../common/labeling.scad>
+
+include <params.scad>
+use <laundry-rack.scad>
 
 $vpr=[ 90.00, 0.00, 0.00 ];
 $vpt=[ 7.38, -124.10, -0.69 ];
@@ -11,26 +13,30 @@ $vpf=22.50;
 $vpd=53.88;
 
 module legArmExample() {
-    translate([squareStockThickness(), 0, squareStockWidth()/2])
+    translate([squareStockThickness, 0, squareStockWidth / 2])
         rotate([0, 0, 90]) legColor() armLegStock(1);
 
-    sizeLabel(squareStockThickness());
+    sizeLabel(squareStockThickness);
 
-    translate([squareStockThickness(), 0])
-        sizeLabel(squareStockWidth(), rotation=-90);
-    translate([squareStockThickness()/2, 0, -sizeLabelHeight() * 1.5])
+    translate([squareStockThickness, 0])
+        sizeLabel(squareStockWidth, rotation=-90);
+    translate([squareStockThickness / 2, 0, -sizeLabelHeight() * 1.5])
         rotate([90, 0, 0])
-        text("LEG / ARM", size=squareStockThickness(), halign="center", valign="top");
+        text("LEG / ARM",
+             size=squareStockThickness,
+             halign="center",
+             valign="top");
 }
 
 module dowelExample() {
     longDowelColor() dowel(1);
 
-    translate([-dowelRadius(), 0]) sizeLabel(dowelDiameter());
+    translate([-dowelRadius(), 0]) sizeLabel(dowelDiameter);
 
-    translate([0, 0, -sizeLabelHeight() * 1.5]) rotate([90, 0, 0])
-        text("DOWEL", size=squareStockThickness(), halign="center", valign="top");
+    translate([0, 0, -sizeLabelHeight() * 1.5])
+        rotate([90, 0, 0])
+        text("DOWEL", size=squareStockThickness, halign="center", valign="top");
 }
 
 legArmExample();
-translate([squareStockThickness() * 8, 0]) dowelExample();
+translate([squareStockThickness * 8, 0]) dowelExample();
