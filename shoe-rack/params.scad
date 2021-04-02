@@ -43,3 +43,16 @@ raisedFrontSlatMinAngle = 5;
 // and cut angle for all shelves, regardless of their mounting angle.
 reduceUniqueParts = false;
 
+// Color of the top and bottom components (the horizontal components)
+// of the end assembly.
+endTopBottomColor = "#ccccff";
+
+// Color of the frontand back components (the vertical components) of
+// the end assembly.
+endFrontBackColor = "#ccffcc";
+
+// Color of the shelf slats.
+slatColor = "#cccc99";
+
+// Color of the supports connecting the slats to the ends.
+shelfSupportColor = "#99cccc";

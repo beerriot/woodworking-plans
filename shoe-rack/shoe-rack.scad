@@ -29,10 +29,10 @@ function slatPositions(shelfAngle) =
     [0 : (slatStockWidth + space) : depth];
 
 // COLORS
-endTopBottomColor=[0.8, 0.8, 1];
-endFrontBackColor=[0.8, 1, 0.8];
-slatColor=[0.8, 0.8, 0.6];
-shelfSupportColor=[0.6, 0.8, 0.8];
+module endTopBottomColor() color(endTopBottomColor) children();
+module endFrontBackColor() color(endFrontBackColor) children();
+module slatColor() color(slatColor) children();
+module shelfSupportColor() color(shelfSupportColor) children();
 
 // COMPONENTS
 
@@ -47,8 +47,8 @@ module slatStock(length, errs=[0,0,0]) {
 
 // `render()` is necessary to prevent z-index conflicts
 // on the ends of the half-laps when put together
-module endPiece(length, pieceColor="red")
-    color(pieceColor) render() difference() {
+module endPiece(length)
+    render() difference() {
         endStock(length);
         // halflap either end
         translate([0, -endStockThickness / 2]) {
@@ -59,18 +59,18 @@ module endPiece(length, pieceColor="red")
     }
     
 module endTopBottom() {
-    endPiece(endDepth, pieceColor=endTopBottomColor);
+    endTopBottomColor() endPiece(endDepth);
 }
 
 module endFrontBack() {
-    endPiece(endHeight, pieceColor=endFrontBackColor);
+    endFrontBackColor() endPiece(endHeight);
 }
 
 module shelfSupport(shelfAngle, bottom=false) {
     cutAngle = shelfCutAngle(shelfAngle);
     depth = shelfDepth(shelfAngle);
     
-    color(shelfSupportColor)
+    shelfSupportColor()
     render()
     translate([0, 0, endStockWidth])
     difference() {
@@ -105,7 +105,7 @@ module shelfCenter(shelfAngle, bottom=false) {
     cutAngle = shelfCutAngle(shelfAngle);
     depth = shelfDepth(shelfAngle);
     
-    color(slatColor)
+    slatColor()
     rotate([-90, 0, 0])
     difference() {
         slatStock(depth);
@@ -132,7 +132,7 @@ module shelfCenter(shelfAngle, bottom=false) {
 }
 
 module slat()
-    color(slatColor)
+    slatColor()
      translate([0, 0, slatStockThickness])
      rotate([-90, 0, 0])
      slatStock(slatLength());

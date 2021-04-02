@@ -85,12 +85,12 @@ function hookWireRadius() = paracordRadius() / 2;
 function hookShaftLength() = dowelDiameter * 2;
 
 // COLORS
-module longDowelColor() color([0.6, 0.6, 1]) children();
-module shortDowelColor() color([0, 0, 1]) children();
-module legColor() color([0.5, 1.0, 0.5]) children();
-module armColor() color([0.9, 0.5, 0.8]) children();
-module paracordColor() color([0, 0, 0]) children();
-module hookColor() color([0.8, 0.8, 0.8]) children();
+module longDowelColor() color(longDowelColor) children();
+module shortDowelColor() color(shortDowelColor) children();
+module legColor() color(legColor) children();
+module armColor() color(armColor) children();
+module paracordColor() color(paracordColor) children();
+module hookColor() color(hookColor) children();
 
 // COMPONENTS
 module dowel(length, errs=[0,0])

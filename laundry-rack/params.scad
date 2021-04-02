@@ -34,3 +34,21 @@ outerDowels = 4;
 
 // Half the thickness of the paracord.
 paracordDiameter = 0.6;
+
+// Color of the dowels spanning the full width of the unit.
+longDowelColor = "#9999ff";
+
+// Color of the dowels that span only the narrower assemblies.
+shortDowelColor = "#0000ff";
+
+// Color of the legs.
+legColor = "#7fff7f";
+
+// Color of the arms.
+armColor = "#e57fcc";
+
+// Color of the paracord part of the locking system.
+paracordColor = "#000000";
+
+// Color of the hook part of the locking system.
+hookColor = "#cccccc";
