@@ -1,4 +1,5 @@
 // Labeling library
+$fs = 0.1;
 
 defaultMarkerRadius = 1.5;
 
@@ -8,9 +9,9 @@ module sizeLabel(distance, over=false, markerRadius=defaultMarkerRadius, lineRad
     module sizeEnd() {
         cylinder(0.1, markerRadius, markerRadius * 0.75);
     }
-    
+
     rounded = is_num(distance) ? round(pow(10, sigfig) * distance) / pow(10, sigfig) : distance;
-    
+
     rotate([0, rotation, 0]) translate([0, 0, (over ? 1 : -1) * markerRadius + 0.01]) color(color) {
         rotate([0, 90, 0]) {
             sizeEnd();
@@ -18,11 +19,11 @@ module sizeLabel(distance, over=false, markerRadius=defaultMarkerRadius, lineRad
             translate([0, 0, distance]) mirror([0, 0, 1]) sizeEnd();
             cylinder(distance, r=lineRadius);
         }
-        
+
         assert(abs(rotation) >= 0 && abs(rotation) <= 360,
                str("sizeLabel rotation must be between 0 and 360 (found ",
                    rotation, ")"));
-        
+
         // center text left-to-right at low angles, but move it to the side above 30º
         halign = (abs(rotation) <= 30 ||
                   (abs(rotation) >= 150 && abs(rotation) <= 210) ||
@@ -30,7 +31,7 @@ module sizeLabel(distance, over=false, markerRadius=defaultMarkerRadius, lineRad
                  : ((rotation < -30 && rotation > -150) ||
                     (rotation > 210 && rotation < 330))
                      ? (over ? "right" : "left") : (over ? "left" : "right");
-        
+
         // move the text below or above at low angles, but put it right in the middle above 45º
         valign = (abs(rotation) <= 45 || abs(rotation) >= 315)
                  ? (over ? "bottom" : "top")
@@ -44,7 +45,7 @@ module sizeLabel(distance, over=false, markerRadius=defaultMarkerRadius, lineRad
     }
 }
 
-//TODO: currently only works for 0 <= angle <= 180
+//TODO: currently only works for 0 <= |angle| <= 180
 module angleLabel(angle, referenceAngle, size, color="grey") {
     color(color) {
         rotate([0, -referenceAngle, 0]) {
@@ -52,11 +53,21 @@ module angleLabel(angle, referenceAngle, size, color="grey") {
             difference() {
                 rotate([90, 0, 0]) cylinder(h=0.1, r=size*2/3, center=true);
                 rotate([90, 0, 0]) cylinder(h=0.12, r=size*2/3 - 0.1, center=true);
-                translate([-size, -0.06, -size*2]) cube([size*2, 0.12, size*2]);
-                rotate([0, -angle, 0]) translate([-size, -0.06, 0]) cube([size*2, 0.12, size]);
+                translate([-size, -0.06, (angle >= 0) ? -size*2 : 0])
+                    cube([size*2, 0.12, size*2]);
+                rotate([0, -angle, 0])
+                    translate([-size, -0.06, (angle >= 0) ? 0 : -size])
+                    cube([size*2, 0.12, size]);
             }
         }
-        translate([cos(referenceAngle + angle/2) * size * 7/8, 0, sin(referenceAngle + angle/2) * size *7/8]) rotate([90, 0, 0]) text(str(angle, "º"), halign="center", valign="center", size=sin(angle)*size*0.45);
+        translate([cos(referenceAngle + angle/2) * size * 7/8,
+                   0,
+                   sin(referenceAngle + angle/2) * size *7/8])
+            rotate([90, 0, 0])
+            text(str(abs(angle), "º"),
+                 halign="center",
+                 valign="center",
+                 size=sin(abs(angle))*size*0.45);
     }
 }
 
@@ -71,12 +82,12 @@ module key(childrenInfo=[], textColor="black", spacing=sizeLabelHeight() / 2) {
     assert(len(childrenInfo) == $children,
            str("Length of key children (", $children,
                ") and info (", len(childrenInfo), ") do not match."));
-    
+
     // midpoints for each child
     heights = [ for(i = 0, h = 0;
                     i < $children;
                     h = h + size(i).z + spacing, i = i + 1) h];
-    
+
     textSize = 0.5 * min([for (i=[0:$children-1]) size(i).z]);
 
     for (i = [0:len(childrenInfo)-1]) {
@@ -129,21 +140,21 @@ module thirdAngle(size,
     assert($children >= 2 && $children <=4,
            str("thirdAngle requires 2 - 4 children ",
                "- object, front, [right, top] - but passed ", $children))
-                      
+
     // make the bottom of the bottom front label sit at zero
     translate([0, 0, sizeLabelHeight() * (frontLabels == undef ? 0 : frontLabels[2])]) {
         // Front view
         children([0:1]);
-        
+
         // Right view
         frontRightLabelSpace = sizeLabelHeight() * (frontLabels == undef ? 0 : frontLabels[1]);
         if ($children > 2 && rightLabels != undef)
             translate([spacing + size.x + frontRightLabelSpace, 0, 0])
                 rotate([0, 0, -90]) translate([-size.x, 0, 0]) children([0,2]);
-        
+
         // Top view
         frontTopLabelSpace = sizeLabelHeight() *
-            ((frontLabels == undef ? 0 : frontLabels[0]) + 
+            ((frontLabels == undef ? 0 : frontLabels[0]) +
              (topLabels == undef ? 0 : topLabels[2]));
         if ($children > 3 && topLabels != undef)
             translate([0, 0, spacing + size.z + frontTopLabelSpace])
@@ -183,14 +194,14 @@ key([keyChildInfo("foo", 1, [1,1,1]), keyChildInfo("bar", 2, [2,2,2])]) {
 
 translate([0, 0, 50]) thirdAngle([5, 2, 3]) {
     cube([5, 2, 3]);
-    
+
     sizeLabel(5);
-    
+
     taRightSide(5) {
         sizeLabel(2);
         translate([2, 0]) rotate([0, -90, 0]) sizeLabel(3);
     }
-        
+
 }
 
 translate([0, 0, 70]) thirdAngle([5, 2, 3], topLabels=[1, 0, 1]) {
@@ -198,14 +209,14 @@ translate([0, 0, 70]) thirdAngle([5, 2, 3], topLabels=[1, 0, 1]) {
         cube([5, 2, 3]);
         translate([2.5, 2, -0.01]) cylinder(3.02, r=1);
     }
-    
+
     sizeLabel(5);
-    
+
     taRightSide(5) {
         translate([0, 0, 3]) sizeLabel(2, over=true);
         translate([2, 0]) rotate([0, -90, 0]) sizeLabel(3);
     }
- 
+
     taTopSide(3) {
         translate([1.5, 0, 2]) sizeLabel(2, over=true);
         sizeLabel(5);
@@ -222,7 +233,7 @@ translate([50, 0, 40]) {
     translate([0, 0, 15]) rotate([90, 0, 0]) text("under, pos", size=2, halign="right");
     translate([0, 0, 30]) rotate([90, 0, 0]) text("over, neg", size=2, halign="right");
     translate([0, 0, 45]) rotate([90, 0, 0]) text("over, pos", size=2, halign="right");
-    
+
     for (a = [0 : 15 : 360]) {
         translate([a+5, 0, -10]) rotate([90, 0, 0]) text(str(a), size=2, halign="center", valign="top");
         translate([a, 0, 0]) sizeLabel(10, over=false, rotation=-a);

@@ -19,14 +19,48 @@ function shelfCutAngle(shelfAngle) =
 function slatCount(shelfAngle) =
     min(maxSlats,
         floor(shelfDepth(shelfAngle) / (slatStockWidth + minSlatSpacing)));
-    
+
 function slatSpace(shelfAngle) =
     let (slats = slatCount(shelfAngle))
     (shelfDepth(shelfAngle) - slatStockWidth * slats) / (slats - 1);
-    
+
 function slatPositions(shelfAngle) =
     let (depth = shelfDepth(shelfAngle), space = slatSpace(shelfAngle))
     [0 : (slatStockWidth + space) : depth];
+
+function lapJointDepth() = endStockThickness / 2;
+
+// Values used in the instructions
+function totalEndStockLengthEstimate() =
+    (endDepth + endHeight) * 4 +
+    shelfDepth(maxShelfAngle()) * len(shelfHeightsAndAngles);
+
+function sumSlats(i=0, n=0) =
+    (i >= len(shelfHeightsAndAngles)) ? n :
+    sumSlats(i + 1, n + slatCount(shelfHeightsAndAngles[i][1]));
+function totalSlats() = sumSlats();
+
+function shallowestShelfDepth() = shelfDepth(minShelfAngle());
+function deepestShelfDepth() = shelfDepth(maxShelfAngle());
+
+function rest(list, fromi) =
+    (fromi > len(list)-1) ?
+    [] : [ for (j=[(fromi+1):(len(list)-1)]) list[j] ];
+function addShelfAngle(angle, angles, i=0) =
+    (i == len(angles) ? [[angle, 1]] :
+     (angle == angles[i][0] ?
+      concat([[angle, angles[i][1]+1]], rest(angles, i+1)) :
+      concat([angles[0]], addShelfAngle(angle, angles, i+1))));
+function countUniqueShelfAngles(i=0, angles=[]) =
+    (i == len(shelfHeightsAndAngles)) ? angles :
+    countUniqueShelfAngles(i+1,
+                           addShelfAngle(shelfHeightsAndAngles[i][1],
+                                         angles));
+function uniqueShelfAngles() = reduceUniqueParts ?
+    [[maxShelfAngle(), len(shelfHeightsAndAngles)]] :
+    countUniqueShelfAngles();
+
+function bottomShelfMountingAngle() = shelfHeightsAndAngles[0][1];
 
 // COLORS
 module endTopBottomColor() color(endTopBottomColor) children();
@@ -51,13 +85,13 @@ module endPiece(length)
     render() difference() {
         endStock(length);
         // halflap either end
-        translate([0, -endStockThickness / 2]) {
+        translate([0, -lapJointDepth()]) {
             endStock(endStockWidth, [-1, 0, 2]);
             translate([length - endStockWidth, 0])
                 endStock(endStockWidth, [1, 0, 2]);
         }
     }
-    
+
 module endTopBottom() {
     endTopBottomColor() endPiece(endDepth);
 }
@@ -69,21 +103,21 @@ module endFrontBack() {
 module shelfSupport(shelfAngle, bottom=false) {
     cutAngle = shelfCutAngle(shelfAngle);
     depth = shelfDepth(shelfAngle);
-    
+
     shelfSupportColor()
     render()
     translate([0, 0, endStockWidth])
     difference() {
         translate([0, 0, -endStockWidth]) endStock(depth);
         //cut off corner sticking out the front
-        rotate([0, 90 - cutAngle, 0]) 
-            translate([0, 0, -endStockWidth]) 
+        rotate([0, 90 - cutAngle, 0])
+            translate([0, 0, -endStockWidth])
             endStock(endStockWidth / cos(cutAngle), [1, 2, 1]);
         //cut off corner sticking out the back
         translate([depth, 0])
-            rotate([0, 90 + cutAngle, 0]) 
+            rotate([0, 90 + cutAngle, 0])
             endStock(endStockWidth / cos(cutAngle), [1, 2, 1]);
-        
+
         // slots for slats
         for (x = slatPositions(shelfAngle))
             if (x != 0 || (x == 0 && shelfAngle < raisedFrontSlatMinAngle))
@@ -104,19 +138,19 @@ module shelfSupport(shelfAngle, bottom=false) {
 module shelfCenter(shelfAngle, bottom=false) {
     cutAngle = shelfCutAngle(shelfAngle);
     depth = shelfDepth(shelfAngle);
-    
+
     slatColor()
     rotate([-90, 0, 0])
     difference() {
         slatStock(depth);
         //cut off corner sticking out the front
-        rotate([0, 0, 90 - cutAngle]) 
+        rotate([0, 0, 90 - cutAngle])
             slatStock(slatStockWidth / cos(cutAngle), [1, -1, 2]);
         //cut off corner sticking out the back
         translate([depth + slatStockThickness, 0])
-            rotate([0, 0, 90 + cutAngle]) 
+            rotate([0, 0, 90 + cutAngle])
             slatStock(slatStockWidth / cos(cutAngle), [1, 1, 2]);
-        
+
         // slots for slats
         for (x = slatPositions(shelfAngle))
             if (x != 0 || (x == 0 && shelfAngle < raisedFrontSlatMinAngle))
@@ -128,7 +162,7 @@ module shelfCenter(shelfAngle, bottom=false) {
         if (bottom)
             rotate([0, 0, shelfAngle])
                 slatStock(endDepth, [2, -1, 2]);
-    } 
+    }
 }
 
 module slat()
@@ -147,30 +181,38 @@ module end() translate([endStockThickness, 0]) rotate([0, 0, 90]) {
         endFrontBack();
 }
 
-module shelf(shelfAngle, bottom=false)
+module shelf(shelfAngle,
+             bottom=false,
+             includeSecondSupport=true,
+             includeCenterSupport=true,
+             includeFrontSlat=true)
     rotate([shelfAngle, 0, 0]) translate([0, 0, -endStockWidth]) {
         translate([endStockThickness, 0])
             rotate([0, 0, 90])
             shelfSupport(shelfAngle, bottom);
-        translate([(length - endStockThickness * 2), 0])
-            rotate([0, 0, 90])
-            shelfSupport(shelfAngle, bottom);
-        
-        translate([(slatLength() + slatStockWidth) / 2, 0, endStockWidth])
-            rotate([0, 0, 90])
-            shelfCenter(shelfAngle, bottom);
-    
+
+        if (includeSecondSupport)
+            translate([(length - endStockThickness * 2), 0])
+                rotate([0, 0, 90])
+                shelfSupport(shelfAngle, bottom);
+
+        if (includeCenterSupport)
+            translate([(slatLength() + slatStockWidth) / 2, 0, endStockWidth])
+                rotate([0, 0, 90])
+                shelfCenter(shelfAngle, bottom);
+
         for (y = slatPositions(shelfAngle),
              // do not sink the front slat if the shelf angle is low;
              // keep it raised to provide a leg for heels/toes to rest against
              sink = (y == 0 && shelfAngle >= raisedFrontSlatMinAngle ?
                      0 : slatStockThickness /2))
-            translate([0, y, endStockWidth - sink]) slat();
+            translate([0, y, endStockWidth - sink])
+                if (y != 0 || includeFrontSlat) slat();
     }
-        
-module assembly() {
+
+module assembly(includeSecondEnd=true) {
     end();
-    translate([length, 0]) mirror([1, 0,0]) end();
+    if (includeSecondEnd) translate([length, 0]) mirror([1, 0,0]) end();
 
     for (i = [0:len(shelfHeightsAndAngles)-1],
          h = shelfHeightsAndAngles[i][0],
@@ -178,5 +220,5 @@ module assembly() {
         translate([endStockThickness, 0, h]) shelf(a, i == 0);
     }
 }
-    
+
 assembly();
