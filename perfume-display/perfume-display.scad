@@ -124,7 +124,8 @@ module rightSide() {
 }
 
 module assembly() {
-    difference() {
+    color(plankColor)
+        difference() {
         plank();
 
         // vial holes

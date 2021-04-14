@@ -23,3 +23,6 @@ bevel = [30, 0.32];
 // Grooves to improve grip when lowering int a drawer.
 //    [diameter, length as ratio of plank dimension]
 groove = [0.63, 0.5];
+
+// Color to draw the finished piece.
+plankColor = "#996633";
