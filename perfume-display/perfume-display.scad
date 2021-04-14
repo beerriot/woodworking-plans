@@ -87,6 +87,20 @@ module bevelCut() {
               height]);
 }
 
+module grooveCut(plankDimension) {
+    radius = groove[0] / 2;
+    length = plankDimension * groove[1];
+    translate([plankDimension / 2, 0, plankSize.z / 2])
+        rotate([0, 90, 0])
+        union() {
+        cylinder(h=length,
+                 r=radius,
+                 center=true);
+        translate([0, 0, length / 2]) sphere(r=radius);
+        translate([0, 0, -length / 2]) sphere(r=radius);
+        }
+}
+
 // ASSEMBLY
 
 module bevels() {
@@ -115,6 +129,16 @@ module assembly() {
         rotate([0, 0, 90]) mirror([0, 1, 0]) bevels();
         //right
         translate([plankSize.x, 0, 0]) rotate([0, 0, 90]) bevels();
+
+        // grooves
+        // front
+        grooveCut(plankSize.x);
+        // back
+        translate([0, plankSize.y, 0]) grooveCut(plankSize.x);
+        // left
+        rotate([0, 0, 90]) grooveCut(plankSize.y);
+        // right
+        translate([plankSize.x, 0, 0]) rotate([0, 0, 90]) grooveCut(plankSize.y);
     }
 }
 
