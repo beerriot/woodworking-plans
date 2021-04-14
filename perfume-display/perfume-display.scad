@@ -76,14 +76,49 @@ module drillHole(diameter) {
     cylinder(r=diameter / 2, h=plankSize.z + 0.1);
 }
 
+module bevelCut() {
+    thickness = (bevel[1] * sin(bevel[0])) + 0.01;
+    height = (bevel[1] / cos(bevel[0])) + 0.02;
+    translate([0, 0, bevel[1]])
+        rotate([bevel[0], 0, 0])
+        translate([-0.01, -thickness, 0.01 - height])
+        cube([max(plankSize.x, plankSize.y) + 0.02,
+              thickness,
+              height]);
+}
+
 // ASSEMBLY
 
-difference() {
-    plank();
-    translate(staticBorder() + dynamicBorder())
-        for (i = vialPositions())
-            translate(i[0]) drillHole(i[1]);
+module bevels() {
+    // bottom
+    bevelCut();
+
+    // top
+    translate([0, 0, plankSize.z]) mirror([0,0,1]) bevelCut();
 }
+
+module assembly() {
+    difference() {
+        plank();
+
+        // vial holes
+        translate(staticBorder() + dynamicBorder())
+            for (i = vialPositions())
+                translate(i[0]) drillHole(i[1]);
+
+        // bevels
+        // front
+        bevels();
+        //back
+        translate([0, plankSize.y, 0]) mirror([0,1,0]) bevels();
+        //left
+        rotate([0, 0, 90]) mirror([0, 1, 0]) bevels();
+        //right
+        translate([plankSize.x, 0, 0]) rotate([0, 0, 90]) bevels();
+    }
+}
+
+assembly();
 
 echo(vialCenterDistance=vialCenterDistance());
 echo(staticBorder=staticBorder(), usablePlankSpace=usablePlankSpace());

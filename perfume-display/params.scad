@@ -16,3 +16,6 @@ plankSize = [25.4, 20.32, 2.54]; // 10x8x1"
 
 // Minimum space between edge of vial hole and edge of plank.
 border = [0.32, 0.32];
+
+// Bevel around the edge: [angle, depth];
+bevel = [30, 0.32];
