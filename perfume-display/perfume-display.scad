@@ -111,6 +111,18 @@ module bevels() {
     translate([0, 0, plankSize.z]) mirror([0,0,1]) bevelCut();
 }
 
+module backSide() {
+    translate([0, plankSize.y, 0]) mirror([0,1,0]) children();
+}
+
+module leftSide() {
+    rotate([0, 0, 90]) mirror([0, 1, 0]) children();
+}
+
+module rightSide() {
+    translate([plankSize.x, 0, 0]) rotate([0, 0, 90]) children();
+}
+
 module assembly() {
     difference() {
         plank();
@@ -120,25 +132,15 @@ module assembly() {
             for (i = vialPositions())
                 translate(i[0]) drillHole(i[1]);
 
-        // bevels
-        // front
         bevels();
-        //back
-        translate([0, plankSize.y, 0]) mirror([0,1,0]) bevels();
-        //left
-        rotate([0, 0, 90]) mirror([0, 1, 0]) bevels();
-        //right
-        translate([plankSize.x, 0, 0]) rotate([0, 0, 90]) bevels();
+        backSide() bevels();
+        leftSide() bevels();
+        rightSide() bevels();
 
-        // grooves
-        // front
         grooveCut(plankSize.x);
-        // back
-        translate([0, plankSize.y, 0]) grooveCut(plankSize.x);
-        // left
-        rotate([0, 0, 90]) grooveCut(plankSize.y);
-        // right
-        translate([plankSize.x, 0, 0]) rotate([0, 0, 90]) grooveCut(plankSize.y);
+        backSide() grooveCut(plankSize.x);
+        leftSide() grooveCut(plankSize.y);
+        rightSide() grooveCut(plankSize.y);
     }
 }
 
