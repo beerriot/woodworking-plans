@@ -19,7 +19,7 @@ function vialCenterDistance() =
 function staticBorder() =
     [vialCenterDistance() / 2,
      vialCenterDistance() / 2,
-     plankSize.z - vialDepth];
+     0];
 
 function usablePlankSpace() = plankSize - staticBorder() * 2;
 
@@ -55,17 +55,20 @@ function relativeVialPositions(row) =
 function vialPositions() =
     [ for (i = [0 : intMaxVials().y - 1])
             for (j = relativeVialPositions(i))
-                let (d = diameterOfVialsInRow(i))
-                    [j + rowOffset(i), d] ];
+                let (d = diameterAndDepthOfVialsInRow(i))
+                    [j + rowOffset(i) + [0, 0, plankSize.z - d[1]], d[0]] ];
 
-function diameterOfVialsInRow(i, countRow=0, vialsBatch=0, vialCount=0) =
-    (countRow == i) ? vials[vialsBatch][0]
+function diameterAndDepthOfVialsInRow(i,
+                                      countRow=0,
+                                      vialsBatch=0,
+                                      vialCount=0) =
+    (countRow == i) ? [vials[vialsBatch][0], vials[vialsBatch][1]]
     : let (newVialCount = vialCount + vialsInRow(countRow))
-    diameterOfVialsInRow(i, countRow+1,
-                         (newVialCount > vials[vialsBatch][1])
-                         ? (vialsBatch + 1) % len(vials) : vialsBatch,
-                         (newVialCount > vials[vialsBatch][1])
-                         ? 0 : newVialCount);
+    diameterAndDepthOfVialsInRow(i, countRow+1,
+                                 (newVialCount > vials[vialsBatch][2])
+                                 ? (vialsBatch + 1) % len(vials) : vialsBatch,
+                                 (newVialCount > vials[vialsBatch][2])
+                                 ? 0 : newVialCount);
 
 // COMPONENTS
 module plank() {
@@ -73,7 +76,7 @@ module plank() {
 }
 
 module drillHole(diameter) {
-    cylinder(r=diameter / 2, h=vialDepth+0.01);
+    cylinder(r=diameter / 2, h=plankSize.z + 0.1);
 }
 
 // ASSEMBLY
