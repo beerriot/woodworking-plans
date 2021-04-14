@@ -12,4 +12,7 @@ defaultInterVialDistance = 1.27; // 1/2"
 minInterVialDistance = 0.32; // 1/8"
 
 // Size of the board to drill the holes in.
-plankSize = [26.4, 21.31, 2.54];
+plankSize = [25.4, 20.32, 2.54]; // 10x8x1"
+
+// Minimum space between edge of vial hole and edge of plank.
+border = [0.32, 0.32];

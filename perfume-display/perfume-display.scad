@@ -16,10 +16,7 @@ function defaultCenterDistanceRequired() =
 function vialCenterDistance() =
     max(minCenterDistanceRequired(), defaultCenterDistanceRequired());
 
-function staticBorder() =
-    [vialCenterDistance() / 2,
-     vialCenterDistance() / 2,
-     0];
+function staticBorder() = [border.x, border.y, 0];
 
 function usablePlankSpace() = plankSize - staticBorder() * 2;
 
