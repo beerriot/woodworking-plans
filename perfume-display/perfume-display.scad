@@ -101,6 +101,16 @@ module grooveCut(plankDimension) {
         }
 }
 
+// fill the holes with color so they're visible in orthographic projection
+module fillHolesForOrthographic() {
+    borderShift = [border[1] * tan(border[0]),
+                   border[1] * tan(border[0]),
+                   0];
+    color([0,0,0,0.8])
+        translate(borderShift - [0, 0, border[1]])
+        cube(plankSize - borderShift * 2);
+}
+
 // ASSEMBLY
 
 module bevels() {

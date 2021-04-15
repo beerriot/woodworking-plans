@@ -1,4 +1,4 @@
-// Finished perspective view.
+// Label number of vial sizes available.
 //cmdline: --projection=o --imgsize=2048,1280
 include <../common/echo-camera-arg.scad>
 
@@ -10,6 +10,7 @@ $vpt = [ 20, 10.26, 3.58 ];
 $vpd = 65.64;
 
 assembly();
+fillHolesForOrthographic();
 
 positions = vialPositions();
 
@@ -30,14 +31,6 @@ bottomInset = staticBorder().y + dynamicBorder().y;
 
 echo("searching ", len(positions), "vial positions");
 echo("position 0:", positions[0]);
-
-// fill the holes with color so they're visible in orthographic projection
-borderShift = [border[1] * tan(border[0]),
-               border[1] * tan(border[0]),
-               0];
-color([0,0,0,0.8])
-translate(borderShift - [0, 0, border[1]])
-cube(plankSize - borderShift * 2);
 
 color([0,0,0,0.8])
 translate([plankSize.x + border.x, bottomInset, plankSize.z]) {
