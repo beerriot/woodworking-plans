@@ -32,10 +32,12 @@ echo("searching ", len(positions), "vial positions");
 echo("position 0:", positions[0]);
 
 // fill the holes with color so they're visible in orthographic projection
-//color("black")
+borderShift = [border[1] * tan(border[0]),
+               border[1] * tan(border[0]),
+               0];
 color([0,0,0,0.8])
-translate([plankSize.x * 0.01, plankSize.y * 0.01])
-cube(plankSize * 0.99);
+translate(borderShift - [0, 0, border[1]])
+cube(plankSize - borderShift * 2);
 
 color([0,0,0,0.8])
 translate([plankSize.x + border.x, bottomInset, plankSize.z]) {
