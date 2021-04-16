@@ -3,6 +3,11 @@ body {
     background: #fafafa; /* background color of OpenSCAD's Nature theme */
 }
 
+.legal {
+    font-size: x-small;
+    text-align: right;
+}
+
 .pure-img-responsive {
     max-width: 100%;
     height: auto;
