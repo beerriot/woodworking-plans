@@ -14,8 +14,6 @@ $vpd = 73.83;
 assembly();
 fillHolesForOrthographic();
 
-positions = vialPositions();
-
 inset = staticBorder() + dynamicBorder() + rowOffset(0);
 
 translate([0, 0, plankSize.z]) {
@@ -37,7 +35,7 @@ translate([0, 0, plankSize.z]) {
             translate([(inset + rowOffset(1)).x - 0.05, 0])
                 cube([0.1, plankSize.y + sizeLabelHeight(), 0.1]);
         }
-        translate([-sizeLabelHeight(), inset.x]) {
+        translate([-sizeLabelHeight(), inset.y]) {
             rotate([-90, 0, 0])
                 sizeLabel(rowOffset(1).y, rotation=-90, over=true);
 

@@ -14,8 +14,6 @@ $vpd = 73.83;
 assembly();
 fillHolesForOrthographic();
 
-positions = vialPositions();
-
 inset = staticBorder() + dynamicBorder() + rowOffset(0);
 
 translate([0, 0, plankSize.z]) {

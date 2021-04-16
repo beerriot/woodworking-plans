@@ -11,6 +11,211 @@ Perfume Display
 <div class="pure-u-1">
   <p>
     This simple tray is a great way to organize a collection of
-    perfume sample vials.
+    perfume sample vials. It offers a total of {{totalVialCount}}
+    holes in which to store perfume vials of various sizes.
+  </p>
+  <p>
+    <i>Side note: The measurements given here are a little "hairy",
+    because they are direct conversions from the Imperial units that
+    were used to design the piece. Feel free to round to the nearest
+    millimeter.</i>
+  </p>
+</div>
+
+<div class="pure-u-1">
+  <h2>Building Instructions</h2>
+</div>
+
+<div class="pure-u-1">
+  <h4 id="step1">Step 1: Cut the plank to size</h4>
+</div>
+
+<div class="pure-u-1 pure-u-md-1-2">
+  <a id="figure1">
+    <img class="pure-img"
+         src="view-undrilled-plank.png"
+         alt="Figure 1: Cut the plank to size." />
+    <p><i>Figure 1: Cut the plank to size.</i></p>
+  </a>
+</div>
+<div class="pure-u-1 pure-u-md-1-2">
+  <p>
+    Start by milling and cutting a flat piece of wood to size.
+  </p>
+</div>
+
+<div class="pure-u-1">
+  <h4 id="step2">Step 2: Layout drill positions</h4>
+</div>
+
+<div class="pure-u-1">
+  <p>
+    Next, layout the points at which to drill the holes. Here are
+    three methods for doing this:
+  </p>
+</div>
+
+<div class="pure-u-1 pure-u-md-1-2">
+  <a id="figure2a">
+    <img class="pure-img"
+         src="view-marking-rectilinear.png"
+         alt="Figure 2a: Drill positions, as rectilinear offsets." />
+    <p><i>Figure 2a: Drill positions, as rectilinear offsets.</i></p>
+  </a>
+</div>
+<div class="pure-u-1 pure-u-md-1-2">
+  <p>
+    <i>Method 1</i>: Draw a line parallel to the front edge of the
+    plank, {{bottomRowInset}}cm in. Draw additional lines parallel to
+    this one at {{interRowSpace}}cm intervals, until you have
+    {{totalRowCount}} lines. The final line should be
+    {{bottomRowInset}}cm from the back edge of the plank.
+  </p>
+  <p>
+    On the first, third, and other odd numbered rows, place the first
+    mark at {{wideRowInset}}cm from the left edge. Then place
+    additional marks every {{vialCenterDistance}}cm along the lines,
+    until you have {{wideRowVialCount}} marks on each line.
+  </p>
+  <p>
+    On the second, fourth, and other even numbered rows, place the
+    first mark at {{narrowRowInset}}cm from the left edge. Then place
+    additional marks ever {{vialCenterDistance}}cm , until you have
+    {{narrowRowVialCount}} marks on these lines.
+  </p>
+</div>
+
+<div class="pure-u-1 pure-u-md-1-2">
+  <a id="figure2b">
+    <img class="pure-img"
+         src="view-marking-angle.png"
+         alt="Figure 2b: Drill positions, as angle crossings." />
+    <p><i>Figure 2b: Drill positions, as angle crossings.</i></p>
+  </a>
+</div>
+<div class="pure-u-1 pure-u-md-1-2">
+  <p>
+    <i>Method 2</i>: Draw a line parallel to the front edge of the
+    plank, {{bottomRowInset}}cm in. Place the first mark on this line
+    at {{wideRowInset}}cm from the left edge. Then place additional
+    marks every {{vialCenterDistance}}cm along the line, until you
+    have {{wideRowVialCount}} marks.
+  </p>
+  <p>
+    Using a 30-60-90 triangle, or an angle copier set to 60&deg;, mark
+    a line starting at each mark, and rising at 60&deg; both to the
+    right and to the left.
+  </p>
+  <p>
+    The upper corners will end up with only one diagonal line, without
+    a crossing diagonal. Measure the distance from the front edge to a
+    diagonal cross near the middle, and then cross the outer corner
+    diagonals at the same distance from the front edge.
+  </p>
+</div>
+
+<div class="pure-u-1 pure-u-md-1-2">
+  <a id="figure2c">
+    <img class="pure-img"
+         src="view-marking-circles.png"
+         alt="Figure 2c: Drill positions, as circle crossings." />
+    <p><i>Figure 2c: Drill positions, as circle crossings.</i></p>
+  </a>
+</div>
+<div class="pure-u-1 pure-u-md-1-2">
+  <p>
+    <i>Method 3</i>: Draw a line parallel to the front edge of the
+    plank, {{bottomRowInset}}cm in. Place the first mark on this line
+    at {{wideRowInset}}cm from the left edge.
+  </p>
+  <p>
+    Set a compass to mark a {{vialCenterDistance}}cm radius. Place the
+    pivot point of the compass at the mark you made on the line, and
+    draw as much of a circle as will fit on the board. Move the
+    compass pivot to where the circle crossed your parallel line, and
+    draw another circle from that point. Continue this process down
+    the length of the line.
+  </p>
+  <p>
+    Now place the compass at each point where the circles cross each
+    other, and draw another row of circles. When that row is done,
+    repeat the process at each point where the new set of circles
+    crossed. Continue this process until you have filled the board.
+  </p>
+</div>
+
+<div class="pure-u-1">
+  <h4 id="step3">Step 3: Drill</h4>
+</div>
+
+<div class="pure-u-1 pure-u-md-1-2">
+  <a id="figure3">
+    <img class="pure-img"
+         src="view-drilled.png"
+         alt="Figure 3: Drill at markings." />
+    <p><i>Figure 3: Drill at markings.</i></p>
+  </a>
+</div>
+<div class="pure-u-1 pure-u-md-1-2">
+  <p>
+    At each place to made a mark (Method 1), where the diagonal or
+    horizontal lines crossed (Method 2), or where the circles crossed
+    (Method 3), drill a hole to hold a perfume vial. Holes should be
+    about one-fourth as deep as the vial that will go in it is
+    tall. Drilling each hole just slightly larger in diameter than the
+    vial that it will hold will make the vial easier to insert and
+    remove. Holes up to {{maxVialDiameter}}cm in diameter can be
+    placed next to each other while still leaving
+    {{minInterVialDistance}}cm of wood between them.
+  </p>
+</div>
+
+<div class="pure-u-1">
+  <h4 id="step4">Step 4: Chamfer and Groove</h4>
+</div>
+
+<div class="pure-u-1 pure-u-md-1-2">
+  <a id="figure4">
+    <img class="pure-img"
+         src="view-chamfer-and-groove.png"
+         alt="Figure 4: Chamfer edges and add a finger groove." />
+    <p><i>Figure 4: Chamfer edges and add a finger groove.</i></p>
+  </a>
+</div>
+<div class="pure-u-1 pure-u-md-1-2">
+  <p>
+    If this tray will be installed in a drawer or other box where it
+    fits the entire space, this step can be skipped. Otherwise, adding
+    a chamfer around the edges and a groove in each side makes the
+    tray nicer to lift and carry, while also giving it a bit more
+    visual interest.
+  </p>
+  <p>
+    A chamfer around the top and bottom edge can be done quickly with
+    a small router and chamfering bit. Either use a bit with a
+    follower bearing, or attach a fence to the router to keep the bit
+    at the right horizontal distance. If a router with chamfering bit
+    is not available, a sanding block held at an angle will also make
+    quick work of this task.
+  </p>
+  <p>
+    The finger groove is most easily made with a router and a core box
+    bit. Attach a fence to the router, and adjust it so that the
+    center of the bit is in the center of the edge of the tray. The
+    length and depth of the groove should be whatever feels
+    comfortable.
+  </p>
+</div>
+
+<div class="pure-u-1">
+  <h4 id="step5">Step 5: Finish</h4>
+</div>
+
+<div class="pure-u-1">
+  <p>
+    Sand, plane, or scrape off any remaining marks, and then apply
+    finish to seal the tray. Be careful to choose a finish that
+    doesn't dry thick and reduce the diameters of your holes! A simple
+    oil and wax, like butcher block treatment, works great.
   </p>
 </div>

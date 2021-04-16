@@ -7,11 +7,14 @@ $fa = 5;
 include <params.scad>
 
 // COMPUTED PARAMS
+function maxVialDiameter() = max([ for (i = vials) i[0] ]);
+function minVialDiameter() = min([ for (i = vials) i[0] ]);
+
 function minCenterDistanceRequired() =
-    minInterVialDistance + max([ for (i = vials) i[0] ]);
+    minInterVialDistance + maxVialDiameter();
 
 function defaultCenterDistanceRequired() =
-    defaultInterVialDistance + min([ for (i = vials) i[0] ]);
+    defaultInterVialDistance + minVialDiameter();
 
 function vialCenterDistance() =
     max(minCenterDistanceRequired(), defaultCenterDistanceRequired());
@@ -67,6 +70,16 @@ function diameterAndDepthOfVialsInRow(i,
                                  (newVialCount > vials[vialsBatch][2])
                                  ? 0 : newVialCount);
 
+// For instructions
+function totalVialCount() = len(vialPositions());
+function totalRowCount() = intMaxVials().y;
+function bottomRowInset() = (staticBorder() + dynamicBorder()).y;
+function interRowSpace() = rowOffset(1).y;
+function wideRowInset() = (staticBorder() + dynamicBorder() + rowOffset(0)).x;
+function wideRowVialCount() = vialsInRow(0);
+function narrowRowInset() = (staticBorder() + dynamicBorder() + rowOffset(1)).x;
+function narrowRowVialCount() = vialsInRow(1);
+
 // COMPONENTS
 module plank() {
     cube(plankSize);
@@ -103,12 +116,10 @@ module grooveCut(plankDimension) {
 
 // fill the holes with color so they're visible in orthographic projection
 module fillHolesForOrthographic() {
-    borderShift = [border[1] * tan(border[0]),
-                   border[1] * tan(border[0]),
-                   0];
+    bevelShift = [0.01, 0.01, bevel[1]];
     color([0,0,0,0.8])
-        translate(borderShift - [0, 0, border[1]])
-        cube(plankSize - borderShift * 2);
+        translate(bevelShift)
+        cube(plankSize - bevelShift * 2);
 }
 
 // ASSEMBLY
@@ -133,7 +144,7 @@ module rightSide() {
     translate([plankSize.x, 0, 0]) rotate([0, 0, 90]) children();
 }
 
-module assembly() {
+module assembly(chamfer=true, groove=true) {
     color(plankColor)
         difference() {
         plank();
@@ -143,21 +154,20 @@ module assembly() {
             for (i = vialPositions())
                 translate(i[0]) drillHole(i[1]);
 
-        bevels();
-        backSide() bevels();
-        leftSide() bevels();
-        rightSide() bevels();
+        if (chamfer) {
+            bevels();
+            backSide() bevels();
+            leftSide() bevels();
+            rightSide() bevels();
+        }
 
-        grooveCut(plankSize.x);
-        backSide() grooveCut(plankSize.x);
-        leftSide() grooveCut(plankSize.y);
-        rightSide() grooveCut(plankSize.y);
+        if (groove) {
+            grooveCut(plankSize.x);
+            backSide() grooveCut(plankSize.x);
+            leftSide() grooveCut(plankSize.y);
+            rightSide() grooveCut(plankSize.y);
+        }
     }
 }
 
 assembly();
-
-echo(vialCenterDistance=vialCenterDistance());
-echo(staticBorder=staticBorder(), usablePlankSpace=usablePlankSpace());
-echo(realMaxVials=realMaxVials(), intMaxVials=intMaxVials());
-echo(dynamicBorder=dynamicBorder());
