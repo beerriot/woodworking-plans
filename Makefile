@@ -12,7 +12,7 @@ $(PROJECT_DIRS):
 
 ${RELEASE_DIR}%.html: %.html common/template.html
 	-@mkdir -p ${RELEASE_DIR}
-	tail +2 $< | sed -e '/{{body}}/r /dev/stdin' -e 's/{{body}}//' -e 's/{{subtitle}}/${TITLE}/' common/template.html > $@
+	tail +2 $< | sed -e '/{{body}}/r /dev/stdin' -e 's/{{body}}//' -e 's/{{subtitle}}/${TITLE}/' -e 's/{{COMMIT_HASH}}/${COMMIT_HASH}/g' -e 's/{{HTML_FILENAME}}/$</' common/template.html > $@
 
 ${RELEASE_DIR}%.html: TITLE=$(shell head -1 $<)
 

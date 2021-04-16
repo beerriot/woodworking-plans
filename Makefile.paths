@@ -8,3 +8,5 @@ OPENSCAD=/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD
 RELEASE_DIR=release/
 BUILD_DIR=build/
 DEPS_DIR=deps/
+
+COMMIT_HASH=$(shell git log -1 --pretty="format:%h")
