@@ -1,7 +1,12 @@
 # Paths use during build. Multiple Makefiles may need to agree on
 # these, so they are consolidated here.
 
-OPENSCAD=/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD
+OPENSCAD=$(shell which openscad)
+
+ifeq (${OPENSCAD},)
+     $(error "Command openscad not found. Set OPENSCAD in Makefile.paths, or set PATH to include openscad.")
+endif
+
 
 # These should all end in /, or the cp in the top-level release target
 # won't work right.
