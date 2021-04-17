@@ -4,3 +4,6 @@ deps/
 build/
 release/
 
+# Jekyll-generated content
+.jekyll-cache/
+_site/

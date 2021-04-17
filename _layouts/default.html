@@ -1,3 +1,5 @@
+---
+---
 <!DOCTYPE html>
 <html>
   <head>
@@ -7,7 +9,7 @@
     <link rel="stylesheet" href="/site/grids-responsive-min.css">
     <link rel="stylesheet" href="/site/pure-menu-style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Woodworking Plans{{subtitle}}</title>
+    <title>Woodworking Plans{% if page.title %}: {{page.title}}{% endif %}</title>
   </head>
   <body>
     <div id="layout">
@@ -41,7 +43,7 @@
         </div>
       </div>
       <div id="main">
-        {{body}}
+        {{content}}
       </div>
     </div>
     <script src="/site/pure-menu.js"></script>
