@@ -19,7 +19,7 @@ make_directories:
 	-@mkdir -p ${DEPS_DIR}
 
 %.png: %.scad
-	${OPENSCAD} --hardwarnings -m make -o $@ -d $(@F).deps --colorscheme Nature ${EXTRA_OPTS} ${CAMERA_OPT} $<
+	${OPENSCAD} --hardwarnings -m make -o $@ -d ${DEPS_DIR}$(@F).deps --colorscheme Nature ${EXTRA_OPTS} ${CAMERA_OPT} $<
 
 %.png: EXTRA_OPTS=$(shell grep "//cmdline:" $< | sed -e "s,//cmdline:,,g")
 %.png: CAMERA_OPT=$(shell ${OPENSCAD} --export-format echo -o - $< | grep "camera" | sed -e 's/.*"\(.*\)"/\1/')
@@ -37,7 +37,7 @@ ${DEPS_DIR}parameters.sed: ${MODEL_SCAD} ${SRC_PARAMS_SCAD}
 	${OPENSCAD} --export-format echo -o - ${DEPS_PARAMS_SCAD} | grep ECHO | sed -e 's/.*"\(.*\)"/\1/' > ${DEPS_DIR}parameters.sed
 
 clean:
-	-@rm -r *.png *.deps ${DEPS_DIR}
+	-@rm -r *.png ${DEPS_DIR}
 
 # explicit wildcard expansion suppresses errors when no files are found
-include $(wildcard *.deps)
+include $(wildcard ${DEPS_DIR}*.deps)

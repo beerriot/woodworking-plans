@@ -22,11 +22,7 @@ clean: release-clean
 	done
 
 release: all
-	-@mkdir -p ${RELEASE_DIR}
-	@for dir in $(dir $(wildcard */Makefile)); do \
-		cp -R $${dir}${BUILD_DIR} ${RELEASE_DIR}$$dir; \
-	done
-	@cp -R site ${RELEASE_DIR}
+	jekyll build
 
 release-clean:
-	-@rm -r ${RELEASE_DIR}
+	jekyll clean

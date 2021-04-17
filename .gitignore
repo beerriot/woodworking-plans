@@ -1,9 +1,7 @@
 .DS_Store
 *~
 deps/
-*.deps
 *.png
-release/
 
 # Jekyll-generated content
 .jekyll-cache/

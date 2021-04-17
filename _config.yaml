@@ -1,1 +1,1 @@
-exclude: [Makefile*, LICENSE, README.md, "*/Makefile", "*/build", "*/deps", "*/*.scad", "*/*.deps"]
+exclude: [Makefile*, LICENSE, README.md, "*/Makefile", "*/deps", "*/*.scad"]

@@ -10,6 +10,4 @@ endif
 
 # These should all end in /, or the cp in the top-level release target
 # won't work right.
-RELEASE_DIR=release/
-BUILD_DIR=build/
 DEPS_DIR=deps/
