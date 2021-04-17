@@ -23,7 +23,10 @@ The files in this repository are:
   * `Makefile`: automated build script
   * `Makefile.paths`: file paths for the build script
   * `common/`: resources that the projects share
-  * `site/`: support files for the associated project website
+  * `site/` and `_layouts`: support files for the associated project
+    website (built with Jeykyll)
+  * `Gemfile`, `Gemfile.lock`, and `_config.yaml`: configuration for
+    Jekyll
   * other subdirectories: one subdirectory per project
 
 Each project subdirectory contains at least three files:
@@ -57,22 +60,25 @@ You will need OpenSCAD installed. Once it is installed, edit
 `Makefile.paths` to set `OPENSCAD` to the path of your `openscad`
 executable.
 
+You will need Jekyll installed. If you have Ruby and Bundler already
+installed, running `bundler install` in this directory will install
+the tested version of Jekyll and other associated gems for you.
+
 You'll also need a scattering of other common command line utilities:
 make, grep, sed, most notably.
 
 At the top level of the repo, run `make release`. This will create a
-subdirectory named `release/`. The contents of this directory and its
+subdirectory named `_site/`. The contents of this directory and its
 subdirectories are the website.
 
-To view the website locally, start a webserver whose root directory is
-`release/`, then navigate to it in your web browser. For instance:
+To view the website locally, start Jekyll, then navigate to the URL it
+says it has exposed. For instance:
 
- 1. `cd release/`
- 2. `python3 -m http.server`
- 3. Open http://localhost:8000/
+ 1. `jekyll serve`
+ 2. Open http://localhost:4000/
 
 To publish this on github, checkout the `gh-pages` branch and replace
-all contents at the toplevel with the contents of the `release/`
+all contents at the toplevel with the contents of the `_site/`
 directory.
 
 ## Model Layout
@@ -132,8 +138,10 @@ function shelfLength() = width - endThickness * 2;
 If `common/Makefile.common` is used as the project's Makefile,
 arranging parameters in this way has an additional benefit: their
 values can be inserted into the project's `index.html` by surrounding
-the parameter name with two opening and closing curly braces,
-e.g. `{{width}}` or `{{shelfLength}}`.
+the parameter name with two opening and closing curly braces, and
+prefixing them with `site.data.<project name>`,
+e.g. `{{site.data.bookshelf.width}}` or
+`{{site.data.bookshelf.shelfLength}}`.
 
 In general, it makes sense to define parameters for nearly every value
 used to construct the model and its components. It makes it possible
