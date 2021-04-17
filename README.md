@@ -23,7 +23,7 @@ The files in this repository are:
   * `Makefile`: automated build script
   * `Makefile.paths`: file paths for the build script
   * `common/`: resources that the projects share
-  * `site/` and `_layouts`: support files for the associated project
+  * `assets/` and `_layouts`: support files for the associated project
     website (built with Jeykyll)
   * `Gemfile`, `Gemfile.lock`, and `_config.yaml`: configuration for
     Jekyll
