@@ -11,9 +11,10 @@ PROJECT_NAME=$(notdir $(basename $(CURDIR)))
 MODEL_SCAD=${PROJECT_NAME}.scad
 SRC_PARAMS_SCAD=params.scad
 DEPS_PARAMS_SCAD=${DEPS_DIR}params.scad
+JEKYLL_DATA_FILE=../_data/${PROJECT_NAME}.yaml
 
 .PHONY: all make_directories
-all: make_directories ${TARGETS_PNG}
+all: make_directories ${TARGETS_PNG} ${JEKYLL_DATA_FILE}
 
 make_directories:
 	-@mkdir -p ${DEPS_DIR}
@@ -25,16 +26,15 @@ make_directories:
 %.png: CAMERA_OPT=$(shell ${OPENSCAD} --export-format echo -o - $< | grep "camera" | sed -e 's/.*"\(.*\)"/\1/')
 
 # First create a dummy scad that calls all the zero-arg parameters and
-# echos their names and values to the log, as sed commands to replace
-# {{name}} with value.  Then actually run that scad, and save those
-# outputs to parameters.sed.
-${DEPS_DIR}parameters.sed: ${MODEL_SCAD} ${SRC_PARAMS_SCAD}
+# echos their names and values to the log, as entries in a YAML file,
+# that Jekyll will render into the HTML file.
+${JEKYLL_DATA_FILE}: ${MODEL_SCAD} ${SRC_PARAMS_SCAD}
 	@echo "include <../${SRC_PARAMS_SCAD}>" > ${DEPS_PARAMS_SCAD}
 	@echo "use <../${MODEL_SCAD}>" >> ${DEPS_PARAMS_SCAD}
 	@echo "function sigfig2(x) = is_num(x) ? round(100 * x) / 100 : x;" >> ${DEPS_PARAMS_SCAD}
-	grep -E "^[a-zA-Z0-9_]+ *=" ${SRC_PARAMS_SCAD} | sed -e 's+\([a-zA-Z0-9_]*\).*+echo(str("s/{{\1}}/", \1, "/g"));+' >> ${DEPS_PARAMS_SCAD}
-	grep -E "^function.*\(\)" ${MODEL_SCAD} | sed -e 's+function \([a-zA-Z0-9_]*\).*+echo(str("s/{{\1}}/", sigfig2(\1()), "/g"));+' >> ${DEPS_PARAMS_SCAD}
-	${OPENSCAD} --export-format echo -o - ${DEPS_PARAMS_SCAD} | grep ECHO | sed -e 's/.*"\(.*\)"/\1/' > ${DEPS_DIR}parameters.sed
+	grep -E "^[a-zA-Z0-9_]+ *=" ${SRC_PARAMS_SCAD} | sed -e 's+\([a-zA-Z0-9_]*\).*+echo(str("\1: ", \1));+' >> ${DEPS_PARAMS_SCAD}
+	grep -E "^function.*\(\)" ${MODEL_SCAD} | sed -e 's+function \([a-zA-Z0-9_]*\).*+echo(str("\1: ", sigfig2(\1())));+' >> ${DEPS_PARAMS_SCAD}
+	${OPENSCAD} --export-format echo -o - ${DEPS_PARAMS_SCAD} | grep ECHO | sed -e 's/.*"\(.*\)"/\1/' > ${JEKYLL_DATA_FILE}
 
 clean:
 	-@rm -r *.png ${DEPS_DIR}
