@@ -1,28 +1,27 @@
 include Makefile.paths
 
-TARGETS_HTML=$(shell ls *.html | sed -e "s,^,${RELEASE_DIR},g")
 PROJECT_DIRS=$(dir $(wildcard */Makefile))
+VERSION_DATA_FILE=_data/version.yaml
 
-.PHONY: all clean release release-clean $(PROJECT_DIRS)
+.PHONY: all clean release release-clean $(PROJECT_DIRS) ${VERSION_DATA_FILE}
 
-all: $(PROJECT_DIRS)
+all: $(PROJECT_DIRS) _data/version.yaml
 
 $(PROJECT_DIRS):
 	$(MAKE) -C $@ all
 
-${RELEASE_DIR}%.html: %.html common/template.html
-	-@mkdir -p ${RELEASE_DIR}
-	tail +2 $< | sed -e '/{{body}}/r /dev/stdin' -e 's/{{body}}//' -e 's/{{subtitle}}/${TITLE}/' -e 's/{{COMMIT_HASH}}/${COMMIT_HASH}/g' -e 's/{{HTML_FILENAME}}/$</' common/template.html > $@
+$(VERSION_DATA_FILE):
+	mkdir -p $(dir ${VERSION_DATA_FILE})
+	echo "commit_hash: ${COMMIT_HASH}" > ${VERSION_DATA_FILE}
 
-${RELEASE_DIR}%.html: TITLE=$(shell head -1 $<)
-
+$(VERSION_DATA_FILE): COMMIT_HASH=$(shell git log -1 --pretty="format:%h")
 
 clean: release-clean
 	@for dir in $(PROJECT_DIRS); do \
 		$(MAKE) -C $$dir clean; \
 	done
 
-release: all ${TARGETS_HTML}
+release: all
 	-@mkdir -p ${RELEASE_DIR}
 	@for dir in $(dir $(wildcard */Makefile)); do \
 		cp -R $${dir}${BUILD_DIR} ${RELEASE_DIR}$$dir; \

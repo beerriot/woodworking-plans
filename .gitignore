@@ -7,3 +7,6 @@ release/
 # Jekyll-generated content
 .jekyll-cache/
 _site/
+
+# All data is generated from models
+_data/

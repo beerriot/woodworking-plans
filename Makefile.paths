@@ -13,5 +13,3 @@ endif
 RELEASE_DIR=release/
 BUILD_DIR=build/
 DEPS_DIR=deps/
-
-COMMIT_HASH=$(shell git log -1 --pretty="format:%h")
