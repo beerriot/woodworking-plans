@@ -1,7 +1,8 @@
 .DS_Store
 *~
 deps/
-build/
+*.deps
+*.png
 release/
 
 # Jekyll-generated content
