@@ -56,30 +56,43 @@ Each project subdirectory may also contain any of the following file:
 
 ## Creating the website
 
-You will need OpenSCAD installed. Once it is installed, edit
-`Makefile.paths` to set `OPENSCAD` to the path of your `openscad`
-executable.
+You will need [OpenSCAD](https://openscad.org) installed. Once it is
+installed, edit `Makefile.paths` to set `OPENSCAD` to the path of your
+`openscad` executable.
 
-You will need Jekyll installed. If you have Ruby and Bundler already
-installed, running `bundler install` in this directory will install
-the tested version of Jekyll and other associated gems for you.
+You will need [Jekyll](https://jekyllrb.com/) installed. If you have
+Ruby and Bundler already installed, running `bundler install` in this
+directory will install the tested version of Jekyll and other
+associated gems for you.
 
 You'll also need a scattering of other common command line utilities:
 make, grep, sed, most notably.
 
-At the top level of the repo, run `make release`. This will create a
-subdirectory named `_site/`. The contents of this directory and its
-subdirectories are the website.
+The entire site can be built with a single command: `make
+release`. This will create a directory named `_site/`, and place a
+standalone copy of the site in it. To deploy the site publicly,
+checkout the `gh-pages` branch of the repo, and replace its contents
+with the contents of the fully-built `_site/` directory.
 
-To view the website locally, start Jekyll, then navigate to the URL it
-says it has exposed. For instance:
+The release build runs two stages.
 
- 1. `jekyll serve`
- 2. Open http://localhost:4000/
+ 1. First, openscad converts all `view-*.scad` files to `view-*.png`
+    files. It also processes `<project>.scad` and `params.scad` to
+    produce `_data/<project>.yaml`. The resulting PNG files and data
+    variables can be referenced from the HTML files.
 
-To publish this on github, checkout the `gh-pages` branch and replace
-all contents at the toplevel with the contents of the `_site/`
-directory.
+ 2. Second, Jekyll renders all HTML files and copy other static files
+    to the `_site/` directory.
+
+When developing, running each stage independently may be more useful.
+Running `make` (without `release`) or `make all` will run the
+SCAD-to-PNG-and-YAML convesion. Running `jekyll serve` after that will
+process the HTML files and set up a local webserver. With `jekyll
+serve` running, you can browse the locally-built site at
+http://localhost:4000/ (or whatever URL `jekyll serve` prints). This
+running server will also watch for changes to the files and reprocess
+them, so you can see the changes in your browser by reloading the
+page.
 
 ## Model Layout
 
