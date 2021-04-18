@@ -32,26 +32,26 @@ project: true
   <h2>Building Instructions</h2>
 </div>
 
-<div class="pure-u-1">
-  <h4 id="step1">Step 1: Cut the plank to size</h4>
-</div>
+{% capture step_0_ignore %}{% increment pd_step %}{% endcapture %}
+{% capture figure_0_ignore %}{% increment pd_fig %}{% endcapture %}
 
-<div class="pure-u-1 pure-u-md-1-2">
-  <a id="figure1">
-    <img class="pure-img" src="view-undrilled-plank.png" alt="Figure
-         1: Cut the plank to size." />
-    <p><i>Figure 1: Cut the plank to size.</i></p>
-  </a>
-</div>
+{% capture step_cut_plank %}{% increment pd_step %}{% endcapture %}
+{% include step_heading.html number=step_cut_plank
+title="Cut the plank to size" %}
+
+{% capture figure_cut_plank %}{% increment pd_fig %}{% endcapture %}
+{% include figure.html number=figure_cut_plank
+image="view-undrilled-plank.png"
+caption="Cut the plank to size." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     Start by milling and cutting a flat piece of wood to size.
   </p>
 </div>
 
-<div class="pure-u-1">
-  <h4 id="step2">Step 2: Layout drill positions</h4>
-</div>
+{% capture step_layout %}{% increment pd_step %}{% endcapture %}
+{% include step_heading.html number=step_layout
+title="Layout drill positions" %}
 
 <div class="pure-u-1">
   <p>
@@ -60,13 +60,11 @@ project: true
   </p>
 </div>
 
-<div class="pure-u-1 pure-u-md-1-2">
-  <a id="figure2a">
-    <img class="pure-img" src="view-marking-rectilinear.png"
-         alt="Figure 2a: Drill positions, as rectilinear offsets." />
-    <p><i>Figure 2a: Drill positions, as rectilinear offsets.</i></p>
-  </a>
-</div>
+{% capture figure_layout %}{% increment pd_fig %}{% endcapture %}
+{% capture figure_layout_rect %}{{figure_layout}}a{% endcapture %}
+{% include figure.html number=figure_layout_rect
+image="view-marking-rectilinear.png"
+caption="Method 1 - Drill positions, as rectilinear offsets." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     <i>Method 1</i>: Draw a line parallel to the front edge of the
@@ -95,13 +93,10 @@ project: true
   </p>
 </div>
 
-<div class="pure-u-1 pure-u-md-1-2">
-  <a id="figure2b">
-    <img class="pure-img" src="view-marking-angle.png" alt="Figure 2b:
-         Drill positions, as angle crossings." />
-    <p><i>Figure 2b: Drill positions, as angle crossings.</i></p>
-  </a>
-</div>
+{% capture figure_layout_angle %}{{figure_layout}}b{% endcapture %}
+{% include figure.html number=figure_layout_angle
+image="view-marking-angle.png"
+caption="Method 2 - Drill positions, as angle crossings." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     <i>Method 2</i>: Draw a line parallel to the front edge of the
@@ -126,13 +121,10 @@ project: true
   </p>
 </div>
 
-<div class="pure-u-1 pure-u-md-1-2">
-  <a id="figure2c">
-    <img class="pure-img" src="view-marking-circles.png" alt="Figure
-         2c: Drill positions, as circle crossings." />
-    <p><i>Figure 2c: Drill positions, as circle crossings.</i></p>
-  </a>
-</div>
+{% capture figure_layout_circle %}{{figure_layout}}c{% endcapture %}
+{% include figure.html number=figure_layout_circle
+image="view-marking-circles.png"
+caption="Method 3 - Drill positions, as circle crossings." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     <i>Method 3</i>: Draw a line parallel to the front edge of the
@@ -157,17 +149,13 @@ project: true
   </p>
 </div>
 
-<div class="pure-u-1">
-  <h4 id="step3">Step 3: Drill</h4>
-</div>
+{% capture step_drill %}{% increment pd_step %}{% endcapture %}
+{% include step_heading.html number=step_drill caption="Drill" %}
 
-<div class="pure-u-1 pure-u-md-1-2">
-  <a id="figure3">
-    <img class="pure-img" src="view-drilled.png" alt="Figure 3: Drill
-         at markings." />
-    <p><i>Figure 3: Drill at markings.</i></p>
-  </a>
-</div>
+{% capture figure_drill %}{% increment pd_fig %}{% endcapture %}
+{% include figure.html number=figure_drill
+image="view-drilled.png"
+caption="Drill at markings." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     At each place to made a mark (Method 1), where the diagonal or
@@ -184,17 +172,13 @@ project: true
   </p>
 </div>
 
-<div class="pure-u-1">
-  <h4 id="step4">Step 4: Chamfer and Groove</h4>
-</div>
+{% capture step_chamfer %}{% increment pd_step %}{% endcapture %}
+{% include step_heading.html number=step_chamfer title="Chamfer and Groove" %}
 
-<div class="pure-u-1 pure-u-md-1-2">
-  <a id="figure4">
-    <img class="pure-img" src="view-chamfer-and-groove.png"
-         alt="Figure 4: Chamfer edges and add a finger groove." />
-    <p><i>Figure 4: Chamfer edges and add a finger groove.</i></p>
-  </a>
-</div>
+{% capture figure_chamfer %}{% increment pd_fig %}{% endcapture %}
+{% include figure.html number=figure_chamfer
+image="view-chamfer-and-groove.png"
+caption="Chamfer edges and add a finger groove." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     If this tray will be installed in a drawer or other box where it
@@ -220,9 +204,8 @@ project: true
   </p>
 </div>
 
-<div class="pure-u-1">
-  <h4 id="step5">Step 5: Finish</h4>
-</div>
+{% capture step_finish %}{% increment pd_step %}{% endcapture %}
+{% include step_heading.html number=step_finish title="Finish" %}
 
 <div class="pure-u-1">
   <p>
