@@ -31,48 +31,45 @@ project: true
   <h2>Building Instructions</h2>
 </div>
 
+{% capture step_0_ignore %}{% increment step %}{% endcapture %}
+
 <div class="pure-u-1">
   <h3>Cutting and Shaping the Components</h3>
 </div>
 
-<div class="pure-u-1 pure-u-md-1-2">
-  <a id="figure0">
-    <img class="pure-img" src="view-stock-widths.png" alt="Figure 0:
-         Stock width, thickness, and diameter." />
-    <p><i>Figure 0: Stock width, thickness, and diameter.</i></p>
-  </a>
-</div>
+{% capture figure_view_stock_widths %}{% increment figure %}{% endcapture %}
+{% include figure.html number=figure_view_stock_widths
+image="view-stock-widths.png"
+caption="Stock width, thickness, and diameter" %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     These instructions assume that your square stock (for the legs and
     arms) and the dowels are already the correct width and thickness
     (Legs/arms: {{site.data.laundry-rack.squareStockWidth}}cm x
     {{site.data.laundry-rack.squareStockThickness}}cm, dowels
-    {{site.data.laundry-rack.dowelDiameter}}cm in
-    diameter). (<a href="#figure0">Figure 0</a>) The dimensions in
-    these plans are the dimensions of commonly-available surfaced
-    stock from major hardware stores. If you're starting with
+    {{site.data.laundry-rack.dowelDiameter}}cm in diameter). ({%
+    include figure_link.html number=figure_view_stock_widths %}) The
+    dimensions in these plans are the dimensions of commonly-available
+    surfaced stock from major hardware stores. If you're starting with
     differently-sized wood, rip the square stock and turn the dowels
     to size before starting.
   </p>
 </div>
 
-<div class="pure-u-1">
-  <h4 id="step1">Step 1: Cut Legs to Shape</h4>
-</div>
+{% capture step_cut_legs_to_shape %}{% increment step %}{% endcapture %}
+{% include step_heading.html number=step_cut_legs_to_shape
+title="Cut Legs to Shape" %}
 
-<div class="pure-u-1 pure-u-md-1-2">
-  <a id="figure1a">
-    <img class="pure-img" src="view-leg-length.png" alt="Figure 1a:
-         Cut the legs to length" />
-    <p><i>Figure 1a: Cut the legs to length.</i></p>
-  </a>
-</div>
+{% capture figure_leg_details %}{% increment figure %}{% endcapture %}
+{% capture figure_view_leg_length %}{{figure_leg_details}}a{% endcapture %}
+{% include figure.html number=figure_view_leg_length
+image="view-leg-length.png"
+caption="Cut the legs to length" %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     Cut four pieces of square stock to length for the legs
-    ({{site.data.laundry-rack.legLength}}cm). (<a href="#figure1a">Figure
-    1a</a>)
+    ({{site.data.laundry-rack.legLength}}cm). ({%- include
+    figure_link.html number=figure_view_leg_length -%})
   </p>
   <p>
     Tip: Don't discard the offcuts from the legs and arms. They can be
@@ -80,35 +77,28 @@ project: true
   </p>
 </div>
 
-<div class="pure-u-1 pure-u-md-1-2">
-  <a id="figure1b">
-    <img class="pure-img" src="view-leg-corner.png" alt="Figure 1b:
-         Cut one corner off of each leg." />
-    <p><i>Figure 1b: Cut one corner off of each leg.</i></p>
-  </a>
-</div>
+{% capture figure_leg_corner %}{{ figure_leg_details }}b{% endcapture %}
+{% include figure.html number=figure_leg_corner
+image="view-leg-corner.png"
+caption="Cut one corner off of each leg." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     If you want the dowels in the arms to hang at exactly the height
     shown in the diagrams, also cut one corner, off thef bottom of
     each leg, at the complement of the angle that the leg rises when
     standing
-    ({{site.data.laundry-rack.legAngleComplement}}&deg;). (<a href="#figure1b">Figure
-    1b</a>)
+    ({{site.data.laundry-rack.legAngleComplement}}&deg;). ({% include figure_link.html number=figure_leg_corner %})
   </p>
 </div>
 
-<div class="pure-u-1">
-  <h4 id="step2">Step 2: Drill holes in the legs.</h4>
-</div>
+{% capture step_drill_holes_legs %}{% increment step %}{% endcapture %}
+{% include step_heading.html number=step_drill_holes_legs
+title="Drill holes in the legs" %}
 
-<div class="pure-u-1 pure-u-md-1-2">
-  <a id="figure2">
-    <img class="pure-img" src="view-leg-holes.png" alt="Figure 2:
-         Drill holes in the legs." />
-    <p><i>Figure 2: Drill holes in the legs.</i></p>
-  </a>
-</div>
+{% capture figure_leg_holes %}{% increment figure %}{% endcapture %}
+{% include figure.html number=figure_leg_holes
+image="view-leg-holes.png"
+caption="Drill holes in the legs." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     In each leg, drill three dowel-sized holes through the wide
@@ -116,41 +106,35 @@ project: true
     from the bottom, where you may have cut a corner off, they will be
     at {{site.data.laundry-rack.bottomLegDowelDistance}}cm,
     {{site.data.laundry-rack.middleLegDowelDistance}}cm, and
-    {{site.data.laundry-rack.topLegDowelDistance}}cm. (<a href="#figure2">Figure
-    2</a>)
+    {{site.data.laundry-rack.topLegDowelDistance}}cm. ({% include
+    figure_link.html number=figure_leg_holes %})
   </p>
 </div>
 
-<div class="pure-u-1">
-  <h4 id="step3">Step 3: Cut Arms to length.</h4>
-</div>
+{% capture step_cut_arms %}{% increment step %}{% endcapture %}
+{% include step_heading.html number=step_cut_arms
+title="Cut Arms to length" %}
 
-<div class="pure-u-1 pure-u-md-1-2">
-  <a id="figure3">
-    <img class="pure-img" src="view-arm-length.png" alt="Figure 3: Cut
-         the arms to length" />
-    <p><i>Figure 3: Cut the arms to length.</i></p>
-  </a>
-</div>
+{% capture figure_cut_arms %}{% increment figure %}{% endcapture %}
+{% include figure.html number=figure_cut_arms
+image="view-arm-length.png"
+caption="Cut the arms to length." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     Cut four pieces of square stock to length for the arms
-    ({{site.data.laundry-rack.armLength}}cm). (<a href="#figure3">Figure
-    3</a>)
+    ({{site.data.laundry-rack.armLength}}cm). ({% include
+    figure_link.html number=figure_cut_arms %})
   </p>
 </div>
 
-<div class="pure-u-1">
-  <h4 id="step4">Step 4: Drill holes in the arms.</h4>
-</div>
+{% capture step_drill_arms %}{% increment step %}{% endcapture %}
+{% include step_heading.html number=step_drill_arms
+title="Drill holes in the arms." %}
 
-<div class="pure-u-1 pure-u-md-1-2">
-  <a id="figure4">
-    <img class="pure-img" src="view-arm-holes.png" alt="Figure 4:
-         Drill holes in the arms." />
-    <p><i>Figure 4: Drill holes in the arms.</i></p>
-  </a>
-</div>
+{% capture figure_drill_arms %}{% increment figure %}{% endcapture %}
+{% include figure.html number=figure_drill_arms
+image="view-arm-holes.png"
+caption="Drill holes in the arms." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     In each arm, drill {{site.data.laundry-rack.armDowelHoleCount}}
@@ -159,43 +143,39 @@ project: true
     first hole will be at {{site.data.laundry-rack.dowelInset}}cm, and
     the center of each hole after that will be
     {{site.data.laundry-rack.armHangDowelSpan}}cm from the center of
-    the previous hole. (<a href="#figure4">Figure 4</a>).
+    the previous hole. ({% include figure_link.html
+    number=figure_drill_arms %}).
   </p>
 </div>
 
-<div class="pure-u-1">
-  <h4 id="step5">Step 5: Cut Dowels to length.</h4>
-</div>
+{% capture step_cut_dowels %}{% increment step %}{% endcapture %}
+{% include step_heading.html number=step_cut_dowels
+title="Cut Dowels to length" %}
 
-<div class="pure-u-1 pure-u-md-1-2">
-  <a id="figure5">
-    <img class="pure-img" src="view-dowel-length.png" alt="Figure 5:
-         Cut the dowels to length" />
-    <p><i>Figure 5: Cut the dowels to length.</i></p>
-  </a>
-</div>
+{% capture figure_cut_dowels %}{% increment figure %}{% endcapture %}
+{% include figure.html number=figure_cut_dowels
+image="view-dowel-length.png"
+caption="Cut the dowels to length." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     Cut the dowels to length. You will need
     {{site.data.laundry-rack.longDowelCount}} cut at
     {{site.data.laundry-rack.longDowelLength}}cm, and
     {{site.data.laundry-rack.shortDowelCount}} cut at
-    {{site.data.laundry-rack.shortDowelLength}}. (<a href="#figure4">Figure
-    4</a>) Collect the small offcuts for use in the next step.
+    {{site.data.laundry-rack.shortDowelLength}}. ({% include
+    figure_link.html number=figure_cut_dowels %}) Collect the small
+    offcuts for use in the next step.
   </p>
 </div>
 
-<div class="pure-u-1">
-  <h4 id="step6">Step 6: Paint (optional).</h4>
-</div>
+{% capture step_paint %}{% increment step %}{% endcapture %}
+{% include step_heading.html number=step_paint
+title="Paint (optional)." %}
 
-<div class="pure-u-1 pure-u-md-1-2">
-  <a id="figure6">
-    <img class="pure-img" src="view-dowel-painting.png" alt="Figure 6:
-         Do not paint the ends of the dowels." />
-    <p><i>Figure 6: Do not paint the ends of the dowels.</i></p>
-  </a>
-</div>
+{% capture figure_dowel_painting %}{% increment figure %}{% endcapture %}
+{% include figure.html number=figure_dowel_painting
+image="view-dowel-painting.png"
+caption="Do not pain the ends of the dowels." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     Consider sanding and painting (or applying other finish) before
@@ -204,8 +184,8 @@ project: true
   </p>
   <p>
     Care still needs to be taken to prevent paint from getting where
-    it shouldn't be. Tape the the ends of the dowels as shown
-    in <a href="#figure6">Figure 6</a>. The last
+    it shouldn't be. Tape the the ends of the dowels as shown in {%
+    include figure_link.html number=figure_dowel_painting %}. The last
     {{site.data.laundry-rack.squareStockThickness}}cm of all short
     dowels, and {{site.data.laundry-rack.nonPivotLongDowelCount}} long
     dowels should be left unpainted. This unpainted section will be
@@ -228,17 +208,14 @@ project: true
   <h3>Assembly</h3>
 </div>
 
-<div class="pure-u-1">
-  <h4 id="step7">Step 7: Assemble the narrow arms.</h4>
-</div>
+{% capture step_assemble_narrow_arms %}{% increment step %}{% endcapture %}
+{% include step_heading.html number=step_assemble_narrow_arms
+title="Assemble the narrow arms." %}
 
-<div class="pure-u-1 pure-u-md-1-2">
-  <a id="figure7">
-    <img class="pure-img" src="view-narrow-arm-assembly.png"
-         alt="Figure 7: Assemble the narrow arms." />
-    <p><i>Figure 7: Assemble the narrow arms.</i></p>
-  </a>
-</div>
+{% capture figure_narrow_arms %}{% increment figure %}{% endcapture %}
+{% include figure.html number=figure_narrow_arms
+image="view-narrow-arm-assembly.png"
+caption="Assemble the narrow arms." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     Apply glue to the first {{site.data.laundry-rack.outerDowels}}
@@ -249,7 +226,7 @@ project: true
   </p>
   <p>
     Place a long dowel, one with the longer unpainted section if you
-    painted in Step 6, into the next whole <i>without glue</i>. The
+    painted in {% include step_link.html number=step_paint %}, into the next whole <i>without glue</i>. The
     arm should spin freely about this dowel after assembly, but don't
     worry if it's just a little tight at the moment. The leverage
     you'll have from pushing at on points in the rack will be able to
@@ -274,63 +251,60 @@ project: true
     holes with short dowels in them should be glued at this step.
   </p>
   <p>
-    Set this assembly aside to dry. (<a href="figure7">Figure 7</a>)
+    Set this assembly aside to dry. ({% include figure_link.html
+    number=figure_narrow_arms %})
   </p>
 </div>
 
-<div class="pure-u-1">
-  <h4 id="step8">Step 8: Partially assemble the wide arms.</h4>
-</div>
+{% capture step_wide_arms %}{% increment step %}{% endcapture %}
+{% include step_heading.html number=step_wide_arms
+title="Partially assemble the wide arms" %}
 
-<div class="pure-u-1 pure-u-md-1-2">
-  <a id="figure8">
-    <img class="pure-img" src="view-wide-arm-assembly.png" alt="Figure
-         8: Partially assemble the wide arms." />
-    <p><i>Figure 8: Partially assemble the wide arms.</i></p>
-  </a>
-</div>
+{% capture figure_wide_arms %}{% increment figure %}{% endcapture %}
+{% include figure.html number=figure_wide_arms
+image="view-wide-arm-assembly.png"
+caption="Partially assemble the wide arms." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     Glue {{site.data.laundry-rack.nonPivotHangingDowelCount}} long
     dowels into one of the two remaining arms, in the same positions
-    you glued the short dowels in step 7. (<a href="figure8">Figure
-    8</a>) If you painted the dowels in step 6, these will all be long
-    dowels with the short unpainted section. The ends of the dowels
-    should be flush with the outside of the arm. Leave the two pivot
-    holes empty for tnow, and do not attach the remaining arm to the
-    other end of these dowels yet. Set this partial assembly aside to
-    dry.
+    you glued the short dowels in step 7. ({% include figure_link.html
+    number=figure_wide_arms %}) If you painted the dowels in {% include step_link.html number=step_paint %},
+    these will all be long dowels with the short unpainted
+    section. The ends of the dowels should be flush with the outside
+    of the arm. Leave the two pivot holes empty for tnow, and do not
+    attach the remaining arm to the other end of these dowels yet. Set
+    this partial assembly aside to dry.
   </p>
 </div>
 
-<div class="pure-u-1">
-  <h4 id="step9">Step 9: Assemble one side of the legs.</h4>
-</div>
+{% capture step_half_legs %}{% increment step %}{% endcapture %}
+{% include step_heading.html number=step_half_legs
+title="Assemble one side of the legs" %}
 
-<div class="pure-u-1 pure-u-md-1-2">
-  <a id="figure9">
-    <img class="pure-img" src="view-half-leg-assembly.png" alt="Figure
-         9: Dowels attached to legs on one side." />
-    <p><i>Figure 9: Dowels attached to legs on one side.</i></p>
-  </a>
-</div>
+{% capture figure_half_legs %}{% increment figure %}{% endcapture %}
+{% include figure.html number=figure_half_legs
+image="view-half-leg-assembly.png"
+caption="Dowels attached to legs on one side." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     Glue a short dowel into the bottom hole of one leg (the hole that
     is {{site.data.laundry-rack.bottomLegDowelDistance}} from the
     end). Glue a long dowel, one with the short unpainted section if
-    you painted them in Step 6, into the bottom hole of a second leg.
+    you painted them in {% include step_link.html number=step_paint %}, into the bottom hole of a second leg.
   </p>
   <p>
     Push a long dowel, one with the long unpainted section if you
-    painted them in Step 6, through the middle hole of the leg with
-    the short dowel attached, until it sticks out
+    painted them in {% include step_link.html number=step_paint %},
+    through the middle hole of the leg with the short dowel attached,
+    until it sticks out
     {{site.data.laundry-rack.squareStockThickness}}cm. Apply glue to
     the middle hole of the leg with the long dowel attached, and then
     push the protruding bit of middle dowel into this glued hole. If
-    you cut the corner off the bottom of the legs in Step 1, be
-    careful to orient this second leg correctly: the cutoff corners
-    should face each other.
+    you cut the corner off the bottom of the legs in {% include
+    step_link.html number=step_cut_legs_to_shape %}, be careful to
+    orient this second leg correctly: the cutoff corners should face
+    each other.
   </p>
   <p>
     If there is any glue between the two legs, or on the dowel inside
@@ -341,17 +315,14 @@ project: true
   </p>
 </div>
 
-<div class="pure-u-1">
-  <h4 id="step10">Step 10: Attach the wide arms.</h4>
-</div>
+{% capture step_attach_wide_arms %}{% increment step %}{% endcapture %}
+{% include step_heading.html number=step_attach_wide_arms
+title="Attach the wide arms" %}
 
-<div class="pure-u-1 pure-u-md-1-2">
-  <a id="figure9">
-    <img class="pure-img" src="view-wide-arms-on-legs.png" alt="Figure
-         10: Wide arms attached to half-leg assembly." />
-    <p><i>Figure 10: Wide arms attached to half-leg assembly.</i></p>
-  </a>
-</div>
+{% capture figure_attach_wide_arms %}{% increment figure %}{% endcapture %}
+{% include figure.html number=figure_attach_wide_arms
+image="view-wide-arms-on-legs.png"
+caption="Wide arms ttached to half-leg assembly." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     Tip: It's easiest to finish the assembly with the structure laying
@@ -363,32 +334,28 @@ project: true
   <p>
     Push the remaining long dowel (it should be one with the wider
     unpainted section) through the top hole of the leg that had the
-    short dowel attached to its bottom hole in Step 9. It should
-    protrude from the opposite side
+    short dowel attached to its bottom hole in {% include
+    step_link.html number=step_half_legs %}. It should protrude from
+    the opposite side
     {{site.data.laundry-rack.squareStockThickness}}cm.
   </p>
   <p>
     Apply glue to the inner skipped hole in the unfinished wide arm
-    assembly from Step 8. Push the end of the dowel protruding from
-    the top of the leg into this hole. As before, clean up any errant
-    glue so that the dowel is only glued to the arm, and the leg can
-    still move freely.
+    assembly from {% include step_link.html number=step_wide_arms
+    %}. Push the end of the dowel protruding from the top of the leg
+    into this hole. As before, clean up any errant glue so that the
+    dowel is only glued to the arm, and the leg can still move freely.
   </p>
 </div>
 
-<div class="pure-u-1">
-  <h4 id="step11">Step 11: Attach the narrow arms.</h4>
-</div>
+{% capture step_attach_narrow_arms %}{% increment step %}{% endcapture %}
+{% include step_heading.html number=step_attach_narrow_arms
+title="Attach the narrow arms." %}
 
-<div class="pure-u-1 pure-u-md-1-2">
-  <a id="figure11">
-    <img class="pure-img" src="view-narrow-arms-on-legs.png"
-         alt="Figure 11: Narrow arms attached to half-leg assembly."
-         />
-    <p><i>Figure 11: Narrow arms attached to half-leg
-    assembly.</i></p>
-  </a>
-</div>
+{% capture figure_attach_narrow_arms %}{% increment figure %}{% endcapture %}
+{% include figure.html number=figure_attach_narrow_arms
+image="view-narrow-arms-on-legs.png"
+title="Narrow arms attached to half-leg assembly." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     Apply glue to the open hole at the top of the leg, and then end of
@@ -399,17 +366,14 @@ project: true
   </p>
 </div>
 
-<div class="pure-u-1">
-  <h4 id="step12">Step 12: Attach the inner leg.</h4>
-</div>
+{% capture step_inner_leg %}{% increment step %}{% endcapture %}
+{% include step_heading.html number=step_inner_leg
+title="Attach the inner leg." %}
 
-<div class="pure-u-1 pure-u-md-1-2">
-  <a id="figure12">
-    <img class="pure-img" src="view-inner-leg-attached.png"
-         alt="Figure 12: Attach the inner leg." />
-    <p><i>Figure 12: Attach the inner leg.</i></p>
-  </a>
-</div>
+{% capture figure_inner_leg %}{% increment figure %}{% endcapture %}
+{% include figure.html number=figure_inner_leg
+image="view-inner-leg-attached.png"
+caption="Attach the inner leg." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     Apply glue to the bottom hole of one of the remaining legs. Do not
@@ -421,22 +385,20 @@ project: true
     {{site.data.laundry-rack.squareStockThickness}}cm.
   </p>
   <p>
-    Be careful to match the cutoff at the bottom (if you made it in
-    Step 1) to the cutoff on the leg at the other end of these dowels.
+    Be careful to match the cutoff at the bottom (if you made it in {%
+    include step_link.html number=step_cut_legs_to_shape %}) to the
+    cutoff on the leg at the other end of these dowels.
   </p>
 </div>
 
-<div class="pure-u-1">
-  <h4 id="step13">Step 13: Attach the final arm and leg.</h4>
-</div>
+{% capture step_attach_outer %}{% increment step %}{% endcapture %}
+{% include step_heading.html number=step_attach_outer
+title="Attach the final arm and leg." %}
 
-<div class="pure-u-1 pure-u-md-1-2">
-  <a id="figure13">
-    <img class="pure-img" src="view-final-arm-and-leg-attached.png"
-         alt="Figure 13: Attach the final arm and leg." />
-    <p><i>Figure 13: Attach the final arm and leg.</i></p>
-  </a>
-</div>
+{% capture figure_attach_outer %}{% increment figure %}{% endcapture %}
+{% include figure.html number=figure_attach_outer
+image="view-final-arm-and-leg-attached.png"
+caption="Attach the final arm and leg." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     The final arm and leg can be attached in either order. For each
@@ -446,7 +408,8 @@ project: true
   </p>
   <p>
     When attaching the leg, be careful to orient the cutoff at the
-    bottom (if you made it in Step 1) in the correct direction. It
+    bottom (if you made it in {% include step_link.html
+    number=step_cut_legs_to_shape %}) in the correct direction. It
     should match the piece at the other end of its dowels.
   </p>
 </div>
@@ -464,17 +427,14 @@ project: true
   </p>
 </div>
 
-<div class="pure-u-1">
-  <h4 id="step14">Step 14: Add a locking hook.</h4>
-</div>
+{% capture step_lock %}{% increment step %}{% endcapture %}
+{% include step_heading.html number=step_lock
+title="Add a locking hook." %}
 
-<div class="pure-u-1 pure-u-md-1-2">
-  <a id="figure14">
-    <img class="pure-img" src="view-locked-open.png" alt="Figure 14: A
-         hook and line keep the rack open." />
-    <p><i>Figure 14: A hook and line keep the rack open.</i></p>
-  </a>
-</div>
+{% capture figure_lock %}{% increment figure %}{% endcapture %}
+{% include figure.html number=figure_lock
+image="view-locked-open.png"
+title="A hook and line keep the rack open." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     To keep the rack from folding up when weight - like wet laundry -
