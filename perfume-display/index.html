@@ -5,13 +5,17 @@ copyright: 2021 Bryan Fink
 project: true
 ---
 <div class="pure-u-1 pure-u-lg-1-3">
-  <img class="pure-img" src="view-vial-counts.png" />
+  {% capture description_view_vial_counts %}The tray offers {{site.data.perfume-display.totalVialCount}} holes to store various size vials of perfume.{% endcapture%}
+  {% include preview_image.html image="view-vial-counts.png"
+  description=description_view_vial_counts %}
 </div>
 <div class="pure-u-1 pure-u-lg-1-3">
-  <img class="pure-img" src="view-vial-offsets-triangular.png" />
+  {% include preview_image.html image="view-vial-offsets-triangular.png"
+  description="Holes are spaced evenly from each other along 60&deg; lines." %}
 </div>
 <div class="pure-u-1 pure-u-lg-1-3">
-  <img class="pure-img" src="view-vial-offsets-rectangular.png" />
+  {% include preview_image.html image="view-vial-offsets-rectangular.png"
+  description="Hole placement via square measurement from tray edges." %}
 </div>
 <div class="pure-u-1">
   <p>
