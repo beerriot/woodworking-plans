@@ -38,39 +38,35 @@ project: true
   <h2>Building Instructions</h2>
 </div>
 
+{% capture step_0_ignore %}{% increment sr_step %}{% endcapture %}
+
 <div class="pure-u-1">
   <h3>Making the Ends</h3>
 </div>
 
-<div class="pure-u-1 pure-u-md-1-2">
-  <a id="figure1">
-    <img class="pure-img" src="view-end-stock-widths.png" alt="Figure
-         1: Ends and shelf support stock dimensions." />
-    <p><i>Figure 1: Ends and shelf support stock dimensions.</i></p>
-  </a>
-</div>
+{% capture figure_end_stock %}{% increment sr_fig %}{% endcapture %}
+{% include figure.html number=figure_end_stock
+image="view-end-stock-widths.png"
+caption="Ends and shelf support stock dimensions." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     The end pieces and the shelf supports are the same width and
     thickness: {{site.data.shoe-rack.endStockWidth}}cm x
-    {{site.data.shoe-rack.endStockThickness}}cm. (<a href="#figure1">Figure1</a>)
-    You will need about
+    {{site.data.shoe-rack.endStockThickness}}cm. ({% include
+    figure_link.html number=figure_end_stock %}) You will need about
     {{site.data.shoe-rack.totalEndStockLengthEstimate}}cm total stock
     (plus a bit extra for saw kerfs and offcuts) in this dimension.
   </p>
 </div>
 
-<div class="pure-u-1">
-  <h4 id="step1">Step 1: Cut pieces for the ends</h4>
-</div>
+{% capture step_cut_ends %}{% increment sr_step %}{% endcapture %}
+{% include step_heading.html number=step_cut_ends
+title="Cut pieces for the ends" %}
 
-<div class="pure-u-1 pure-u-md-1-2">
-  <a id="figure2">
-    <img class="pure-img" src="view-end-piece-lengths.png" alt="Figure
-         2: Pieces for the ends of the unit." />
-    <p><i>Figure 2: Pieces for the ends of the unit.</i></p>
-  </a>
-</div>
+{% capture figure_cut_ends %}{% increment sr_fig %}{% endcapture %}
+{% include figure.html number=figure_cut_ends
+image="view-end-piece-lengths.png"
+caption="Pieces for the ends of the unit." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     From the stock you prepared in the last step, cut four pieces
@@ -79,17 +75,14 @@ project: true
   </p>
 </div>
 
-<div class="pure-u-1">
-  <h4 id="step2">Step 2: Cut the lap joints.</h4>
-</div>
+{% capture step_lap_joints %}{% increment sr_step %}{% endcapture %}
+{% include step_heading.html number=step_lap_joints
+title="Cut the lap joints." %}
 
-<div class="pure-u-1 pure-u-md-1-2">
-  <a id="figure3">
-    <img class="pure-img" src="view-lap-joint.png" alt="Figure 3:
-         Prepare half-laps in each end." />
-    <p><i>Figure 3: Prepare half-laps in each end.</i></p>
-  </a>
-</div>
+{% capture figure_lap_joints %}{% increment sr_fig %}{% endcapture %}
+{% include figure.html number=figure_lap_joints
+image="view-lap-joint.png"
+caption="Prepare half-laps in each end." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     Prepare half-lap joints in the ends by removing half the thickness
@@ -148,17 +141,14 @@ project: true
   </ul>
 </div>
 
-<div class="pure-u-1">
-  <h4 id="step3">Step 3: Glue the end assemblies.</h4>
-</div>
+{% capture step_glue_ends %}{% increment sr_step %}{% endcapture %}
+{% include step_heading.html number=step_glue_ends
+title="Glue the end assemblies." %}
 
-<div class="pure-u-1 pure-u-md-1-2">
-  <a id="figure4">
-    <img class="pure-img" src="view-end-assembled.png" alt="Figure 4:
-         Glue each end together." />
-    <p><i>Figure 4: Glue each end together.</i></p>
-  </a>
-</div>
+{% capture figure_glue_ends %}{% increment sr_fig %}{% endcapture %}
+{% include figure.html number=figure_glue_ends
+image="view-end-assembled.png"
+caption="Glue each end together." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     Glue and clamp the end assemblies together. One
@@ -183,17 +173,14 @@ project: true
   <h3>Making the Shelves</h3>
 </div>
 
-<div class="pure-u-1">
-  <h4 id="step4">Step 4: Cut the slats.</h4>
-</div>
+{% capture step_cut_slats %}{% increment sr_step %}{% endcapture %}
+{% include step_heading.html number=step_cut_slats
+title="Cut the slats." %}
 
-<div class="pure-u-1 pure-u-md-1-2">
-  <a id="figure5">
-    <img class="pure-img" src="view-slat-dimensions.png" alt="Figure
-         5: Cut the slats for the shelves." />
-    <p><i>Figure 5: Cut the slats for the shelves.</i></p>
-  </a>
-</div>
+{% capture figure_cut_slats %}{% increment sr_fig %}{% endcapture %}
+{% include figure.html number=figure_cut_slats
+image="view-slat-dimensions.png"
+caption="Cut the slats for the shelves." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     You will need {{site.data.shoe-rack.totalSlats}} slats, each
@@ -221,23 +208,21 @@ project: true
   </p>
 </div>
 
-<div class="pure-u-1">
-  <h4 id="step5">Step 5: Shape the shelf supports.</h4>
-</div>
+{% capture step_cut_supports %}{% increment sr_step %}{% endcapture %}
+{% include step_heading.html number=step_cut_supports
+title="Shape the shelf supports." %}
 
-<div class="pure-u-1 pure-u-md-1-2">
-  <a id="figure6">
-    <img class="pure-img" src="view-shelf-support-detail.png"
-         alt="Figure 6: Shelf support detail." />
-    <p><i>Figure 6: Shelf support detail.</i></p>
-  </a>
-</div>
+{% capture figure_cut_supports %}{% increment sr_fig %}{% endcapture %}
+{% include figure.html number=figure_cut_supports
+image="view-shelf-support-detail.png"
+caption="Shelf support detail." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <!-- TODO need logic to say or not say this, depending on
       reduceUnique parts and given shelf angles.  -->
   <p>
     For each shelf, cut two end supports and one center support to the
-    length given in <a href="#figure6">Figure 6</a> (between
+    length given in {% include figure_link.html
+    number=figure_cut_supports %} (between
     {{site.data.shoe-rack.shallowestShelfDepth}}cm and
     {{site.data.shoe-rack.deepestShelfDepth}}cm, depending on mounting
     angle). The end supports are made of the same stock that the ends
@@ -258,25 +243,24 @@ project: true
   </p>
   <p>
     Finally, ease the front and back of the shelf support by cutting
-    off the lower corner, as shown in <a href="#figure6">Figure
-    6</a>. This cut is most important for the back of the shelf, to
-    keep the corner from sticking out of the rear of the
-    unit. Matching the mounting angle makes it easy to align the shelf
-    during assembly, but is not required. Cutting the angle on the
-    front side gives the front of the unit a more open look.
+    off the lower corner, as shown in {% include figure_link.html
+    number=figure_cut_supports %}. This cut is most important for the
+    back of the shelf, to keep the corner from sticking out of the
+    rear of the unit. Matching the mounting angle makes it easy to
+    align the shelf during assembly, but is not required. Cutting the
+    angle on the front side gives the front of the unit a more open
+    look.
   </p>
 </div>
 
-<div class="pure-u-1">
-  <h4 id="step6">Step 6: Cut the bottom off the bottom supports.</h4>
-</div>
-<div class="pure-u-1 pure-u-md-1-2">
-  <a id="figure7">
-    <img class="pure-img" src="view-cut-bottom-shelf.png" alt="Figure
-         7: Cut the bottom shelf even with the floor." />
-    <p><i>Figure 7: Cut the bottom shelf even with the floor.</i></p>
-  </a>
-</div>
+{% capture step_cut_bottom %}{% increment sr_step %}{% endcapture %}
+{% include step_heading.html number=step_cut_bottom
+title="Cut the bottom off the bottom supports." %}
+
+{% capture figure_cut_bottom %}{% increment sr_fig %}{% endcapture %}
+{% include figure.html number=figure_cut_bottom
+image="view-cut-bottom-shelf.png"
+caption="Cut the bottom shelf even with the floor." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     The supports for the bottom shelf need to be further trimmed so
@@ -300,17 +284,15 @@ project: true
   </p>
 </div>
 
-<div class="pure-u-1">
-  <h4 id="step7">Step 7: Assemble the shelves.</h4>
-</div>
+{% capture step_assemble_shelves %}{% increment sr_step %}{% endcapture %}
+{% include step_heading.html number=step_assemble_shelves
+title="Assemble the shelves." %}
 
-<div class="pure-u-1 pure-u-md-1-2">
-  <a id="figure8a">
-    <img class="pure-img" src="view-shelf-assembly-first-side.png"
-         alt="Figure 8a: Attach slats to one shelf support." />
-    <p><i>Figure 8a: Attach slats to one shelf support.</i></p>
-  </a>
-</div>
+{% capture figure_shelf_assembly %}{% increment sr_fig %}{% endcapture %}
+{% capture figure_shelf_first_end %}{{figure_shelf_assembly}}a{% endcapture %}
+{% include figure.html number=figure_shelf_first_end
+image="view-shelf-assembly-first-side.png"
+caption="Attach slats to one shelf support." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     Apply glue to the rebates in one shelf support, and then insert a
@@ -319,13 +301,10 @@ project: true
     meet at 90&deg; Clamp the slats in place.
   </p>
 </div>
-<div class="pure-u-1 pure-u-md-1-2">
-  <a id="figure8b">
-    <img class="pure-img" src="view-shelf-assembly-second-side.png"
-         alt="Figure 8b: Attach a shelf support to the other end." />
-    <p><i>Figure 8b: Attach a shelf support to the other end.</i></p>
-  </a>
-</div>
+{% capture figure_shelf_second_end %}{{figure_shelf_assembly}}b{% endcapture %}
+{% include figure.html number=figure_shelf_second_end
+image="view-shelf-assembly-second-side.png"
+caption="Attach a shelf support to the other end." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     When you have enough clamps free (either immediately, or when the
@@ -334,13 +313,10 @@ project: true
     the slats.
   </p>
 </div>
-<div class="pure-u-1 pure-u-md-1-2">
-  <a id="figure8c">
-    <img class="pure-img" src="view-shelf-assembly-center.png"
-         alt="Figure 8c: Attach the center support." />
-    <p><i>Figure 8c: Attach the center support.</i></p>
-  </a>
-</div>
+{% capture figure_shelf_center %}{{figure_shelf_assembly}}c{% endcapture %}
+{% include figure.html number=figure_shelf_center
+image="view-shelf-assembly-center.png"
+caption="Attach the center support." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     Apply glue to the rebates of the center support, and fit it onto
@@ -352,13 +328,10 @@ project: true
     slat. Clamp the support in place while the glue dries.
   </p>
 </div>
-<div class="pure-u-1 pure-u-md-1-2">
-  <a id="figure8d">
-    <img class="pure-img" src="view-shelf-assembly-front-slat.png"
-         alt="Figure 8d: Attach the front slat." />
-    <p><i>Figure 8d: Attach the front slat.</i></p>
-  </a>
-</div>
+{% capture figure_shelf_front_slat %}{{figure_shelf_assembly}}d{% endcapture %}
+{% include figure.html number=figure_shelf_front_slat
+image="view-shelf-assembly-front-slat.png"
+caption="Attach the front slat." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     If the front slat for this shelf does not have a rebate, attach it
@@ -372,9 +345,9 @@ project: true
   </p>
 </div>
 
-<div class="pure-u-1">
-  <h4 id="step8">Step 8: Attach the shelves to the ends.</h4>
-</div>
+{% capture step_attach_shelves %}{% increment sr_step %}{% endcapture %}
+{% include step_heading.html number=step_attach_shelves
+title="Attach the shelves to the ends." %}
 
 <div class="pure-u-1">
   <p>
@@ -387,13 +360,11 @@ project: true
   </p>
 </div>
 
-<div class="pure-u-1 pure-u-md-1-2">
-  <a id="figure9a">
-    <img class="pure-img" src="view-unit-half-assembled.png"
-         alt="Figure 9a: Half-assembled unit." />
-    <p><i>Figure 9a: Half-assembled unit.</i></p>
-  </a>
-</div>
+{% capture figure_attach_shelves %}{% increment sr_fig %}{% endcapture %}
+{% capture figure_attach_shelves_first_end %}{{figure_attach_shelves}}a{% endcapture %}
+{% include figure.html number=figure_attach_shelves_first_end
+image="view-unit-half-assembled.png"
+caption="Half-assembled unit." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     Lay one end assembly flat. Place one shelf at a time on-end on
@@ -416,13 +387,10 @@ project: true
   </p>
 </div>
 
-<div class="pure-u-1 pure-u-md-1-2">
-  <a id="figure9b">
-    <img class="pure-img" src="view-unit-assembled.png" alt="Figure
-         9b: Assembled unit." />
-    <p><i>Figure 9b: Assembled unit.</i></p>
-  </a>
-</div>
+{% capture figure_attach_shelves_second_end %}{{figure_attach_shelves}}b{% endcapture %}
+{% include figure.html number=figure_attach_shelves_second_end
+image="view-unit-assembled.png"
+caption="Assembled unit." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     If you have enough clamps, continue assembly immediately. If not,
@@ -437,9 +405,9 @@ project: true
   </p>
 </div>
 
-<div class="pure-u-1">
-  <h4 id="step9">Step 9: Stain, paint, finish.</h4>
-</div>
+{% capture step_finish %}{% increment sr_step %}{% endcapture %}
+{% include step_heading.html number=step_finish
+title="Stain, paint, finish." %}
 
 <div class="pure-u-1">
   <p>

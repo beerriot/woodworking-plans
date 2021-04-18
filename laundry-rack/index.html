@@ -31,13 +31,13 @@ project: true
   <h2>Building Instructions</h2>
 </div>
 
-{% capture step_0_ignore %}{% increment step %}{% endcapture %}
+{% capture step_0_ignore %}{% increment lr_step %}{% endcapture %}
 
 <div class="pure-u-1">
   <h3>Cutting and Shaping the Components</h3>
 </div>
 
-{% capture figure_view_stock_widths %}{% increment figure %}{% endcapture %}
+{% capture figure_view_stock_widths %}{% increment lr_fig %}{% endcapture %}
 {% include figure.html number=figure_view_stock_widths
 image="view-stock-widths.png"
 caption="Stock width, thickness, and diameter" %}
@@ -56,11 +56,11 @@ caption="Stock width, thickness, and diameter" %}
   </p>
 </div>
 
-{% capture step_cut_legs_to_shape %}{% increment step %}{% endcapture %}
+{% capture step_cut_legs_to_shape %}{% increment lr_step %}{% endcapture %}
 {% include step_heading.html number=step_cut_legs_to_shape
 title="Cut Legs to Shape" %}
 
-{% capture figure_leg_details %}{% increment figure %}{% endcapture %}
+{% capture figure_leg_details %}{% increment lr_fig %}{% endcapture %}
 {% capture figure_view_leg_length %}{{figure_leg_details}}a{% endcapture %}
 {% include figure.html number=figure_view_leg_length
 image="view-leg-length.png"
@@ -86,16 +86,16 @@ caption="Cut one corner off of each leg." %}
     If you want the dowels in the arms to hang at exactly the height
     shown in the diagrams, also cut one corner, off thef bottom of
     each leg, at the complement of the angle that the leg rises when
-    standing
-    ({{site.data.laundry-rack.legAngleComplement}}&deg;). ({% include figure_link.html number=figure_leg_corner %})
+    standing ({{site.data.laundry-rack.legAngleComplement}}&deg;). ({%
+    include figure_link.html number=figure_leg_corner %})
   </p>
 </div>
 
-{% capture step_drill_holes_legs %}{% increment step %}{% endcapture %}
+{% capture step_drill_holes_legs %}{% increment lr_step %}{% endcapture %}
 {% include step_heading.html number=step_drill_holes_legs
 title="Drill holes in the legs" %}
 
-{% capture figure_leg_holes %}{% increment figure %}{% endcapture %}
+{% capture figure_leg_holes %}{% increment lr_fig %}{% endcapture %}
 {% include figure.html number=figure_leg_holes
 image="view-leg-holes.png"
 caption="Drill holes in the legs." %}
@@ -111,11 +111,11 @@ caption="Drill holes in the legs." %}
   </p>
 </div>
 
-{% capture step_cut_arms %}{% increment step %}{% endcapture %}
+{% capture step_cut_arms %}{% increment lr_step %}{% endcapture %}
 {% include step_heading.html number=step_cut_arms
 title="Cut Arms to length" %}
 
-{% capture figure_cut_arms %}{% increment figure %}{% endcapture %}
+{% capture figure_cut_arms %}{% increment lr_fig %}{% endcapture %}
 {% include figure.html number=figure_cut_arms
 image="view-arm-length.png"
 caption="Cut the arms to length." %}
@@ -127,11 +127,11 @@ caption="Cut the arms to length." %}
   </p>
 </div>
 
-{% capture step_drill_arms %}{% increment step %}{% endcapture %}
+{% capture step_drill_arms %}{% increment lr_step %}{% endcapture %}
 {% include step_heading.html number=step_drill_arms
 title="Drill holes in the arms." %}
 
-{% capture figure_drill_arms %}{% increment figure %}{% endcapture %}
+{% capture figure_drill_arms %}{% increment lr_fig %}{% endcapture %}
 {% include figure.html number=figure_drill_arms
 image="view-arm-holes.png"
 caption="Drill holes in the arms." %}
@@ -148,11 +148,11 @@ caption="Drill holes in the arms." %}
   </p>
 </div>
 
-{% capture step_cut_dowels %}{% increment step %}{% endcapture %}
+{% capture step_cut_dowels %}{% increment lr_step %}{% endcapture %}
 {% include step_heading.html number=step_cut_dowels
 title="Cut Dowels to length" %}
 
-{% capture figure_cut_dowels %}{% increment figure %}{% endcapture %}
+{% capture figure_cut_dowels %}{% increment lr_fig %}{% endcapture %}
 {% include figure.html number=figure_cut_dowels
 image="view-dowel-length.png"
 caption="Cut the dowels to length." %}
@@ -168,11 +168,11 @@ caption="Cut the dowels to length." %}
   </p>
 </div>
 
-{% capture step_paint %}{% increment step %}{% endcapture %}
+{% capture step_paint %}{% increment lr_step %}{% endcapture %}
 {% include step_heading.html number=step_paint
 title="Paint (optional)." %}
 
-{% capture figure_dowel_painting %}{% increment figure %}{% endcapture %}
+{% capture figure_dowel_painting %}{% increment lr_fig %}{% endcapture %}
 {% include figure.html number=figure_dowel_painting
 image="view-dowel-painting.png"
 caption="Do not pain the ends of the dowels." %}
@@ -208,11 +208,11 @@ caption="Do not pain the ends of the dowels." %}
   <h3>Assembly</h3>
 </div>
 
-{% capture step_assemble_narrow_arms %}{% increment step %}{% endcapture %}
+{% capture step_assemble_narrow_arms %}{% increment lr_step %}{% endcapture %}
 {% include step_heading.html number=step_assemble_narrow_arms
 title="Assemble the narrow arms." %}
 
-{% capture figure_narrow_arms %}{% increment figure %}{% endcapture %}
+{% capture figure_narrow_arms %}{% increment lr_fig %}{% endcapture %}
 {% include figure.html number=figure_narrow_arms
 image="view-narrow-arm-assembly.png"
 caption="Assemble the narrow arms." %}
@@ -226,13 +226,14 @@ caption="Assemble the narrow arms." %}
   </p>
   <p>
     Place a long dowel, one with the longer unpainted section if you
-    painted in {% include step_link.html number=step_paint %}, into the next whole <i>without glue</i>. The
-    arm should spin freely about this dowel after assembly, but don't
-    worry if it's just a little tight at the moment. The leverage
-    you'll have from pushing at on points in the rack will be able to
-    overcome this friction. Push this long dowel through until it
-    protrudes one leg thickness out of the other side of the arm. The
-    paint will be touching the inside of the arm.
+    painted in {% include step_link.html number=step_paint %}, into
+    the next whole <i>without glue</i>. The arm should spin freely
+    about this dowel after assembly, but don't worry if it's just a
+    little tight at the moment. The leverage you'll have from pushing
+    at on points in the rack will be able to overcome this
+    friction. Push this long dowel through until it protrudes one leg
+    thickness out of the other side of the arm. The paint will be
+    touching the inside of the arm.
   </p>
   <p>
     Tip: Pushing the long dowels through can be a good place to use
@@ -256,11 +257,11 @@ caption="Assemble the narrow arms." %}
   </p>
 </div>
 
-{% capture step_wide_arms %}{% increment step %}{% endcapture %}
+{% capture step_wide_arms %}{% increment lr_step %}{% endcapture %}
 {% include step_heading.html number=step_wide_arms
 title="Partially assemble the wide arms" %}
 
-{% capture figure_wide_arms %}{% increment figure %}{% endcapture %}
+{% capture figure_wide_arms %}{% increment lr_fig %}{% endcapture %}
 {% include figure.html number=figure_wide_arms
 image="view-wide-arm-assembly.png"
 caption="Partially assemble the wide arms." %}
@@ -269,20 +270,21 @@ caption="Partially assemble the wide arms." %}
     Glue {{site.data.laundry-rack.nonPivotHangingDowelCount}} long
     dowels into one of the two remaining arms, in the same positions
     you glued the short dowels in step 7. ({% include figure_link.html
-    number=figure_wide_arms %}) If you painted the dowels in {% include step_link.html number=step_paint %},
-    these will all be long dowels with the short unpainted
-    section. The ends of the dowels should be flush with the outside
-    of the arm. Leave the two pivot holes empty for tnow, and do not
-    attach the remaining arm to the other end of these dowels yet. Set
-    this partial assembly aside to dry.
+    number=figure_wide_arms %}) If you painted the dowels in {%
+    include step_link.html number=step_paint %}, these will all be
+    long dowels with the short unpainted section. The ends of the
+    dowels should be flush with the outside of the arm. Leave the two
+    pivot holes empty for tnow, and do not attach the remaining arm to
+    the other end of these dowels yet. Set this partial assembly aside
+    to dry.
   </p>
 </div>
 
-{% capture step_half_legs %}{% increment step %}{% endcapture %}
+{% capture step_half_legs %}{% increment lr_step %}{% endcapture %}
 {% include step_heading.html number=step_half_legs
 title="Assemble one side of the legs" %}
 
-{% capture figure_half_legs %}{% increment figure %}{% endcapture %}
+{% capture figure_half_legs %}{% increment lr_fig %}{% endcapture %}
 {% include figure.html number=figure_half_legs
 image="view-half-leg-assembly.png"
 caption="Dowels attached to legs on one side." %}
@@ -291,7 +293,8 @@ caption="Dowels attached to legs on one side." %}
     Glue a short dowel into the bottom hole of one leg (the hole that
     is {{site.data.laundry-rack.bottomLegDowelDistance}} from the
     end). Glue a long dowel, one with the short unpainted section if
-    you painted them in {% include step_link.html number=step_paint %}, into the bottom hole of a second leg.
+    you painted them in {% include step_link.html number=step_paint
+    %}, into the bottom hole of a second leg.
   </p>
   <p>
     Push a long dowel, one with the long unpainted section if you
@@ -315,11 +318,11 @@ caption="Dowels attached to legs on one side." %}
   </p>
 </div>
 
-{% capture step_attach_wide_arms %}{% increment step %}{% endcapture %}
+{% capture step_attach_wide_arms %}{% increment lr_step %}{% endcapture %}
 {% include step_heading.html number=step_attach_wide_arms
 title="Attach the wide arms" %}
 
-{% capture figure_attach_wide_arms %}{% increment figure %}{% endcapture %}
+{% capture figure_attach_wide_arms %}{% increment lr_fig %}{% endcapture %}
 {% include figure.html number=figure_attach_wide_arms
 image="view-wide-arms-on-legs.png"
 caption="Wide arms ttached to half-leg assembly." %}
@@ -348,11 +351,11 @@ caption="Wide arms ttached to half-leg assembly." %}
   </p>
 </div>
 
-{% capture step_attach_narrow_arms %}{% increment step %}{% endcapture %}
+{% capture step_attach_narrow_arms %}{% increment lr_step %}{% endcapture %}
 {% include step_heading.html number=step_attach_narrow_arms
 title="Attach the narrow arms." %}
 
-{% capture figure_attach_narrow_arms %}{% increment figure %}{% endcapture %}
+{% capture figure_attach_narrow_arms %}{% increment lr_fig %}{% endcapture %}
 {% include figure.html number=figure_attach_narrow_arms
 image="view-narrow-arms-on-legs.png"
 title="Narrow arms attached to half-leg assembly." %}
@@ -366,11 +369,11 @@ title="Narrow arms attached to half-leg assembly." %}
   </p>
 </div>
 
-{% capture step_inner_leg %}{% increment step %}{% endcapture %}
+{% capture step_inner_leg %}{% increment lr_step %}{% endcapture %}
 {% include step_heading.html number=step_inner_leg
 title="Attach the inner leg." %}
 
-{% capture figure_inner_leg %}{% increment figure %}{% endcapture %}
+{% capture figure_inner_leg %}{% increment lr_fig %}{% endcapture %}
 {% include figure.html number=figure_inner_leg
 image="view-inner-leg-attached.png"
 caption="Attach the inner leg." %}
@@ -391,11 +394,11 @@ caption="Attach the inner leg." %}
   </p>
 </div>
 
-{% capture step_attach_outer %}{% increment step %}{% endcapture %}
+{% capture step_attach_outer %}{% increment lr_step %}{% endcapture %}
 {% include step_heading.html number=step_attach_outer
 title="Attach the final arm and leg." %}
 
-{% capture figure_attach_outer %}{% increment figure %}{% endcapture %}
+{% capture figure_attach_outer %}{% increment lr_fig %}{% endcapture %}
 {% include figure.html number=figure_attach_outer
 image="view-final-arm-and-leg-attached.png"
 caption="Attach the final arm and leg." %}
@@ -427,11 +430,11 @@ caption="Attach the final arm and leg." %}
   </p>
 </div>
 
-{% capture step_lock %}{% increment step %}{% endcapture %}
+{% capture step_lock %}{% increment lr_step %}{% endcapture %}
 {% include step_heading.html number=step_lock
 title="Add a locking hook." %}
 
-{% capture figure_lock %}{% increment figure %}{% endcapture %}
+{% capture figure_lock %}{% increment lr_fig %}{% endcapture %}
 {% include figure.html number=figure_lock
 image="view-locked-open.png"
 title="A hook and line keep the rack open." %}
