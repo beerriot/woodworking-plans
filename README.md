@@ -97,8 +97,9 @@ page.
 ## Further Reading
 
 If you're interested in digging into the models, have a look at
-(README-models.md). It discusses the organization of each project SCAD
-file.
+[README-models.md](README-models.md). It discusses the organization
+of each project SCAD file.
 
 If you're interested in improving the website, have a look at
-(README-website.md). It discusses the organization of the HTML files.
+[README-website.md](README-website.md). It discusses the organization
+of the HTML files.
