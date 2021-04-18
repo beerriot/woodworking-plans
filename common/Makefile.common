@@ -10,6 +10,7 @@ TARGETS_PNG=$(shell ls view-*.scad | sed -e 's/\.scad/\.png/g')
 PROJECT_NAME=$(notdir $(basename $(CURDIR)))
 MODEL_SCAD=${PROJECT_NAME}.scad
 SRC_PARAMS_SCAD=params.scad
+DEPS_DIR=deps/
 DEPS_PARAMS_SCAD=${DEPS_DIR}params.scad
 JEKYLL_DATA_FILE=../_data/${PROJECT_NAME}.yaml
 
@@ -17,6 +18,7 @@ JEKYLL_DATA_FILE=../_data/${PROJECT_NAME}.yaml
 all: make_directories ${TARGETS_PNG} ${JEKYLL_DATA_FILE}
 
 make_directories:
+	-@mkdir -p $(dir ${JEKYLL_DATA_FILE})
 	-@mkdir -p ${DEPS_DIR}
 
 %.png: %.scad
@@ -37,7 +39,7 @@ ${JEKYLL_DATA_FILE}: ${MODEL_SCAD} ${SRC_PARAMS_SCAD}
 	${OPENSCAD} --export-format echo -o - ${DEPS_PARAMS_SCAD} | grep ECHO | sed -e 's/.*"\(.*\)"/\1/' > ${JEKYLL_DATA_FILE}
 
 clean:
-	-@rm -r *.png ${DEPS_DIR}
+	-@rm -rf *.png ${DEPS_DIR} ${JEKYLL_DATA_FILE}
 
 # explicit wildcard expansion suppresses errors when no files are found
 include $(wildcard ${DEPS_DIR}*.deps)

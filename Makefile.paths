@@ -6,8 +6,3 @@ OPENSCAD=$(shell which openscad)
 ifeq (${OPENSCAD},)
      $(error "Command openscad not found. Set OPENSCAD in Makefile.paths, or set PATH to include openscad.")
 endif
-
-
-# These should all end in /, or the cp in the top-level release target
-# won't work right.
-DEPS_DIR=deps/
