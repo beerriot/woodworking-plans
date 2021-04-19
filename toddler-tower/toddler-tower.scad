@@ -27,6 +27,29 @@ function wide_support_height() =
 
 function safety_rail_height() = thickness * 1.5;
 
+function cutout_radius() = handhold_size[1] / 2;
+
+function upper_window_inset() = handhold_size[1] * 3;
+function upper_window_height() =
+    height - platform_heights[len(platform_heights) - 1]
+    - upper_window_inset() * 2;
+function upper_window_top_depth() =
+    bottom_depth - upper_window_inset() * 2
+    - (sin(front_angle())
+       * (height - front_step_heights[0] - upper_window_inset()));
+function upper_window_bottom_depth() =
+    upper_window_top_depth() + sin(front_angle()) * upper_window_height();
+
+function lower_window_inset() =
+    front_step_depth() -sin(front_angle()) * front_step_heights[0];
+function lower_window_height() =
+    platform_heights[0] - thickness * 2 - cutout_radius();
+function lower_window_upper_corner_offset() =
+    sin(front_angle()) * lower_window_height() + cutout_radius();
+function lower_window_top_depth() = front_step_depth();
+function lower_window_bottom_depth() =
+    bottom_depth + cutout_radius() - front_step_depth() - lower_window_inset();
+
 // COMPONENTS
 
 module sheet_stock(length, width, errs=[0,0,0]) {
@@ -70,17 +93,65 @@ module safety_rail_rabbet() {
     rabbet(safety_rail_height());
 }
 
-module handhold_cutout_end() {
-    cylinder(h=thickness + 0.02, r=handhold_size[1] / 2);
+module cutout_end() {
+    translate([0, 0, -0.01])
+        cylinder(h=thickness + 0.02, r=cutout_radius());
 }
 
 module handhold_cutout() {
-    translate([0, 0, -0.01]) {
-        hull() {
-            handhold_cutout_end();
-            translate([-(handhold_size[0] - handhold_size[1]), 0, 0])
-                handhold_cutout_end();
-        }
+    hull() {
+        cutout_end();
+        translate([-(handhold_size[0] - handhold_size[1]), 0, 0])
+            cutout_end();
+    }
+}
+
+module upper_window_cutout() {
+    hull() {
+        // upper counter-side corner is centered on origin
+        cutout_end();
+
+        // lower counter-side corner
+        translate([-upper_window_height(), 0, 0])
+            cutout_end();
+
+        // upper non-counter-side corner
+        translate([0, -upper_window_top_depth(), 0])
+            cutout_end();
+
+        // lower non-counter-side corner
+        translate([-upper_window_height(), -upper_window_bottom_depth(), 0])
+            cutout_end();
+    }
+}
+
+module lower_window_cutout() {
+    hull() {
+        // lower non-counter-side edge is origin
+        rotate([0, 0, front_angle()])
+            translate([-0.5, 0, -0.01])
+            cube([1, 1, thickness + 0.02]);
+
+        // upper non-counter-side corner
+        translate([lower_window_height(),
+                   lower_window_upper_corner_offset(),
+                   0])
+            cutout_end();
+
+        // upper counter-side corner
+        translate([lower_window_height(),
+                   lower_window_upper_corner_offset() + front_step_depth(),
+                   0])
+            cutout_end();
+
+        // lower counter-side edge
+        translate([0, lower_window_bottom_depth(), 0])
+            rotate([0, 0, -atan((lower_window_bottom_depth()
+                                 - lower_window_top_depth()
+                                 - lower_window_upper_corner_offset())
+                                / lower_window_height())])
+            translate([-0.5, -1, -0.01])
+            cube([1, 1, thickness + 0.02]);
     }
 }
 
@@ -125,16 +196,26 @@ module right_side() {
                    0])
             safety_rail_rabbet();
 
+        // handholds for climbing
         for (h = handhold_heights)
             rotate([0, 0, front_angle()])
                 translate([h, handhold_size[1] / 2, 0])
                 handhold_cutout();
 
+        // one more handhold at the top
         translate([height - handhold_size[1],
                    bottom_depth - (platform_depth - handhold_size[0]) / 2,
                    0])
             rotate([0, 0, 90])
             handhold_cutout();
+
+        translate([height - upper_window_inset(),
+                   bottom_depth - upper_window_inset(),
+                   0])
+            upper_window_cutout();
+
+        translate([0, lower_window_inset(), 0])
+            lower_window_cutout();
     }
 }
 
