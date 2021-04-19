@@ -20,7 +20,9 @@ function front_step_inset(h) =
 
 function rabbet_depth() = thickness / 4;
 
-function narrow_support_height() = front_step_heights[0];
+function inter_rabbet_span() = width - (thickness - rabbet_depth()) * 2;
+
+function narrow_support_height() = front_step_heights[0] - thickness;
 
 function wide_support_height() =
     (height - platform_heights[len(platform_heights) - 1]) / 2;
@@ -104,8 +106,16 @@ module narrow_support_rabbet() {
     rabbet(narrow_support_height());
 }
 
+module narrow_support() {
+    sheet_stock(inter_rabbet_span(), narrow_support_height());
+}
+
 module wide_support_rabbet() {
     rabbet(wide_support_height());
+}
+
+module wide_support() {
+    sheet_stock(inter_rabbet_span(), wide_support_height());
 }
 
 module safety_rail_rabbet() {
@@ -252,6 +262,25 @@ module assembly() {
     rotate([0, -90, 0]) left_side();
 
     translate([width, 0, 0]) rotate([0, -90, 0]) right_side();
+
+    translate([thickness - rabbet_depth(), 0, 0]) {
+        // under step
+        translate([0, (front_step_depth() + thickness) / 2, 0])
+            rotate([90, 0, 0]) narrow_support();
+
+        // bottom cabinet-side
+        translate([0, bottom_depth, thickness])
+            rotate([90, 0, 0]) narrow_support();
+
+        translate([0, bottom_depth, height - narrow_support_height()]) {
+            // top cabinet-side
+            rotate([90, 0, 0]) narrow_support();
+
+            // mid cabinet-side
+            translate([0, 0, -wide_support_height() * 1.25])
+                rotate([90, 0, 0]) wide_support();
+        }
+    }
 }
 
 assembly();
