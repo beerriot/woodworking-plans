@@ -27,3 +27,6 @@ handhold_size = [10, 3.5];
 
 // centers of the top half-circle of each handhold
 handhold_heights = [45, 60, 75];
+
+// Outer diameter of the threaded inserts for the platform and front step
+threaded_insert_od = 0.6;

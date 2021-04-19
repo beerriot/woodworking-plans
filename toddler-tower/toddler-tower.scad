@@ -81,6 +81,25 @@ module platform_rabbet() {
     rotate([0, 0, 90]) rabbet(platform_depth);
 }
 
+module bolt_hole() {
+    translate([-thickness / 2, 0, -0.01])
+        cylinder(h=thickness + 0.02, d=threaded_insert_od);
+}
+
+module front_step_bolt_holes() {
+    translate([0, front_step_depth() * 0.2, 0])
+        bolt_hole();
+    translate([0, front_step_depth() * 0.8, 0])
+        bolt_hole();
+}
+
+module platform_bolt_holes() {
+    translate([0, platform_depth * 0.2, 0])
+        bolt_hole();
+    translate([0, platform_depth * 0.8, 0])
+        bolt_hole();
+}
+
 module narrow_support_rabbet() {
     rabbet(narrow_support_height());
 }
@@ -162,12 +181,16 @@ module right_side() {
         front_angle_cut();
 
         for (h = front_step_heights)
-            translate([h, front_step_inset(h), 0])
+            translate([h, front_step_inset(h), 0]) {
                 front_step_rabbet();
+                front_step_bolt_holes();
+            }
 
         for (h = platform_heights)
-            translate([h, bottom_depth - platform_depth, 0])
+            translate([h, bottom_depth - platform_depth, 0]) {
                 platform_rabbet();
+                platform_bolt_holes();
+            }
 
         // Non-step/platform cross-members
 
@@ -220,7 +243,15 @@ module right_side() {
 }
 
 module left_side() {
-    mirror([0, 0, 1]) left_side();
+    mirror([0, 0, 1]) right_side();
 }
 
-right_side();
+// ASSEMBLY
+
+module assembly() {
+    rotate([0, -90, 0]) left_side();
+
+    translate([width, 0, 0]) rotate([0, -90, 0]) right_side();
+}
+
+assembly();
