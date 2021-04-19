@@ -79,8 +79,16 @@ module front_step_rabbet() {
     rotate([0, 0, 90]) rabbet(front_step_depth());
 }
 
+module front_step() {
+    sheet_stock(inter_rabbet_span(), front_step_depth());
+}
+
 module platform_rabbet() {
     rotate([0, 0, 90]) rabbet(platform_depth);
+}
+
+module platform() {
+    sheet_stock(inter_rabbet_span(), platform_depth);
 }
 
 module bolt_hole() {
@@ -258,6 +266,20 @@ module left_side() {
 
 // ASSEMBLY
 
+module place_front_step_at(position) {
+    translate([0,
+               front_step_inset(front_step_heights[position]),
+               front_step_heights[position] - thickness])
+        children();
+}
+
+module place_platform_at(position) {
+    translate([0,
+               bottom_depth - platform_depth,
+               platform_heights[position] - thickness])
+        children();
+}
+
 module assembly() {
     rotate([0, -90, 0]) left_side();
 
@@ -280,6 +302,12 @@ module assembly() {
             translate([0, 0, -wide_support_height() * 1.25])
                 rotate([90, 0, 0]) wide_support();
         }
+
+        place_front_step_at(0)
+            front_step();
+
+        place_platform_at(1)
+            platform();
     }
 }
 
