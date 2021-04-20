@@ -37,4 +37,4 @@ front_step_color = "#99ffff";
 narrow_support_color = "#9999ff";
 wide_support_color = "#ff99ff";
 safety_rail_color = "#99ff99";
-rabbet_color = "#cccccc";
+dado_color = "#cccccc";

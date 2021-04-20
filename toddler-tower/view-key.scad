@@ -11,12 +11,12 @@ $vpr = [ 90.00, 0.00, 0.00 ];
 $vpd = 610.90;
 
 side_size = [height, thickness, bottom_depth];
-platform_size = [inter_rabbet_span(), thickness, platform_depth];
-step_size = [inter_rabbet_span(), thickness, front_step_depth()];
-wide_support_size = [inter_rabbet_span(), thickness, wide_support_height()];
+platform_size = [inter_dado_span(), thickness, platform_depth];
+step_size = [inter_dado_span(), thickness, front_step_depth()];
+wide_support_size = [inter_dado_span(), thickness, wide_support_height()];
 narrow_support_size =
-    [inter_rabbet_span(), thickness, narrow_support_height()];
-safety_rail_size = [inter_rabbet_span(), thickness, safety_rail_height()];
+    [inter_dado_span(), thickness, narrow_support_height()];
+safety_rail_size = [inter_dado_span(), thickness, safety_rail_height()];
 
 key([keyChildInfo("RIGHT SIDE", 1,
                   thirdAngleSize(side_size, topLabels=[1,0,0])),
@@ -57,8 +57,8 @@ key([keyChildInfo("RIGHT SIDE", 1,
     thirdAngle(platform_size) {
         translate([0, thickness, 0]) rotate([90, 0, 0]) platform();
 
-        sizeLabel(inter_rabbet_span());
-        taRightSide(inter_rabbet_span()) {
+        sizeLabel(inter_dado_span());
+        taRightSide(inter_dado_span()) {
             translate([0, 0, platform_depth]) sizeLabel(thickness, over=true);
             translate([thickness, 0, 0])
                 sizeLabel(platform_depth, rotation=-90);
@@ -68,7 +68,7 @@ key([keyChildInfo("RIGHT SIDE", 1,
         translate([0, thickness, 0]) rotate([90, 0, 0]) front_step();
 
         union() {}
-        taRightSide(inter_rabbet_span()) {
+        taRightSide(inter_dado_span()) {
             translate([thickness, 0, 0])
                 sizeLabel(front_step_depth(), rotation=-90);
         }
@@ -77,7 +77,7 @@ key([keyChildInfo("RIGHT SIDE", 1,
         translate([0, thickness, 0]) rotate([90, 0, 0]) wide_support();
 
         union() {}
-        taRightSide(inter_rabbet_span()) {
+        taRightSide(inter_dado_span()) {
             translate([thickness, 0, 0])
                 sizeLabel(wide_support_height(), rotation=-90);
         }
@@ -86,7 +86,7 @@ key([keyChildInfo("RIGHT SIDE", 1,
         translate([0, thickness, 0]) rotate([90, 0, 0]) narrow_support();
 
         union() {}
-        taRightSide(inter_rabbet_span()) {
+        taRightSide(inter_dado_span()) {
             translate([thickness, 0, 0])
                 sizeLabel(narrow_support_height(), rotation=-90);
         }
@@ -95,7 +95,7 @@ key([keyChildInfo("RIGHT SIDE", 1,
         translate([0, thickness, 0]) rotate([90, 0, 0]) safety_rail();
 
         union() {}
-        taRightSide(inter_rabbet_span()) {
+        taRightSide(inter_dado_span()) {
             translate([thickness, 0, 0])
                 sizeLabel(safety_rail_height(), rotation=-90);
         }
