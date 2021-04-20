@@ -130,6 +130,10 @@ module safety_rail_rabbet() {
     rabbet(safety_rail_height());
 }
 
+module safety_rail() {
+    sheet_stock(inter_rabbet_span(), safety_rail_height());
+}
+
 module cutout_end() {
     translate([0, 0, -0.01])
         cylinder(h=thickness + 0.02, r=cutout_radius());
@@ -302,6 +306,11 @@ module assembly() {
             translate([0, 0, -wide_support_height() * 1.25])
                 rotate([90, 0, 0]) wide_support();
         }
+
+        translate([0,
+                   bottom_depth - platform_depth + thickness,
+                   height - safety_rail_height()])
+            rotate([90, 0, 0]) safety_rail();
 
         place_front_step_at(0)
             front_step();
