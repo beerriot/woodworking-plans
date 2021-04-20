@@ -30,3 +30,11 @@ handhold_heights = [45, 60, 75];
 
 // Outer diameter of the threaded inserts for the platform and front step
 threaded_insert_od = 0.6;
+
+side_color = "#ff9999";
+platform_color = "#ffff99";
+front_step_color = "#99ffff";
+narrow_support_color = "#9999ff";
+wide_support_color = "#ff99ff";
+safety_rail_color = "#99ff99";
+rabbet_color = "#cccccc";

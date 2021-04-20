@@ -59,19 +59,21 @@ module sheet_stock(length, width, errs=[0,0,0]) {
 }
 
 module side_panel_blank() {
-    sheet_stock(height, bottom_depth);
+    color(side_color) sheet_stock(height, bottom_depth);
 }
 
 module front_angle_cut() {
     translate([front_step_heights[0], 0, 0])
         rotate([0, 0, front_angle()])
         translate([0, -bottom_depth, 0])
+        color(side_color)
         sheet_stock(height, bottom_depth, errs=[2,0,2]);
 }
 
 module rabbet(length) {
     translate([0, 0, thickness])
         rotate([-90, 0, 0])
+        color(rabbet_color)
         sheet_stock(length, rabbet_depth(), [2, 2, 2]);
 }
 
@@ -80,7 +82,8 @@ module front_step_rabbet() {
 }
 
 module front_step() {
-    sheet_stock(inter_rabbet_span(), front_step_depth());
+    color(front_step_color)
+        sheet_stock(inter_rabbet_span(), front_step_depth());
 }
 
 module platform_rabbet() {
@@ -88,7 +91,7 @@ module platform_rabbet() {
 }
 
 module platform() {
-    sheet_stock(inter_rabbet_span(), platform_depth);
+    color(platform_color) sheet_stock(inter_rabbet_span(), platform_depth);
 }
 
 module bolt_hole() {
@@ -115,7 +118,8 @@ module narrow_support_rabbet() {
 }
 
 module narrow_support() {
-    sheet_stock(inter_rabbet_span(), narrow_support_height());
+    color(narrow_support_color)
+        sheet_stock(inter_rabbet_span(), narrow_support_height());
 }
 
 module wide_support_rabbet() {
@@ -123,7 +127,8 @@ module wide_support_rabbet() {
 }
 
 module wide_support() {
-    sheet_stock(inter_rabbet_span(), wide_support_height());
+    color(wide_support_color)
+        sheet_stock(inter_rabbet_span(), wide_support_height());
 }
 
 module safety_rail_rabbet() {
@@ -131,11 +136,13 @@ module safety_rail_rabbet() {
 }
 
 module safety_rail() {
-    sheet_stock(inter_rabbet_span(), safety_rail_height());
+    color(safety_rail_color)
+        sheet_stock(inter_rabbet_span(), safety_rail_height());
 }
 
 module cutout_end() {
     translate([0, 0, -0.01])
+        color(side_color)
         cylinder(h=thickness + 0.02, r=cutout_radius());
 }
 
@@ -284,7 +291,7 @@ module place_platform_at(position) {
         children();
 }
 
-module assembly() {
+module assembly(front_step_position=0, platform_position=1) {
     rotate([0, -90, 0]) left_side();
 
     translate([width, 0, 0]) rotate([0, -90, 0]) right_side();
@@ -312,10 +319,10 @@ module assembly() {
                    height - safety_rail_height()])
             rotate([90, 0, 0]) safety_rail();
 
-        place_front_step_at(0)
+        place_front_step_at(front_step_position)
             front_step();
 
-        place_platform_at(1)
+        place_platform_at(platform_position)
             platform();
     }
 }

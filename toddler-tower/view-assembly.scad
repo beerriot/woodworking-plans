@@ -1,4 +1,5 @@
 //cmdline: --imgsize=2048,2048
+include <../common/echo-camera-arg.scad>
 
 use <toddler-tower.scad>
 
