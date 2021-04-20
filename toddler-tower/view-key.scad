@@ -28,7 +28,7 @@ key([keyChildInfo("RIGHT SIDE", 1,
                   thirdAngleSize(step_size)),
      keyChildInfo("WIDE SUPPORT", 1,
                   thirdAngleSize(wide_support_size)),
-     keyChildInfo("NARROW SUPPORT", 1,
+     keyChildInfo("NARROW SUPPORT", 3,
                   thirdAngleSize(narrow_support_size)),
      keyChildInfo("SAFETY_RAIL", 1,
                   thirdAngleSize(safety_rail_size))]) {
