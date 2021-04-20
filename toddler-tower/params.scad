@@ -1,13 +1,13 @@
 // Typical counter-top height in the US is 36 inches. Rounding down to 91cm.
-height = 91;
+height = 90;
 
 // Distance from the outside of the left wall to the outside of the
 // right wall.
-width = 50;
+width = 45;
 
 // Distance from the counter side of the tower to the opposite edge of
 // the feet.
-bottom_depth = 50;
+bottom_depth = 45;
 
 // Distance from the counter side of the tower to the opposite edge of
 // the standing platform.
