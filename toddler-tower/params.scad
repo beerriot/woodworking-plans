@@ -38,3 +38,5 @@ narrow_support_color = "#9999ff";
 wide_support_color = "#ff99ff";
 safety_rail_color = "#99ff99";
 dado_color = "#cccccc";
+rabbet_color = "#999999";
+groove_color = rabbet_color;

@@ -18,9 +18,9 @@ function front_step_depth() = bottom_depth / 4;
 function front_step_inset(h) =
     max(0, (h - front_step_heights[0] - thickness)) * sin(front_angle());
 
-function dado_depth() = thickness / 4;
+function recess_depth() = thickness / 4;
 
-function inter_dado_span() = width - (thickness - dado_depth()) * 2;
+function inter_recess_span() = width - (thickness - recess_depth()) * 2;
 
 function narrow_support_height() = front_step_heights[0] - thickness;
 
@@ -52,6 +52,9 @@ function lower_window_top_depth() = front_step_depth();
 function lower_window_bottom_depth() =
     bottom_depth + cutout_radius() - front_step_depth() - lower_window_inset();
 
+function top_handhold_offset() =
+    (platform_depth - handhold_size[0]) / 2;
+
 // COMPONENTS
 
 module sheet_stock(length, width, errs=[0,0,0]) {
@@ -70,11 +73,22 @@ module front_angle_cut() {
         sheet_stock(height, bottom_depth, errs=[2,0,2]);
 }
 
-module dado(length) {
+module recess(length) {
     translate([0, 0, thickness])
         rotate([-90, 0, 0])
-        color(dado_color)
-        sheet_stock(length, dado_depth(), [2, 2, 2]);
+        sheet_stock(length, recess_depth(), [2, 2, 2]);
+}
+
+module dado(length) {
+    color(dado_color) recess(length);
+}
+
+module rabbet(length) {
+    color(rabbet_color) recess(length);
+}
+
+module groove(length) {
+    color(groove_color) recess(length);
 }
 
 module front_step_dado() {
@@ -83,7 +97,7 @@ module front_step_dado() {
 
 module front_step() {
     color(front_step_color)
-        sheet_stock(inter_dado_span(), front_step_depth());
+        sheet_stock(inter_recess_span(), front_step_depth());
 }
 
 module platform_dado() {
@@ -91,7 +105,7 @@ module platform_dado() {
 }
 
 module platform() {
-    color(platform_color) sheet_stock(inter_dado_span(), platform_depth);
+    color(platform_color) sheet_stock(inter_recess_span(), platform_depth);
 }
 
 module bolt_hole() {
@@ -113,31 +127,35 @@ module platform_bolt_holes() {
         bolt_hole();
 }
 
-module narrow_support_dado() {
-    dado(narrow_support_height());
+module narrow_support_rabbet() {
+    rabbet(narrow_support_height());
+}
+
+module narrow_support_groove() {
+    groove(narrow_support_height());
 }
 
 module narrow_support() {
     color(narrow_support_color)
-        sheet_stock(inter_dado_span(), narrow_support_height());
+        sheet_stock(inter_recess_span(), narrow_support_height());
 }
 
-module wide_support_dado() {
-    dado(wide_support_height());
+module wide_support_rabbet() {
+    rabbet(wide_support_height());
 }
 
 module wide_support() {
     color(wide_support_color)
-        sheet_stock(inter_dado_span(), wide_support_height());
+        sheet_stock(inter_recess_span(), wide_support_height());
 }
 
-module safety_rail_dado() {
-    dado(safety_rail_height());
+module safety_rail_groove() {
+    groove(safety_rail_height());
 }
 
 module safety_rail() {
     color(safety_rail_color)
-        sheet_stock(inter_dado_span(), safety_rail_height());
+        sheet_stock(inter_recess_span(), safety_rail_height());
 }
 
 module cutout_end() {
@@ -225,28 +243,28 @@ module right_side() {
 
         // under the front steps
         translate([0, (front_step_depth() - thickness) / 2, 0])
-            narrow_support_dado();
+            narrow_support_groove();
 
         // on the bottom against the cabinets
         translate([thickness, bottom_depth - thickness, 0])
-            narrow_support_dado();
+            narrow_support_rabbet();
 
         translate([height - narrow_support_height(),
                    bottom_depth - thickness,
                    0]) {
             // at the top against the counter
-            narrow_support_dado();
+            narrow_support_rabbet();
 
             // between the platforms and the top support, against the
             // cabinets
             translate([-wide_support_height() * 1.25, 0, 0])
-                wide_support_dado();
+                wide_support_rabbet();
         }
 
         translate([height - safety_rail_height(),
                    bottom_depth - platform_depth,
                    0])
-            safety_rail_dado();
+            safety_rail_groove();
 
         // handholds for climbing
         for (h = handhold_heights)
@@ -256,7 +274,7 @@ module right_side() {
 
         // one more handhold at the top
         translate([height - handhold_size[1],
-                   bottom_depth - (platform_depth - handhold_size[0]) / 2,
+                   bottom_depth - top_handhold_offset(),
                    0])
             rotate([0, 0, 90])
             handhold_cutout();
@@ -296,7 +314,7 @@ module assembly(front_step_position=0, platform_position=1) {
 
     translate([width, 0, 0]) rotate([0, -90, 0]) right_side();
 
-    translate([thickness - dado_depth(), 0, 0]) {
+    translate([thickness - recess_depth(), 0, 0]) {
         // under step
         translate([0, (front_step_depth() + thickness) / 2, 0])
             rotate([90, 0, 0]) narrow_support();
