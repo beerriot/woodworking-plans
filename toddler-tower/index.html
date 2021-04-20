@@ -12,3 +12,318 @@ project: true
   {% include preview_image.html image="view-third-angle.png"
   description="Third-angle view of the assembled toddler tower." %}
 </div>
+
+<div class="pure-u-1">
+  <p>
+    This enclosed step stool provides a platform to raise children to
+    the height of a counter top, so they can observe and participate
+    in kitchen activities. The adjustable platform and front step
+    allow the tower to adapt as a child grows.
+  </p>
+  <p>
+    All parts are made from stock of the same thickness. If you are
+    building this for a standard-height counter (36 inches in the US,
+    or 90 cm. elsewhere), and easy way to acquire the material is to
+    shop in the shelving section of your local home improvement
+    store. They are likely to have hardwood shelving panels 36-by-18
+    in., or 90-by-45 cm. Three of these will accomodate all parts: one
+    for each side, and one for the platforms and other cross
+    members. A good secondary option is 48-by-24 in. (120-by-60 cm.)
+    "handy panels" of good-quality 3/4 in. (1.9 cm.) plywood.
+  </p>
+</div>
+
+<div class="pure-u-1">
+  <h2>Building Instructions</h2>
+</div>
+
+{% capture step_0_ignore %}{% increment tt_step %}{% endcapture %}
+{% capture figure_0_ignore %}{% increment tt_fig %}{% endcapture %}
+
+<div class="pure-u-1">
+  <h3>Making the Ends</h3>
+</div>
+
+{% capture step_size_panels %}{% increment tt_step %}{% endcapture %}
+{% include step_heading.html number=step_size_panels
+title="Cut the panels to size" %}
+
+{% capture figure_size_panels %}{% increment tt_fig %}{% endcapture %}
+{% capture figure_size_panels_caption %}Cut two panels to {{site.data.toddler-tower.height}}cm by {{site.data.toddler-tower.bottom_depth}}cm.{% endcapture %}
+{% include figure.html number=figure_size_panels
+image="view-panel-size.png"
+caption=figure_size_panels_caption %}
+<div class="pure-u-1 pure-u-md-1-2">
+  <p>
+    Start by cutting two panels to
+    {{site.data.toddler-tower.height}}cm by
+    {{site.data.toddler-tower.bottom_depth}}cm. Ensure that the
+    {{site.data.toddler-tower.height}}cm dimension runs with the grain
+    of the wood. When the tower is standing upright, the grain of the
+    wood should run vertically.
+  </p>
+  <p>
+    If your panels came labeled as this size from the store, check
+    that they are cut square and to exactly matching size.
+  </p>
+</div>
+
+{% capture step_platform_dados %}{% increment tt_step %}{% endcapture %}
+{% include step_heading.html number=step_platform_dados
+title="Cut dados for the platform and step" %}
+
+{% capture figure_platform_dados %}{% increment tt_fig %}{% endcapture %}
+{% capture figure_platform_dados_caption %}Cut dados {{site.data.toddler-tower.recess_depth}}cm deep for the platform and front step to slide into.{% endcapture %}
+{% include figure.html number=figure_platform_dados
+image="view-platform_dados.png"
+caption=figure_platform_dados_caption %}
+<div class="pure-u-1 pure-u-md-1-2">
+  <p>
+    The most important cuts in this build are the dados into which
+    the platform and step fit. If the dados in the left side don't
+    align with the dados in the right, the tower won't stand
+    straight, or the platform may not even fit. So, make those cuts
+    while the stock still has plenty of square side from which to
+    reference.
+  </p>
+  <p>
+    The dados should be at least as wide as the stock you're using
+    ({{site.data.toddler-tower.thickness}}cm). If you cut them just a
+    half millimeter or so wider ({{site.data.toddler-tower.thickness |
+    plus: 0.05}}cm), the platform will slide in and out more easily.
+  <p>
+    The dados should be {{site.data.toddler-tower.recess_depth}}cm
+    deep to give a good ledge to support the platform and step,
+    without creating a weak spot in the side.
+  </p>
+  <p>
+    The platform slides in from the cabinet side of the tower. Make
+    sure to cut these {{site.data.toddler-tower.platform_depth}}cm
+    long dados from the right side of one panel, and from the left
+    side of the other. The top edge of the dados should be at {% for h
+    in platform_heights %}{% if h == platform_heights.last %}and
+    {{site.data.toddler-tower.h}}cm{% else
+    %}{{site.data.toddler-tower.h}}cm, {% endif %}{% endfor %} from
+    the bottom edge.
+  </p>
+  The step slides into its
+  {{site.data.toddler-tower.front_step_depth}}cm dado from the
+  opposite side of each panel. These dados should be at {% for h in
+  front_step_heights %}{% if h == front_step_heights.last %}and
+  {{site.data.toddler-tower.h}}cm{% else
+  %}{{site.data.toddler-tower.h}}cm{% endif %}{% endfor %} from the
+  bottom edge.
+  </p>
+  <p>
+    If you accidentally cut all platform dados from the same side of
+    each panel, or you don't want to deal with squaring off the inner
+    end of the dado, it's completely fine to continue cutting all
+    the way through to the other side. A stopped dado, as designed,
+    provides a nice positive feedback when inserting the platform, but
+    it's not necessary for the tower to function.
+  </p>
+</div>
+
+{% capture step_support_rabbets %}{% increment tt_step %}{% endcapture %}
+{% include step_heading.html number=step_support_rabbets
+title="Cut rabbets and grooves for the cross-member supports" %}
+
+{% capture figure_support_rabbets %}{% increment tt_fig %}{% endcapture %}
+{% capture figure_support_rabbets_caption %}Cut rabbets and grooves {{site.data.toddler-tower.recess_depth}}cm deep for the cross-member supports to fit into.{% endcapture %}
+{% include figure.html number=figure_support_rabbets
+image="view-support_rabbets.png"
+caption=figure_support_rabbets_caption %}
+<div class="pure-u-1 pure-u-md-1-2">
+  <p>
+    Next cut rabbets and grooves for the permanently-fixed support
+    members. All rabbets and grooves are
+    {{site.data.toddler-tower.recess_depth}}cm deep and
+    {{site.data.toddler-tower.thickness}}cm wide, like the platform
+    and step dados. But, since these pieces don't need to slide,
+    keepthing the width and length of these recesses to the exact
+    dimensions of the pieces that will fit in them, is a good idea.
+  </p>
+  <p>
+    Along the cabinet edge, cut a rabbet
+    {{site.data.toddler-tower.narrow_support_height}}cm long, starting
+    at the top edge. Also cut a rabbet
+    {{site.data.toddler-tower.narrow_support_height}}cm long, starting
+    {{site.data.toddler-tower.thickness}}cm up from the bottom
+    edge. Finally, cut a rabbet
+    {{site.data.toddler-tower.wide_support_height}}cm long starting
+    {{site.data.toddler-tower.wide_support_height | times: 1.25}}cm
+    from the top edge.
+  </p>
+  <p>
+    Cut a groove from the bottom edge through the lower wall of the
+    lowest front step dado, exactly in the middle of that dado. Also
+    cut a groove {{site.data.toddler-tower.safety_rail_height}}cm long
+    starting at the top edge, with the edge farthest from the cabinet
+    side being {{site.data.toddler-tower.platform_depth}}cm from the
+    cabinet side.
+  </p>
+</div>
+
+{% capture step_front_angle %}{% increment tt_step %}{% endcapture %}
+{% include step_heading.html number=step_front_angle
+title="Cut the front at a ladder angle." %}
+
+{% capture figure_front_angle %}{% increment tt_fig %}{% endcapture %}
+{% include figure.html number=figure_front_angle
+image="view-front_angle.png"
+caption="Cut the front from the lowest step to the support rail." %}
+<div class="pure-u-1 pure-u-md-1-2">
+  <p>
+    Draw a line from the top outer corner of the lowest step dado, to
+    the top outer corner of the safety rail. Cut along this line, and
+    discard the triangle offcut.
+  </p>
+</div>
+
+{% capture step_handholds %}{% increment tt_step %}{% endcapture %}
+{% include step_heading.html number=step_handholds
+title="Cut out holes for handholds." %}
+
+{% capture figure_handholds %}{% increment tt_fig %}{% endcapture %}
+{% capture figure_handholds_circles %}{{figure_handholds}}a{% endcapture %}
+{% capture figure_handholds_circles_caption %}Start the handholds by drilling holes {{site.data.toddler-tower.handhold_size[1]}}cm at either end of each handhold.{% endcapture %}
+{% include figure.html number=figure_handholds_circles
+image="view-handholds_circles.png"
+caption=figure_handholds_circles_caption %}
+<div class="pure-u-1 pure-u-md-1-2">
+  <p>
+    Start the handholds by marking points
+    {{site.data.toddler-tower.handhold_size[1]}}cm from the angled
+    edge cut in {% include step_link.html number=step_front_angle %},
+    and {% for h in handhold_heights %}{% if h ==
+    handhold_heights.last %}and {{site.data.toddler-tower.h}}cm{% else
+    %}{{site.data.toddler-tower.h}}cm, {% endif %}{% endfor %} up from
+    the bottom edge. Next, marking another point, also
+    {{site.data.toddler-tower.handhold_size[1]}}cm from the angle
+    edge, and {{site.data.toddler-tower.handhold_size[0]}}cm below
+    each of the first points.
+  </p>
+  <p>
+    If you have a hole saw, drill a
+    {{site.data.toddler-tower.handhold_size[1]}}cm hole at each point
+    you just marked. If you don't have a hole saw, use a compass to
+    draw a {{site.data.toddler-tower.handhold_size[1] | divided_by:
+    2}}cm radius circle at each point, then drill the larges hole you
+    can with whatever bit you have smaller than that circle at the
+    center point.
+  </p>
+  <p>
+    Repeat this process for one more handhold along the top
+    edge. Place the first point at
+    {{site.data.toddler-tower.top_handhold_offset}}cm from the
+    cabinet-side edge, {{site.data.toddler-tower.handhold_size[1]}}cm
+    down from the top edge. Place the second point an additional
+    {{site.data.toddler-tower.handhold_size[0]}}cm from the front
+    edge.
+  </p>
+</div>
+
+{% capture figure_handholds_flats %}{{figure_handholds}}b{% endcapture %}
+{% include figure.html number=figure_handholds_flats
+image="view-handholds_flats.png"
+caption="Complete the handholds by sawing out the waste between the circles." %}
+<div class="pure-u-1 pure-u-md-1-2">
+  <p>
+    To finish the handholds, lay a straightedge against the edges of
+    each pair of circles, and draw a line from one to the other. Saw
+    long these lines and remove the waste. You may need to use a rasp
+    or sandpaper to even the last bit of material where the flat meets
+    the edge of the circle.
+  </p>
+  <p>
+    To make the handholds more comfortable, round or chamfer the
+    edges. If you have a router with a roundover bit or chamfering
+    bit, this should be quick work. If you don't, a rasp or coarse
+    sandpaper will be effective.
+  </p>
+</div>
+
+{% capture step_windows %}{% increment tt_step %}{% endcapture %}
+{% include step_heading.html number=step_windows
+title="Cut windows (optional)." %}
+
+{% capture figure_windows %}{% increment tt_fig %}{% endcapture %}
+{% capture figure_windows_circles %}{{figure_windows}}a{% endcapture %}
+{% capture figure_windows_circles_caption %}Start the windows by drilling holes {{site.data.toddler-tower.handhold_size[1]}}cm at the corners of each window.{% endcapture %}
+{% include figure.html number=figure_windows_circles
+image="view-windows_circles.png"
+caption=figure_windows_circles_caption %}
+<div class="pure-u-1 pure-u-md-1-2">
+  <p>
+    The windows in the top and bottom of the unit are optional. The
+    top one removes a bit of weight from the unit, and helps to lower
+    the center of gravity. The bottom one also removes weight, and
+    makes it less likely that unevenness in the floor will cause the
+    tower to rock.
+  </p>
+  <p>
+    The process for making the windows is similar to the process for
+    making the handholds. Start the upper window by making a mark
+    {{site.data.toddler-tower.upper_window_inset}}cm down from the top
+    edge, and in the same distance from the cabinet edge. Make a
+    second mark also {{site.data.toddler-tower.upper_window_inset}}cm
+    down from the top edge, but
+    {{site.data.toddler-tower.upper_window_top_depth}}cm farther from
+    the cabinet edge ({{site.data.toddler-tower.upper_window_inset |
+    plus: site.data.toddler-tower.upper_window_top_depth}}cm from the
+    cabinet edge in total). Make a third mark
+    {{site.data.toddler-tower.upper_window_inset}}cm in from the
+    cabinet edge, but
+    {{site.data.toddler-tower.upper_window_height}}cm below the first
+    mark ({{site.data.toddler-tower.upper_window_height | plus:
+    site.data.toddler-tower.upper_window_inset}}cm total from the top
+    edge). Make your final mark the same distance from the top edge,
+    but {{site.data.toddler-tower.upper_window_bottom_depth}}cm
+    farther from the cabinet edge
+    ({{site.data.toddler-tower.upper_window_bottom_depth | plus:
+    upper_window_bottom_depth}}cm total). Drill holes at each mark.
+  </p>
+  <p>
+    Start the bottom window by making a mark
+    {{site.data.toddler-tower.lower_window_height}}cm from the bottom
+    edge, and
+    {{site.data.toddler-tower.lower_window_upper_corner_offset | plus:
+    site.data.toddler-tower.lower_window_inset}}cm from the angled
+    edge at that height. Mark a second point at the same distance from
+    the bottom edge, and
+    {{site.data.toddler-tower.front_step_depth}}cm farther in from the
+    front angled edge. Drill at each mark. (The lower corners of this
+    window are not rounded, so they don't need drilling.)
+  </p>
+</div>
+
+{% capture figure_windows_flats %}{{figure_windows}}b{% endcapture %}
+{% include figure.html number=figure_windows_flats
+image="view-window_flats.png"
+caption=figure_windows_circles_caption %}
+<div class="pure-u-1 pure-u-md-1-2">
+  <p>
+    Using a straightedge, draw lines between the top edges of the top
+    circles, the bottom edges of the bottom cricle, the right edges of
+    the right circles, and the left edges of the left circles, of the
+    top window. Saw along these lines, and discard the material that
+    comes out of the center.
+  </p>
+  <p>
+    Make a mark on the bottom edge of the panel
+    {{site.data.toddler-tower.lower_window_inset}}cm from the
+    non-cabinet corner. Make a second mark
+    {{site.data.toddler-tower.lower_winddow_inset | plus:
+    lower_window_bottom_depth}}cm from the same corner. using a
+    straightedge, connect the first point to the right side of the
+    right circle above it, connect the second point to the left side
+    of the left circle, and finally connect the top edges of the
+    circles. Saw along these lines, and discard the trapezoid that
+    comes off.
+  </p>
+  <p>
+    Round or chamfer the edges of these windows, like you did the
+    handholds. Also round or chamfer the outer edges of each
+    panel. The side panels are now complete.
+  </p>
+</div>
