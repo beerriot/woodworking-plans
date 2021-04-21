@@ -45,7 +45,7 @@ project: true
   <h3>Making the Ends</h3>
 </div>
 
-{% capture step_size_panels %}{% increment tt_step %}{% endcapture %}
+>{% capture step_size_panels %}{% increment tt_step %}{% endcapture %}
 {% include step_heading.html number=step_size_panels
 title="Cut the panels to size" %}
 
@@ -302,6 +302,197 @@ caption="Cut between the edges of the drilled holes to remove the windows" %}
   <p>
     Round or chamfer the edges of these windows, like you did the
     handholds. Also round or chamfer the outer edges of each
-    panel. The side panels are now complete.
+    panel. The side panels are now complete, except for some screw and
+    bolt holes we'll get to later.
+  </p>
+</div>
+
+<div class="pure-u-1">
+  <h3>Making the Cross Members</h3>
+</div>
+
+{% capture step_cross_members %}{% increment tt_step %}{% endcapture %}
+{% include step_heading.html number=step_cross_members
+title="Cut the Platform, Step, and other Supports" %}
+
+{% capture figure_cross_members %}{% increment tt_fig %}{% endcapture %}
+{% capture figure_cross_members_caption %}All cross members are {{tt.inter_recess_span}}cm wide. Depths: platform, {{tt.platform_depth}}cm; step, {{tt.front_step_depth}}cm; safety rail, {{tt.safety_rail_height}}cm; wide support, {{tt.wide_support_height}}cm; narrow support, {{tt.narrow_support_height}}cm.{% endcapture %}
+{% include figure.html number=figure_cross_members
+title=figure_cross_members_caption %}
+<div class="pure-u-1 pure-u-md-1-2">
+  <p>
+    The rest of the pieces of the tower should be cut so that the
+    grain of the wood runs from left to right across the width of the
+    tower. In this dimension, they're all the same length:
+    {{tt.inter_recess_span}}cm. If you're using a saw that has any sort
+    of gauge or stop, it may make sense to set the guide to that
+    length and cut enough pieces to make the rest of the following
+    components:
+  </p>
+  <ul>
+    <li>(1) Platform: {{tt.platform_depth}}cm by {{tt.inter_recess_span}}cm</li>
+    <li>(1) Front step: {{tt.front_step_depth}}cm by {{tt.inter_recess_span}}cm</li>
+    <li>(1) Safety rail: {{tt.safety_rail_height}}cm by {{tt.inter_recess_span}}cm</li>
+    <li>(1) Wide support: {{tt.wide_support_height}}cm by {{tt.inter_recess_span}}cm</li>
+    <li>(3) Narrow supports: {{tt.narrow_support_height}}cm by {{tt.inter_recess_span}}cm</li>
+  </ul>
+</div>
+
+<div class="pure-u-1">
+  <h3>Assembly</h3>
+</div>
+
+{% capture step_bolt_holes %}{% increment tt_step %}{% endcapture %}
+{% include step_heading.html number=step_bolt_holes
+title="Drill holes for the bolts and threaded inserts." %}
+
+<div class="pure-u-1">
+  <p>
+    The platform and the front step are attached with bolts that feed
+    through the side panels and screw into threaded inserts that are
+    embedded in the platform and front step. Find a drill bit that
+    matches the outer diameter of the barrel of your threaded inserts
+    (at the base, not the tip, of the threads) - in the diagrams here,
+    that's {{threaded_insert_od | times: 10}}mm. Use this bit to drill
+    the holes both in the platform and the step, as well as through
+    the sides. This will make a larger hole than you need for the bolt
+    to pass through the sides, but that will make it easier to align
+    during installation.
+  </p>
+</div>
+{% capture figure_bolt_holes_platform %}{% increment tt_fig %}{% endcapture %}
+{% capture figure_bolt_holes_platform_caption %}Platform holes are {{tt.bolt_hole_platform_front}}cm and {{tt.bolt_hole_platform_rear}}cm from the cabinet-side edge.{% endcapture %}
+{% include figure.html number=figure_bolt_holes_platform
+image="view-bolt_holes_platform.png"
+caption=figure_bolt_holes_platform_caption %}
+<div class="pure-u-1 pure-u-md-1-2">
+  <p>
+    In each platform dado in each side panel, drill a hole centered
+    top-to-bottom in the dado, {{tt.bolt_hole_platform_front}}cm from
+    the cabinet-side (open end) of the dado. Drill another
+    {{tt.bolt_hole_platform_rear}}cm from the same side.
+  </p>
+  <p>
+    Pass one of your platform bolts through one of the holes, and
+    screw a threaded insert onto it, until the threaded insert touches
+    the bottom of the dado. Do not tighten it - you'll be taking it
+    off again in a moment. Measure the distance from the bottom of the
+    dado to the end of the threaded insert, or to the end of the bolt
+    if the bolt sticks through. Remember this measurement - it's how
+    deep the holes in the platform and the front step need to
+    be. Remove the threaded insert and the bolt from the side panel.
+  </p>
+  <p>
+    Drill holes in both ends of the platform, centered in the
+    thickness. Just like the holes in the side panels, one in each end
+    should be {{tt.bolt_hole_platform_front}}cm from the cabinet-side
+    edge, and the other should be {{tt.bolt_hole_platform_rear}}cm
+    from the same edge. The depth of these holes should be the
+    measurement you just made a moment ago.
+  </p>
+</div>
+{% capture figure_bolt_holes_step %}{% increment tt_fig %}{% endcapture %}
+{% capture figure_bolt_holes_step_caption %}Front step holes are {{tt.bolt_hole_step_front}}cm and {{tt.bolt_hole_step_rear}}cm from the non-cabinet-side edge.{% endcapture %}
+{% include figure.html number=figure_bolt_holes_step
+image="view-bolt_holes_step.png"
+caption=figure_bolt_holes_step_caption %}
+<div class="pure-u-1 pure-u-md-1-2">
+  <p>
+    In each step dado in each side panel, drill a hole centered
+    top-to-bottom in the dado, {{tt.bolt_hole_step_front}}cm from the
+    non-cabinet-side (the same side as the angled cut) of the
+    dado. Drill another {{tt.bolt_hole_step_rear}}cm from the same
+    side.
+  </p>
+  <p>
+    Drill holes in both ends of the step, centered in the
+    thickness. Just like the holes in the side panels, one in each end
+    should be {{tt.bolt_hole_step_front}}cm from the non-cabinet-side
+    edge, and the other should be {{tt.bolt_hole_step_rear}}cm
+    from the same edge. The depth of these holes should be the
+    measurement you made earlier.
+  </p>
+</div>
+
+{% capture step_cross_member_assembly %}{% increment tt_step %}{% endcapture %}
+{% include step_heading.html number=step_cross_member_assembly
+title="Attach the cross-member supports." %}
+
+{% capture figure_platform_step_installed %}{% increment tt_fig %}{% endcapture %}
+{% include figure.html number=figure_platform_step_installed
+image="view-platform_step_installed.png"
+caption="Install the platform and the step, so the tower will stand while you attach the permanent cross-members." %}
+<div class="pure-u-1 pure-u-md-1-2">
+  <p>
+    It's easiest to attach the cross-member supports if they can be
+    clamped in place while you work. Luckily, the tower will stand if
+    you install the platform and step now. Turn the threaded inserts
+    into the holes on either end of the platform and front step. Pass
+    bolts through the holes in the lowest step dados, and throught the
+    holes in one of the higher platform dados. Screw the bolts into
+    the threaded inserts, and stand the tower up.
+  </p>
+</div>
+{% capture figure_cross_members_installed %}{% increment tt_fig %}{% endcapture %}
+{% include figure.html number=figure_cross_members_installed
+image="view-cross_members_installed.png"
+caption="Clamp each cross-member in place, pre-drill screw holes, optionally glue, and then screw in place." %}
+<div class="pure-u-1 pure-u-md-1-2">
+  <p>
+    Working with one cross-member support at a time, place it into its
+    rabbets or grooves and clamp it in place. For the wide and narrow
+    supports, pre-drill a hole for a screw through the side panel and
+    into the cross-member. The hole should be about a centimeter to a
+    centimeter and a half from the top or bottom edge of each
+    support. Choose a distance that looks good to you, and use it on
+    all 16 holes. The safety rail only needs one screw in each end. I
+    recommend the middle of the rail.
+  </p>
+  <p>
+    Glueing these cross-members in place is not strictly necessary,
+    but it will add some long-term stability to the tower. If that
+    sounds good to you, before driving screws into the holes you just
+    drilled, remove the cross-member, apply glue to its rabbet or
+    groove, and clamp the support back in place.
+  </p>
+  <p>
+    Be careful when driving the screws. I strongly recommend using a
+    finish washer with each screw, to prevent the wedged head from
+    splitting the wood if it is tightened too far below the
+    surface. Another option would be to use a pan-head screw instead.
+  </p>
+</div>
+
+{% capture step_test %}{% increment tt_step %}{% endcapture %}
+{% include step_heading.html number=step_test
+title="Test platform adjustment." %}
+
+{% capture figure_platform_moving %}{% increment tt_fig %}{% endcapture %}
+{% include figure.html number=figure_platform_moving
+image="view-platform_moving.gif"
+caption="Try moving the platform and step to other positions." %}
+<div class="pure-u-1 pure-u-md-1-2">
+  <p>
+    Before painting, or otherwise finishing, try repositioning the
+    platform and the step. They may take a little bit of force to push
+    out of their dados. This may be fine, because you probably won't
+    move them that often. If you would like them to move easier
+    anyway, sand a bit off of the ends. Lightly chamfering the corners
+    that sit in the bottom of the dados can help as well.
+  </p>
+</div>
+
+<div class="pure-u-1">
+  <p>
+    When you can successfully reposition your platform and step, your
+    build is complete. It's a good idea to paint or otherwise seal the
+    wood with something that can be wiped off with a damp rag. Remove
+    the platform and the step from the tower while painting, so the
+    paint doesn't "glue" them in place. If your dados are snug, also
+    consider taping off the part of the platform and step that sit
+    inside them, so the paint doesn't make that part thicker.
+  </p>
+  <p>
+    Enjoy having your kids participate in kitchen activities!
   </p>
 </div>

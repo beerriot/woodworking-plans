@@ -55,6 +55,12 @@ function lower_window_bottom_depth() =
 function top_handhold_offset() =
     (platform_depth - handhold_size[0]) / 2;
 
+function bolt_hole_step_front() = front_step_depth() * 0.2;
+function bolt_hole_step_rear() = front_step_depth() * 0.8;
+
+function bolt_hole_platform_front() = platform_depth * 0.2;
+function bolt_hole_platform_rear() = platform_depth * 0.8;
+
 // COMPONENTS
 
 module sheet_stock(length, width, errs=[0,0,0]) {
@@ -114,16 +120,16 @@ module bolt_hole() {
 }
 
 module front_step_bolt_holes() {
-    translate([0, front_step_depth() * 0.2, 0])
+    translate([0, bolt_hole_step_front(), 0])
         bolt_hole();
-    translate([0, front_step_depth() * 0.8, 0])
+    translate([0, bolt_hole_step_rear(), 0])
         bolt_hole();
 }
 
 module platform_bolt_holes() {
-    translate([0, platform_depth * 0.2, 0])
+    translate([0, bolt_hole_platform_front(), 0])
         bolt_hole();
-    translate([0, platform_depth * 0.8, 0])
+    translate([0, bolt_hole_platform_rear(), 0])
         bolt_hole();
 }
 
