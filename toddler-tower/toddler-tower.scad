@@ -43,7 +43,7 @@ function upper_window_bottom_depth() =
     upper_window_top_depth() + sin(front_angle()) * upper_window_height();
 
 function lower_window_inset() =
-    front_step_depth() -sin(front_angle()) * front_step_heights[0];
+    front_step_depth() - sin(front_angle()) * front_step_heights[0];
 function lower_window_height() =
     platform_heights[0] - thickness * 2 - cutout_radius();
 function lower_window_upper_corner_offset() =
@@ -184,8 +184,7 @@ module handhold_cutout(connect_circles=true) {
         handhold_cutout_circles();
 }
 
-module upper_window_cutout() {
-    hull() {
+module upper_window_cutout_circles() {
         // upper counter-side corner is centered on origin
         cutout_end();
 
@@ -200,36 +199,50 @@ module upper_window_cutout() {
         // lower non-counter-side corner
         translate([-upper_window_height(), -upper_window_bottom_depth(), 0])
             cutout_end();
-    }
 }
 
-module lower_window_cutout() {
-    hull() {
-        // lower non-counter-side edge is origin
-        rotate([0, 0, front_angle()])
-            translate([-0.5, 0, -0.01])
-            cube([1, 1, thickness + 0.02]);
+module upper_window_cutout(connect_circles=true) {
+    if (connect_circles)
+        hull() upper_window_cutout_circles();
+    else
+        upper_window_cutout_circles();
+}
 
-        // upper non-counter-side corner
-        translate([lower_window_height(),
-                   lower_window_upper_corner_offset(),
-                   0])
-            cutout_end();
+module lower_window_cutout_circles() {
+    // upper non-counter-side corner
+    translate([lower_window_height(),
+               lower_window_upper_corner_offset(),
+               0])
+        cutout_end();
 
-        // upper counter-side corner
-        translate([lower_window_height(),
-                   lower_window_upper_corner_offset() + front_step_depth(),
-                   0])
-            cutout_end();
+    // upper counter-side corner
+    translate([lower_window_height(),
+               lower_window_upper_corner_offset() + front_step_depth(),
+               0])
+        cutout_end();
+}
 
-        // lower counter-side edge
-        translate([0, lower_window_bottom_depth(), 0])
-            rotate([0, 0, -atan((lower_window_bottom_depth()
-                                 - lower_window_top_depth()
-                                 - lower_window_upper_corner_offset())
-                                / lower_window_height())])
-            translate([-0.5, -1, -0.01])
-            cube([1, 1, thickness + 0.02]);
+module lower_window_cutout(connect_circles=true) {
+    if (connect_circles) {
+        hull() {
+            // lower non-counter-side edge is origin
+            rotate([0, 0, front_angle()])
+                translate([-0.5, 0, -0.01])
+                cube([1, 1, thickness + 0.02]);
+
+            lower_window_cutout_circles();
+
+            // lower counter-side edge
+            translate([0, lower_window_bottom_depth(), 0])
+                rotate([0, 0, -atan((lower_window_bottom_depth()
+                                     - lower_window_top_depth()
+                                     - lower_window_upper_corner_offset())
+                                    / lower_window_height())])
+                translate([-0.5, -1, -0.01])
+                cube([1, 1, thickness + 0.02]);
+        }
+    } else {
+        lower_window_cutout_circles();
     }
 }
 
@@ -296,7 +309,6 @@ function inset_for_handhold(h) =
     + handhold_size[1] / cos(front_angle());
 
 module all_handholds(connect_circles=true) {
-
     // handholds for climbing
     for (h = handhold_heights)
         translate([h, inset_for_handhold(h), 0])
@@ -309,6 +321,16 @@ module all_handholds(connect_circles=true) {
                0])
         rotate([0, 0, 90])
         handhold_cutout(connect_circles);
+}
+
+module all_windows(connect_circles=true) {
+    translate([height - upper_window_inset(),
+               bottom_depth - upper_window_inset(),
+               0])
+        upper_window_cutout(connect_circles);
+
+    translate([0, lower_window_inset(), 0])
+        lower_window_cutout(connect_circles);
 }
 
 module right_side() {
@@ -328,13 +350,7 @@ module right_side() {
 
         all_handholds();
 
-        translate([height - upper_window_inset(),
-                   bottom_depth - upper_window_inset(),
-                   0])
-            upper_window_cutout();
-
-        translate([0, lower_window_inset(), 0])
-            lower_window_cutout();
+        all_windows();
     }
 }
 

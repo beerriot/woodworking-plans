@@ -261,24 +261,24 @@ caption=figure_windows_circles_caption %}
     ({{tt.upper_window_height | plus: tt.upper_window_inset}}cm total
     from the top edge). Make your final mark the same distance from
     the top edge, but {{tt.upper_window_bottom_depth}}cm farther from
-    the cabinet edge ({{tt.upper_window_bottom_depth | plus:
-    upper_window_bottom_depth}}cm total). Drill holes at each mark.
+    the cabinet edge ({{tt.upper_window_inset | plus:
+    tt.upper_window_bottom_depth}}cm total). Drill holes at each mark.
   </p>
   <p>
     Start the bottom window by making a mark
     {{tt.lower_window_height}}cm from the bottom edge, and
-    {{tt.lower_window_upper_corner_offset | plus:
-    tt.lower_window_inset}}cm from the angled edge at that
-    height. Mark a second point at the same distance from the bottom
-    edge, and {{tt.front_step_depth}}cm farther in from the front
-    angled edge. Drill at each mark. (The lower corners of this window
-    are not rounded, so they don't need drilling.)
+    {{tt.handhold_size[1] | divided_by: 2 | plus:
+    tt.front_step_depth}}cm from the angled edge at that height. Mark
+    a second point at the same distance from the bottom edge, and
+    {{tt.front_step_depth}}cm farther in from the front angled
+    edge. Drill at each mark. (The lower corners of this window are
+    not rounded, so they don't need drilling.)
   </p>
 </div>
 
 {% capture figure_windows_flats %}{{figure_windows}}b{% endcapture %}
 {% include figure.html number=figure_windows_flats
-image="view-window_flats.png"
+image="view-windows_flats.png"
 caption="Cut between the edges of the drilled holes to remove the windows" %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
@@ -291,12 +291,12 @@ caption="Cut between the edges of the drilled holes to remove the windows" %}
   <p>
     Make a mark on the bottom edge of the panel
     {{tt.lower_window_inset}}cm from the non-cabinet corner. Make a
-    second mark {{tt.lower_winddow_inset | plus:
-    lower_window_bottom_depth}}cm from the same corner. using a
-    straightedge, connect the first point to the right side of the
-    right circle above it, connect the second point to the left side
-    of the left circle, and finally connect the top edges of the
-    circles. Saw along these lines, and discard the trapezoid that
+    second mark {{tt.bottom_depth | minus: tt.lower_window_inset |
+    minus: tt.lower_window_bottom_depth}}cm from the cabinet-side
+    corner. using a straightedge, connect the first point to the right
+    side of the right circle above it, connect the second point to the
+    left side of the left circle, and finally connect the top edges of
+    the circles. Saw along these lines, and discard the trapezoid that
     comes off.
   </p>
   <p>
@@ -318,7 +318,8 @@ title="Cut the Platform, Step, and other Supports" %}
 {% capture figure_cross_members %}{% increment tt_fig %}{% endcapture %}
 {% capture figure_cross_members_caption %}All cross members are {{tt.inter_recess_span}}cm wide. Depths: platform, {{tt.platform_depth}}cm; step, {{tt.front_step_depth}}cm; safety rail, {{tt.safety_rail_height}}cm; wide support, {{tt.wide_support_height}}cm; narrow support, {{tt.narrow_support_height}}cm.{% endcapture %}
 {% include figure.html number=figure_cross_members
-title=figure_cross_members_caption %}
+image="view-_cross_members.png"
+caption=figure_cross_members_caption %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     The rest of the pieces of the tower should be cut so that the
