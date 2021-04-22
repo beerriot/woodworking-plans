@@ -98,7 +98,8 @@ module groove(length) {
 }
 
 module front_step_dado() {
-    rotate([0, 0, 90]) dado(front_step_depth());
+    deepest_inset = front_step_inset(front_step_heights[len(front_step_heights)-1]);
+    translate([0, -deepest_inset, 0]) rotate([0, 0, 90]) dado(front_step_depth() + deepest_inset);
 }
 
 module front_step() {
@@ -227,23 +228,47 @@ module lower_window_cutout() {
     }
 }
 
+module at_platform_heights() {
+    for (h = platform_heights)
+        translate([h, 0, 0]) children();
+}
+
+module all_platform_dados() {
+    at_platform_heights()
+        translate([0, bottom_depth - platform_depth, 0])
+        platform_dado();
+}
+
+module all_platform_bolt_holes() {
+    at_platform_heights()
+        translate([0, bottom_depth - platform_depth, 0])
+        platform_bolt_holes();
+}
+
+module at_front_step_heights() {
+    for (h = front_step_heights)
+        translate([h, front_step_inset(h), 0]) children();
+}
+
+module all_front_step_dados() {
+    at_front_step_heights() front_step_dado();
+}
+
+module all_front_step_bolt_holes() {
+    at_front_step_heights() front_step_bolt_holes();
+}
+
 module right_side() {
     difference() {
         side_panel_blank();
 
         front_angle_cut();
 
-        for (h = front_step_heights)
-            translate([h, front_step_inset(h), 0]) {
-                front_step_dado();
-                front_step_bolt_holes();
-            }
+        all_platform_dados();
+        all_platform_bolt_holes();
 
-        for (h = platform_heights)
-            translate([h, bottom_depth - platform_depth, 0]) {
-                platform_dado();
-                platform_bolt_holes();
-            }
+        all_front_step_dados();
+        all_front_step_bolt_holes();
 
         // Non-step/platform cross-members
 
