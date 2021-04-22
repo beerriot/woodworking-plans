@@ -11,11 +11,11 @@ $vpt = panel_vpt();
 $vpr = panel_vpr();
 $vpd = panel_vpd();
 
-module partial_right_side() {
+module view_panel_size() {
     side_panel_blank();
 }
 
-showBothSides() partial_right_side();
+showBothSides() view_panel_size();
 
 translate([0, bottom_depth, 0]) {
     viewLabel() sizeLabel(bottom_depth);

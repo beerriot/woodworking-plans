@@ -258,6 +258,34 @@ module all_front_step_bolt_holes() {
     at_front_step_heights() front_step_bolt_holes();
 }
 
+module all_rabbets_and_grooves() {
+
+    // under the front steps
+    translate([0, (front_step_depth() - thickness) / 2, 0])
+        narrow_support_groove();
+
+    // on the bottom against the cabinets
+    translate([thickness, bottom_depth - thickness, 0])
+        narrow_support_rabbet();
+
+    translate([height - narrow_support_height(),
+               bottom_depth - thickness,
+               0]) {
+        // at the top against the counter
+        narrow_support_rabbet();
+
+        // between the platforms and the top support, against the
+        // cabinets
+        translate([-wide_support_height() * 1.25, 0, 0])
+            wide_support_rabbet();
+    }
+
+    translate([height - safety_rail_height(),
+               bottom_depth - platform_depth,
+               0])
+        safety_rail_groove();
+}
+
 module right_side() {
     difference() {
         side_panel_blank();
@@ -271,31 +299,7 @@ module right_side() {
         all_front_step_bolt_holes();
 
         // Non-step/platform cross-members
-
-        // under the front steps
-        translate([0, (front_step_depth() - thickness) / 2, 0])
-            narrow_support_groove();
-
-        // on the bottom against the cabinets
-        translate([thickness, bottom_depth - thickness, 0])
-            narrow_support_rabbet();
-
-        translate([height - narrow_support_height(),
-                   bottom_depth - thickness,
-                   0]) {
-            // at the top against the counter
-            narrow_support_rabbet();
-
-            // between the platforms and the top support, against the
-            // cabinets
-            translate([-wide_support_height() * 1.25, 0, 0])
-                wide_support_rabbet();
-        }
-
-        translate([height - safety_rail_height(),
-                   bottom_depth - platform_depth,
-                   0])
-            safety_rail_groove();
+        all_rabbets_and_grooves();
 
         // handholds for climbing
         for (h = handhold_heights)

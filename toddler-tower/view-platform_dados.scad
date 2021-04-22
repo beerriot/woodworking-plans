@@ -7,20 +7,22 @@ use <panel-build.scad>
 
 include <params.scad>
 
+use <view-panel_size.scad>
+
 $vpt = panel_vpt();
 $vpr = panel_vpr();
 $vpd = panel_vpd();
 
-module partial_right_side() {
+module view_platform_dados() {
     difference() {
-        side_panel_blank();
+        view_panel_size();
 
         all_platform_dados();
         all_front_step_dados();
     }
 }
 
-showBothSides() partial_right_side();
+showBothSides() view_platform_dados();
 
 translate([0, bottom_depth, thickness]) {
     translate([platform_heights[0] - thickness, 0, 0]) {
