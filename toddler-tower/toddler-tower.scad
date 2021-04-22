@@ -171,12 +171,17 @@ module cutout_end() {
         cylinder(h=thickness + 0.02, r=cutout_radius());
 }
 
-module handhold_cutout() {
-    hull() {
+module handhold_cutout_circles() {
+    cutout_end();
+    translate([-(handhold_size[0] - handhold_size[1]), 0, 0])
         cutout_end();
-        translate([-(handhold_size[0] - handhold_size[1]), 0, 0])
-            cutout_end();
-    }
+}
+
+module handhold_cutout(connect_circles=true) {
+    if (connect_circles)
+        hull() handhold_cutout_circles();
+    else
+        handhold_cutout_circles();
 }
 
 module upper_window_cutout() {
@@ -286,6 +291,26 @@ module all_rabbets_and_grooves() {
         safety_rail_groove();
 }
 
+function inset_for_handhold(h) =
+    (h - front_step_heights[0]) * sin(front_angle())
+    + handhold_size[1] / cos(front_angle());
+
+module all_handholds(connect_circles=true) {
+
+    // handholds for climbing
+    for (h = handhold_heights)
+        translate([h, inset_for_handhold(h), 0])
+            rotate([0, 0, front_angle()])
+            handhold_cutout(connect_circles);
+
+    // one more handhold at the top
+    translate([height - handhold_size[1],
+               bottom_depth - top_handhold_offset(),
+               0])
+        rotate([0, 0, 90])
+        handhold_cutout(connect_circles);
+}
+
 module right_side() {
     difference() {
         side_panel_blank();
@@ -301,18 +326,7 @@ module right_side() {
         // Non-step/platform cross-members
         all_rabbets_and_grooves();
 
-        // handholds for climbing
-        for (h = handhold_heights)
-            rotate([0, 0, front_angle()])
-                translate([h, handhold_size[1] / 2, 0])
-                handhold_cutout();
-
-        // one more handhold at the top
-        translate([height - handhold_size[1],
-                   bottom_depth - top_handhold_offset(),
-                   0])
-            rotate([0, 0, 90])
-            handhold_cutout();
+        all_handholds();
 
         translate([height - upper_window_inset(),
                    bottom_depth - upper_window_inset(),
