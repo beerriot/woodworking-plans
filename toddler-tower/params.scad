@@ -40,3 +40,4 @@ safety_rail_color = "#99ff99";
 dado_color = "#cccccc";
 rabbet_color = "#999999";
 groove_color = rabbet_color;
+bolt_hole_color = "#999999";

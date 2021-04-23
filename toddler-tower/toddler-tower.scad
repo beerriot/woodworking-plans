@@ -61,6 +61,9 @@ function bolt_hole_step_rear() = front_step_depth() * 0.8;
 function bolt_hole_platform_front() = platform_depth * 0.2;
 function bolt_hole_platform_rear() = platform_depth * 0.8;
 
+// TODO: calculate actually threaded insert +/- bolt depth
+function bolt_hole_depth() = thickness;
+
 // COMPONENTS
 
 module sheet_stock(length, width, errs=[0,0,0]) {
@@ -112,12 +115,24 @@ module platform_dado() {
 }
 
 module platform() {
-    color(platform_color) sheet_stock(inter_recess_span(), platform_depth);
+    difference() {
+        color(platform_color)
+            sheet_stock(inter_recess_span(), platform_depth);
+
+        translate([bolt_hole_depth(), 0, thickness])
+            rotate([0, -90, 0])
+            platform_bolt_holes();
+
+        translate([inter_recess_span(), 0, thickness])
+            rotate([0, -90, 0])
+            platform_bolt_holes();
+    }
 }
 
-module bolt_hole() {
-    translate([-thickness / 2, 0, -0.01])
-        cylinder(h=thickness + 0.02, d=threaded_insert_od);
+module bolt_hole(depth=(thickness + 0.02)) {
+    color(bolt_hole_color)
+        translate([-thickness / 2, 0, -0.01])
+        cylinder(h=depth, d=threaded_insert_od);
 }
 
 module front_step_bolt_holes() {
