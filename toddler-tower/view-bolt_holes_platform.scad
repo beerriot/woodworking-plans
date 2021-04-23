@@ -1,4 +1,4 @@
-//cmdline: --projection=o --imgsize=1152,1024
+//cmdline: --projection=o --imgsize=1280,1024
 include <../common/echo-camera-arg.scad>
 
 use <../common/labeling.scad>
@@ -9,7 +9,7 @@ include <params.scad>
 
 use <view-windows_flats.scad>
 
-$vpt = [ 30.67, 51.00, 26.43 ];
+$vpt = [ 44.04, 51.00, 26.33 ];
 $vpr = [ 90.00, 0.00, 0.00 ];
 $vpd = 166.58;
 
@@ -42,22 +42,19 @@ thirdAngle([bottom_depth, thickness /* TODO + bolt length */, height],
     }
 }
 
-// hide bottom of the side panel
-color([1, 1, 1, 0.2])
-translate([-bottom_depth, -1.01, -lower_window_height()])
-cube([bottom_depth * 3, 1, lower_window_height() * 2]);
-
-translate([bottom_depth - platform_depth,
+translate([thirdAngleSize([bottom_depth, thickness, height],
+                          frontLabels=[0,1,0],
+                          rightLabels=[0,1,0]).x,
            -(2 + bolt_hole_depth()),
-           lower_window_height()
+           platform_heights[0]
            - thirdAngleSize([platform_depth, thickness, inter_recess_span()],
-                             frontLabels=[1,0,0],
+                             frontLabels=[0,0,0],
                              rightLabels=undef,
-                             topLabels=[1,0,1]).z]) {
+                             topLabels=[0,0,1]).z]) {
     thirdAngle([platform_depth, thickness, inter_recess_span()],
                frontLabels=[1,0,0],
                rightLabels=undef,
-               topLabels=[1,0,1]) {
+               topLabels=[1,0,0]) {
         translate([platform_depth, thickness, 0])
             rotate([90, 0, 0])
             rotate([0, 0, 90])
