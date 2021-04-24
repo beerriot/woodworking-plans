@@ -3,6 +3,7 @@
 // about them falling off.
 
 use <../common/common.scad>
+use <../common/hardware.scad>
 
 $fs = 0.1;
 $fa = 5;
@@ -61,10 +62,49 @@ function bolt_hole_step_rear() = front_step_depth() * 0.8;
 function bolt_hole_platform_front() = platform_depth * 0.2;
 function bolt_hole_platform_rear() = platform_depth * 0.8;
 
-// TODO: calculate actually threaded insert +/- bolt depth
-function bolt_hole_depth() = thickness;
+function bolt_length() = thickness + threaded_insert_depth;
+
+function bolt_hole_depth() = max(threaded_insert_depth,
+                                 bolt_length() - (thickness - recess_depth()));
+
+function screw_length() = thickness * 2.5;
+
+function screw_inset() = min(1.5,
+                             narrow_support_height() * 0.2,
+                             wide_support_height() * 0.2);
 
 // COMPONENTS
+
+module bolt() {
+    color(bolt_color)
+        hex_bolt(diameter=threaded_insert_od / 2,
+                 length=bolt_length(),
+                 head_diameter=bolt_head_diameter,
+                 head_thickness=0.1,
+                 hex_size=threaded_insert_od / 2);
+}
+
+module tt_threaded_insert() {
+    color(threaded_insert_color)
+        threaded_insert(id=threaded_insert_od / 2,
+                        od=threaded_insert_od,
+                        depth=1);
+}
+
+module screw() {
+    color(screw_color) deck_screw(screw_length());
+}
+
+module tt_finish_washer() {
+    color(finish_washer_color) finish_washer();
+}
+
+module screw_with_washer() {
+    translate([0, 0, -finish_washer_height()]) {
+        translate([0, 0, -0.01]) screw();
+        finish_washer();
+    }
+}
 
 module sheet_stock(length, width, errs=[0,0,0]) {
     squareStock(length, width, thickness, errs);
@@ -146,18 +186,34 @@ module bolt_hole(depth=(thickness + 0.02)) {
         cylinder(h=depth, d=threaded_insert_od);
 }
 
-module front_step_bolt_holes() {
+module front_step_bolt_positions() {
     translate([0, bolt_hole_step_front(), 0])
-        bolt_hole();
+        children();
     translate([0, bolt_hole_step_rear(), 0])
-        bolt_hole();
+        children();
+}
+
+module front_step_bolt_holes() {
+    front_step_bolt_positions() bolt_hole();
+}
+
+module front_step_bolts() {
+    front_step_bolt_positions() bolt();
+}
+
+module platform_bolt_positions() {
+    translate([0, bolt_hole_platform_front(), 0])
+        children();
+    translate([0, bolt_hole_platform_rear(), 0])
+        children();
 }
 
 module platform_bolt_holes() {
-    translate([0, bolt_hole_platform_front(), 0])
-        bolt_hole();
-    translate([0, bolt_hole_platform_rear(), 0])
-        bolt_hole();
+    platform_bolt_positions() bolt_hole();
+}
+
+module platform_bolts() {
+    platform_bolt_positions() bolt();
 }
 
 module narrow_support_rabbet() {
@@ -180,6 +236,19 @@ module wide_support_rabbet() {
 module wide_support() {
     color(wide_support_color)
         sheet_stock(inter_recess_span(), wide_support_height());
+}
+
+module support_screws(support_height) {
+    translate([0, screw_inset(), 0]) screw_with_washer();
+    translate([0, support_height - screw_inset(), 0]) screw_with_washer();
+}
+
+module narrow_support_screws() {
+    support_screws(narrow_support_height());
+}
+
+module wide_support_screws() {
+    support_screws(wide_support_height());
 }
 
 module safety_rail_groove() {
@@ -400,40 +469,112 @@ module place_platform_at(position) {
         children();
 }
 
-module assembly(front_step_position=0, platform_position=1) {
+module assembly_side_panels() {
     rotate([0, -90, 0]) left_side();
 
     translate([width, 0, 0]) rotate([0, -90, 0]) right_side();
+}
 
-    translate([thickness - recess_depth(), 0, 0]) {
-        // under step
-        translate([0, (front_step_depth() + thickness) / 2, 0])
-            rotate([90, 0, 0]) narrow_support();
-
-        // bottom cabinet-side
-        translate([0, bottom_depth, thickness])
-            rotate([90, 0, 0]) narrow_support();
-
-        translate([0, bottom_depth, height - narrow_support_height()]) {
-            // top cabinet-side
-            rotate([90, 0, 0]) narrow_support();
-
-            // mid cabinet-side
-            translate([0, 0, -wide_support_height() * 1.25])
-                rotate([90, 0, 0]) wide_support();
-        }
-
-        translate([0,
-                   bottom_depth - platform_depth + thickness,
-                   height - safety_rail_height()])
-            rotate([90, 0, 0]) safety_rail();
-
-        place_front_step_at(front_step_position)
-            front_step();
-
-        place_platform_at(platform_position)
-            platform();
+module assembly_cross_members() {
+    // under step
+    translate([0, front_step_depth() / 2, 0]) {
+        translate([thickness - recess_depth(), thickness / 2, 0])
+            rotate([90, 0, 0])
+            narrow_support();
+        rotate([90, 0, 90]) narrow_support_screws();
+        translate([width, 0, 0]) rotate([90, 0, -90]) narrow_support_screws();
     }
+
+    // bottom cabinet-side
+    translate([0, bottom_depth, thickness]) {
+        translate([thickness - recess_depth(), 0, 0])
+            rotate([90, 0, 0])
+            narrow_support();
+        translate([0, -thickness / 2, 0]) {
+            rotate([90, 0, 90]) narrow_support_screws();
+            translate([width, 0, 0])
+                rotate([90, 0, -90])
+                narrow_support_screws();
+        }
+    }
+
+    // top cabinet-side
+    translate([0, bottom_depth, height - narrow_support_height()]) {
+        translate([thickness - recess_depth(), 0, 0])
+            rotate([90, 0, 0])
+            narrow_support();
+        translate([0, -thickness / 2, 0]) {
+            rotate([90, 0, 90]) narrow_support_screws();
+            translate([width, 0, 0])
+                rotate([90, 0, -90])
+                narrow_support_screws();
+        }
+    }
+
+    // mid cabinet-side
+    translate([0,
+               bottom_depth,
+               height - narrow_support_height()
+               - wide_support_height() * 1.25]) {
+        translate([thickness - recess_depth(), 0, 0])
+            rotate([90, 0, 0])
+            wide_support();
+        translate([0, -thickness / 2, 0]) {
+            rotate([90, 0, 90]) wide_support_screws();
+            translate([width, 0, 0])
+                rotate([90, 0, -90])
+                wide_support_screws();
+        }
+    }
+
+    // safety rail
+    translate([0,
+               bottom_depth - platform_depth + thickness,
+               height - safety_rail_height()]) {
+        translate([thickness - recess_depth(), 0, 0])
+            rotate([90, 0, 0])
+            safety_rail();
+        translate([0, -thickness / 2, safety_rail_height() / 2]) {
+            rotate([90, 0, 90]) screw_with_washer();
+            translate([width, 0, 0]) rotate([90, 0, -90]) screw_with_washer();
+        }
+    }
+}
+
+module assembly_front_step(position) {
+    place_front_step_at(position) {
+        translate([thickness - recess_depth(), 0, 0])
+            front_step();
+        translate([0, 0, thickness / 2])
+            rotate([0, 90, 0])
+            front_step_bolts();
+        translate([width, 0, thickness / 2])
+            rotate([0, -90, 0])
+            front_step_bolts();
+    }
+}
+
+module assembly_platform(position) {
+    place_platform_at(position) {
+        translate([thickness - recess_depth(), 0, 0])
+            platform();
+        translate([0, 0, thickness / 2])
+            rotate([0, 90, 0])
+            platform_bolts();
+        translate([width, 0, thickness / 2])
+            rotate([0, -90, 0])
+            platform_bolts();
+    }
+}
+
+module assembly(front_step_position=0, platform_position=1) {
+    assembly_side_panels();
+
+    assembly_cross_members();
+
+    assembly_platform(platform_position);
+
+    assembly_front_step(front_step_position);
 }
 
 assembly();

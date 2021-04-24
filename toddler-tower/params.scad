@@ -28,8 +28,14 @@ handhold_size = [10, 3.5];
 // centers of the top half-circle of each handhold
 handhold_heights = [45, 60, 75];
 
-// Outer diameter of the threaded inserts for the platform and front step
+// Outer diameter of the threaded inserts for the platform and front step.
 threaded_insert_od = 0.6;
+
+// Length of the threaded insert.
+threaded_insert_depth = 1;
+
+// Diameter of the head of the bolts holding the platform and step.
+bolt_head_diameter = 1.25;
 
 side_color = "#ff9999";
 platform_color = "#ffff99";
@@ -41,3 +47,7 @@ dado_color = "#cccccc";
 rabbet_color = "#999999";
 groove_color = rabbet_color;
 bolt_hole_color = "#999999";
+threaded_insert_color = "#000000";
+bolt_color = "#666600";
+screw_color = "#cccccc";
+finish_washer_color = "#ccccff";
