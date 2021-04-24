@@ -106,8 +106,19 @@ module front_step_dado() {
 }
 
 module front_step() {
-    color(front_step_color)
-        sheet_stock(inter_recess_span(), front_step_depth());
+    difference() {
+        color(front_step_color)
+            sheet_stock(inter_recess_span(), front_step_depth());
+
+
+        translate([bolt_hole_depth(), 0, thickness])
+            rotate([0, -90, 0])
+            front_step_bolt_holes();
+
+        translate([inter_recess_span(), 0, thickness])
+            rotate([0, -90, 0])
+            front_step_bolt_holes();
+    }
 }
 
 module platform_dado() {
