@@ -10,7 +10,8 @@ $vpt = [ 54.17, 38.87, 72.47 ];
 $vpr = [ 90.00, 0.00, 0.00 ];
 $vpd = 395.22;
 
-thirdAngle([width, bottom_depth, height]) {
+thirdAngle([width, bottom_depth + thickness, height],
+           frontLabels=[1,0,1]) {
     assembly();
 
     sizeLabel(width);

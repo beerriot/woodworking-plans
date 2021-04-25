@@ -160,13 +160,26 @@ module front_step_dado() {
     translate([0, -deepest_inset, 0]) rotate([0, 0, 90]) dado(front_step_depth() + deepest_inset);
 }
 
+module step_platform_curve(move_direction, err=0) {
+    translate([inter_recess_span() / 2,
+               move_direction * thickness * 0.25,
+               -0.01 * err])
+        scale([(inter_recess_span() - recess_depth()) / (2 * thickness * 1.25),
+               1,
+               1])
+        cylinder(h=thickness + 0.02 * err, r=thickness * 1.25);
+}
+
 module front_step() {
     difference() {
-        wood_diagram_color(front_step_color)
+        wood_diagram_color(front_step_color) union() {
             sheet_stock(inter_recess_span(), front_step_depth());
 
+            step_platform_curve(1);
+        }
 
-        translate([bolt_hole_depth(), 0, thickness])
+
+        translate([0, 0, thickness])
             rotate([0, -90, 0])
             front_step_bolt_holes(bolt_hole_depth());
 
@@ -185,7 +198,10 @@ module platform() {
         wood_diagram_color(platform_color)
             sheet_stock(inter_recess_span(), platform_depth);
 
-        translate([bolt_hole_depth(), 0, thickness])
+        wood_diagram_color(platform_color)
+            step_platform_curve(-1, 1);
+
+        translate([0, 0, thickness])
             rotate([0, -90, 0])
             platform_bolt_holes(bolt_hole_depth());
 

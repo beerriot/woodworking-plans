@@ -70,13 +70,13 @@ translate([thirdAngleSize([bottom_depth, thickness, height],
                frontLabels=[1,0,0],
                rightLabels=undef,
                topLabels=[1,0,0]) {
-        translate([platform_depth, thickness, 0])
+        translate([0, thickness, inter_recess_span()])
             rotate([90, 0, 0])
-            rotate([0, 0, 90])
+            rotate([0, 0, -90])
             platform();
 
         union() {
-            color([1, 1, 1, 0.5])
+            color([1, 1, 1, 0.25])
                 translate([0,
                            -thickness / 2,
                            inter_recess_span() - bolt_hole_depth()])
@@ -86,7 +86,7 @@ translate([thirdAngleSize([bottom_depth, thickness, height],
             translate([platform_depth - bolt_hole_platform_front(),
                        0,
                        inter_recess_span() - bolt_hole_depth()])
-                sizeLabel(bolt_hole_depth(), rotation=-90);
+                sizeLabel(bolt_hole_depth(), rotation=-90, color="black");
         }
 
         union() {

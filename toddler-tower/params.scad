@@ -49,7 +49,7 @@ narrow_support_color = "#dd7799";
 wide_support_color = "#ffaaff";
 safety_rail_color = "#cc33dd";
 
-bolt_hole_color = "#999999";
+bolt_hole_color = "#333333";
 
 threaded_insert_color = "#999933";
 bolt_color = "#666600";

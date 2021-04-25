@@ -43,13 +43,13 @@ translate([-(front_step_depth() + sizeLabelHeight()),
                frontLabels=[1,0,0],
                rightLabels=undef,
                topLabels=[1,0,0]) {
-        translate([front_step_depth(), thickness, 0])
+        translate([0, thickness, inter_recess_span()])
             rotate([90, 0, 0])
-            rotate([0, 0, 90])
+            rotate([0, 0, -90])
             front_step();
 
         union() {
-            color([1, 1, 1, 0.5])
+            color([1, 1, 1, 0.25])
                 translate([0,
                            -thickness / 2,
                            inter_recess_span() - bolt_hole_depth()])
@@ -57,7 +57,7 @@ translate([-(front_step_depth() + sizeLabelHeight()),
                 front_step_bolt_holes(bolt_hole_depth());
 
             translate([front_step_depth() - bolt_hole_step_front(),
-                       0,
+                       -thickness,
                        inter_recess_span() - bolt_hole_depth()])
                 sizeLabel(bolt_hole_depth(), rotation=-90);
         }

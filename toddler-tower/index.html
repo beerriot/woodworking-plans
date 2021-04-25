@@ -341,6 +341,22 @@ caption=figure_cross_members_caption %}
     <li>(1) Wide support: {{tt.wide_support_height}}cm by {{tt.inter_recess_span}}cm</li>
     <li>(3) Narrow supports: {{tt.narrow_support_height}}cm by {{tt.inter_recess_span}}cm</li>
   </ul>
+  <p>
+    The curve on the platform and the front step is an optional
+    feature. It gives the piece a little more of a finished look and
+    feel, and also provides both a slightly deeper step and a little
+    more room to climb under the safety rail. I recommend not going
+    too deep with the curve - if the center is about one board
+    thickness back, that's about right.
+  </p>
+  <p>
+    Tip: notice how the convex curve of the step matches the concave
+    curve of the platform. If you cut a panel {{ tt.platform_depth |
+    plus: tt.front_step_depth }}cm by {{ tt.inter_recess_span}}cm -
+    the combined size of the step plus the platform - you can form
+    that edge of both pieces by cutting the curve at {{
+    tt.front_step_depth }}cm through your combined panel.
+  </p>
 </div>
 
 <div class="pure-u-1">
@@ -395,6 +411,12 @@ caption=figure_bolt_holes_platform_caption %}
     from the same edge. The depth of these holes should be the
     measurement you just made a moment ago.
   </p>
+  <p>
+    If you added the curve to the front of the platform, make sure
+    you're measuring from the flat edge. The bolt positions given here
+    are symmetrical, but using the same reference edge for all
+    measurements helps ensure everything lines up better.
+  </p>
 </div>
 {% capture figure_bolt_holes_step %}{% increment tt_fig %}{% endcapture %}
 {% capture figure_bolt_holes_step_caption %}Front step holes are {{tt.bolt_hole_step_front}}cm and {{tt.bolt_hole_step_rear}}cm from the non-cabinet-side edge.{% endcapture %}
@@ -417,6 +439,12 @@ caption=figure_bolt_holes_step_caption %}
     from the same edge. The depth of these holes should be the
     measurement you made earlier.
   </p>
+  <p>
+    If you added the curve to the front of the step, make sure the
+    curve is facing <i>away</i> from the platform while measuring for
+    the bolt holes. The curve should stick out away from the cabinets
+    in the final assembly.
+  </p>
 </div>
 
 {% capture step_cross_member_assembly %}{% increment tt_step %}{% endcapture %}
@@ -436,6 +464,10 @@ caption="Install the platform and the step, so the tower will stand while you at
     bolts through the holes in the lowest step dados, and throught the
     holes in one of the higher platform dados. Screw the bolts into
     the threaded inserts, and stand the tower up.
+  </p>
+  <p>
+    Reminder: if you added the curves to the step and platform, they
+    both face away from the cabinets.
   </p>
 </div>
 {% capture figure_cross_members_installed %}{% increment tt_fig %}{% endcapture %}

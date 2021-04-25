@@ -38,7 +38,11 @@ key([keyChildInfo("NARROW SUPPORT", 3, narrow_support_size),
             sizeLabel(safety_rail_height(), rotation=-90);
     }
     union() {
-        rotate([90, 0, 0]) front_step();
+        // -0.01 gets the curve out of the plane of the platform's
+        // -removed curve, to avoid rendering conflicts
+        translate([0, -0.01, front_step_depth()])
+            rotate([-90, 0, 0])
+            front_step();
         translate([inter_recess_span(), 0, 0])
             sizeLabel(front_step_depth(), rotation=-90);
     }
