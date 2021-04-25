@@ -27,6 +27,7 @@ make_directories:
 
 %.gif: %.scad
 	${OPENSCAD} --hardwarnings -m make -o $(subst .scad,.png,$<) -d ${DEPS_DIR}$(@F).deps --colorscheme Nature ${EXTRA_OPTS} ${CAMERA_OPT} $<
+	sed -i '' -e 's/^anim-.*png/$(@F)/' ${DEPS_DIR}$(@F).deps
 	convert -delay 10 $(subst .scad,,$<)*.png half-$@
 	convert half-$@ -loop 0 -coalesce -duplicate 1,-2-1 $@
 
