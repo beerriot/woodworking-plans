@@ -75,8 +75,23 @@ function screw_inset() = min(1.5,
 
 // COMPONENTS
 
+// default gets overridden in assembly()
+$use_finish_colors = false;
+
+module wood_diagram_color(diagram_color) {
+    color($use_finish_colors ? finish_wood_color : diagram_color) children();
+}
+
+module screw_diagram_color(diagram_color) {
+    color($use_finish_colors ? finish_screw_color : diagram_color) children();
+}
+
+module bolt_diagram_color(diagram_color) {
+    color($use_finish_colors ? finish_bolt_color : diagram_color) children();
+}
+
 module bolt() {
-    color(bolt_color)
+    bolt_diagram_color(bolt_color)
         hex_bolt(diameter=threaded_insert_od / 2,
                  length=bolt_length(),
                  head_diameter=bolt_head_diameter,
@@ -85,24 +100,24 @@ module bolt() {
 }
 
 module tt_threaded_insert() {
-    color(threaded_insert_color)
+    bolt_diagram_color(threaded_insert_color)
         threaded_insert(id=threaded_insert_od / 2,
                         od=threaded_insert_od,
                         depth=1);
 }
 
 module screw() {
-    color(screw_color) deck_screw(screw_length());
+    screw_diagram_color(screw_color) deck_screw(screw_length());
 }
 
 module tt_finish_washer() {
-    color(finish_washer_color) finish_washer();
+    screw_diagram_color(finish_washer_color) finish_washer();
 }
 
 module screw_with_washer() {
     translate([0, 0, -finish_washer_height()]) {
         translate([0, 0, -0.01]) screw();
-        finish_washer();
+        tt_finish_washer();
     }
 }
 
@@ -111,14 +126,14 @@ module sheet_stock(length, width, errs=[0,0,0]) {
 }
 
 module side_panel_blank() {
-    color(side_color) sheet_stock(height, bottom_depth);
+    wood_diagram_color(side_color) sheet_stock(height, bottom_depth);
 }
 
 module front_angle_cut() {
     translate([front_step_heights[0], 0, 0])
         rotate([0, 0, front_angle()])
         translate([0, -bottom_depth, 0])
-        color(side_color)
+        wood_diagram_color(side_color)
         sheet_stock(height, bottom_depth, errs=[2,0,2]);
 }
 
@@ -129,15 +144,15 @@ module recess(length) {
 }
 
 module dado(length) {
-    color(dado_color) recess(length);
+    wood_diagram_color(dado_color) recess(length);
 }
 
 module rabbet(length) {
-    color(rabbet_color) recess(length);
+    wood_diagram_color(rabbet_color) recess(length);
 }
 
 module groove(length) {
-    color(groove_color) recess(length);
+    wood_diagram_color(groove_color) recess(length);
 }
 
 module front_step_dado() {
@@ -147,7 +162,7 @@ module front_step_dado() {
 
 module front_step() {
     difference() {
-        color(front_step_color)
+        wood_diagram_color(front_step_color)
             sheet_stock(inter_recess_span(), front_step_depth());
 
 
@@ -167,7 +182,7 @@ module platform_dado() {
 
 module platform() {
     difference() {
-        color(platform_color)
+        wood_diagram_color(platform_color)
             sheet_stock(inter_recess_span(), platform_depth);
 
         translate([bolt_hole_depth(), 0, thickness])
@@ -181,7 +196,7 @@ module platform() {
 }
 
 module bolt_hole(depth) {
-    color(bolt_hole_color)
+    wood_diagram_color(bolt_hole_color)
         translate([-thickness / 2, 0, -0.01])
         cylinder(h=depth, d=threaded_insert_od);
 }
@@ -225,7 +240,7 @@ module narrow_support_groove() {
 }
 
 module narrow_support() {
-    color(narrow_support_color)
+    wood_diagram_color(narrow_support_color)
         sheet_stock(inter_recess_span(), narrow_support_height());
 }
 
@@ -234,7 +249,7 @@ module wide_support_rabbet() {
 }
 
 module wide_support() {
-    color(wide_support_color)
+    wood_diagram_color(wide_support_color)
         sheet_stock(inter_recess_span(), wide_support_height());
 }
 
@@ -256,13 +271,13 @@ module safety_rail_groove() {
 }
 
 module safety_rail() {
-    color(safety_rail_color)
+    wood_diagram_color(safety_rail_color)
         sheet_stock(inter_recess_span(), safety_rail_height());
 }
 
 module cutout_end() {
     translate([0, 0, -0.01])
-        color(side_color)
+        wood_diagram_color(side_color)
         cylinder(h=thickness + 0.02, r=cutout_radius());
 }
 
@@ -274,7 +289,7 @@ module handhold_cutout_circles() {
 
 module handhold_cutout(connect_circles=true) {
     if (connect_circles)
-        hull() handhold_cutout_circles();
+        wood_diagram_color(side_color) hull() handhold_cutout_circles();
     else
         handhold_cutout_circles();
 }
@@ -298,7 +313,7 @@ module upper_window_cutout_circles() {
 
 module upper_window_cutout(connect_circles=true) {
     if (connect_circles)
-        hull() upper_window_cutout_circles();
+        wood_diagram_color(side_color) hull() upper_window_cutout_circles();
     else
         upper_window_cutout_circles();
 }
@@ -319,7 +334,7 @@ module lower_window_cutout_circles() {
 
 module lower_window_cutout(connect_circles=true) {
     if (connect_circles) {
-        hull() {
+        wood_diagram_color(side_color) hull() {
             // lower non-counter-side edge is origin
             rotate([0, 0, front_angle()])
                 translate([-0.5, 0, -0.01])
@@ -625,7 +640,10 @@ module assembly_platform(position, position2=undef) {
 }
 
 module assembly(front_step_position=0, platform_position=1,
-                front_step_position2=1, platform_position2=2) {
+                front_step_position2=1, platform_position2=2,
+                use_finish_colors=false) {
+    $use_finish_colors = use_finish_colors;
+
     assembly_side_panels();
 
     assembly_cross_members();

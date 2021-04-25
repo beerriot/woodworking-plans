@@ -51,3 +51,7 @@ threaded_insert_color = "#000000";
 bolt_color = "#666600";
 screw_color = "#cccccc";
 finish_washer_color = "#ccccff";
+
+finish_wood_color = "#ffffdd";
+finish_screw_color = "#cccc99";
+finish_bolt_color = "#999933";
