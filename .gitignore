@@ -2,6 +2,7 @@
 *~
 deps/
 *.png
+*.gif
 
 # Jekyll-generated content
 .jekyll-cache/

@@ -1,1 +1,1 @@
-exclude: [Makefile*, LICENSE, README.md, "*/Makefile", "*/deps", "*/*.scad"]
+exclude: [Makefile*, LICENSE, README.md, "*/Makefile", "*/deps", "*/*.scad", "*/anim-*.png", "*/half-*.gif"]

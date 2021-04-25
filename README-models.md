@@ -125,6 +125,15 @@ viewpoint of the scene using `$vpt`, `$vpr`, and `$vpd`, also add
 allow the common Makefile to append a `--camera` commandline argument
 to the openscad execution, which silences the warning.
 
+## Animations
+
+If you'd like to include an animation, create a file named
+`anim-*.scad`. This file should have the same structure as a view
+file, but crucially it should include an `--animate=<frame count>` in
+the `cmdline` setting. This file will be turned into a 10
+frames-per-second GIF named `anim-*.gif`. It will run forward and
+backward and loop forever.
+
 ## Key
 
 I've found it useful for one of the views to be a "key". Like a key on

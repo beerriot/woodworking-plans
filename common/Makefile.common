@@ -5,7 +5,8 @@
 
 include ../Makefile.paths
 
-TARGETS_PNG=$(shell ls view-*.scad | sed -e 's/\.scad/\.png/g')
+TARGETS_PNG=$(subst .scad,.png,$(wildcard view-*.scad))
+TARGETS_GIF=$(subst .scad,.gif,$(wildcard anim-*.scad))
 
 PROJECT_NAME=$(notdir $(basename $(CURDIR)))
 MODEL_SCAD=${PROJECT_NAME}.scad
@@ -15,7 +16,7 @@ DEPS_PARAMS_SCAD=${DEPS_DIR}params.scad
 JEKYLL_DATA_FILE=../_data/${PROJECT_NAME}.yaml
 
 .PHONY: all make_directories
-all: make_directories ${TARGETS_PNG} ${JEKYLL_DATA_FILE}
+all: make_directories ${TARGETS_PNG} ${TARGETS_GIF} ${JEKYLL_DATA_FILE}
 
 make_directories:
 	-@mkdir -p $(dir ${JEKYLL_DATA_FILE})
@@ -24,8 +25,13 @@ make_directories:
 %.png: %.scad
 	${OPENSCAD} --hardwarnings -m make -o $@ -d ${DEPS_DIR}$(@F).deps --colorscheme Nature ${EXTRA_OPTS} ${CAMERA_OPT} $<
 
-%.png: EXTRA_OPTS=$(shell grep "//cmdline:" $< | sed -e "s,//cmdline:,,g")
-%.png: CAMERA_OPT=$(shell ${OPENSCAD} --export-format echo -o - $< | grep "camera" | sed -e 's/.*"\(.*\)"/\1/')
+%.gif: %.scad
+	${OPENSCAD} --hardwarnings -m make -o $(subst .scad,.png,$<) -d ${DEPS_DIR}$(@F).deps --colorscheme Nature ${EXTRA_OPTS} ${CAMERA_OPT} $<
+	convert -delay 10 $(subst .scad,,$<)*.png half-$@
+	convert half-$@ -loop 0 -coalesce -duplicate 1,-2-1 $@
+
+%.png %.gif: EXTRA_OPTS=$(shell grep "//cmdline:" $< | sed -e "s,//cmdline:,,g")
+%.png %.gif: CAMERA_OPT=$(shell ${OPENSCAD} --export-format echo -o - $< | grep "camera" | sed -e 's/.*"\(.*\)"/\1/')
 
 # First create a dummy scad that calls all the zero-arg parameters and
 # echos their names and values to the log, as entries in a YAML file,
@@ -39,7 +45,7 @@ ${JEKYLL_DATA_FILE}: ${MODEL_SCAD} ${SRC_PARAMS_SCAD}
 	${OPENSCAD} --export-format echo -o - ${DEPS_PARAMS_SCAD} | grep ECHO | sed -e 's/.*"\(.*\)"/\1/' > ${JEKYLL_DATA_FILE}
 
 clean:
-	-@rm -rf *.png ${DEPS_DIR} ${JEKYLL_DATA_FILE}
+	-@rm -rf *.png *.gif ${DEPS_DIR} ${JEKYLL_DATA_FILE}
 
 # explicit wildcard expansion suppresses errors when no files are found
 include $(wildcard ${DEPS_DIR}*.deps)

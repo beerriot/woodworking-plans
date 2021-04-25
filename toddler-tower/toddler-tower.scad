@@ -455,17 +455,70 @@ module left_side() {
 
 // ASSEMBLY
 
-module place_front_step_at(position) {
+// Animation timeline:
+// major sections [start, end]
+anim_platform_start = 0;
+anim_step_start = 0.5;
+
+// subsections [relative start, duration]
+anim_remove_bolts = [0, 0.1];
+anim_slide_out = [0.1, 0.1];
+anim_change_height = [0.2, 0.1];
+anim_slide_in = [0.3, 0.1];
+anim_replace_bolts = [0.4, 0.1];
+
+function out_in_anim(base_t, out_t, in_t, distance) =
+    let (out_rel_t = $t - base_t - out_t[0],
+         in_rel_t = $t - base_t - in_t[0])
+    ((out_rel_t < 0) || (in_rel_t > in_t[1]))
+    ? 0
+    : ((out_rel_t < out_t[1])
+       ? (distance * out_rel_t / out_t[1])
+       : ((in_rel_t > 0)
+          ? (distance * (in_t[1] - in_rel_t) / in_t[1])
+          : distance));
+
+function slide_anim(base_t, distance) =
+    out_in_anim(base_t, anim_slide_out, anim_slide_in, distance);
+
+function height_anim(base_t, height1, height2) =
+    let (height_diff = height2 - height1,
+         rel_t = $t - base_t - anim_change_height[0])
+    (rel_t < 0)
+    ? 0
+    : ((rel_t < anim_change_height[1])
+       ? (height_diff * rel_t / anim_change_height[1])
+       : height_diff);
+
+function bolt_anim(base_t) =
+    out_in_anim(base_t,
+                anim_remove_bolts,
+                anim_replace_bolts,
+                bolt_length() * 1.25);
+
+module place_front_step_at(position, position2, slide_scale=1) {
     translate([0,
-               front_step_inset(front_step_heights[position]),
-               front_step_heights[position] - thickness])
+               slide_anim(anim_step_start, -front_step_depth() * 1.25)
+               * slide_scale
+               + height_anim(anim_step_start,
+                             front_step_inset(front_step_heights[position]),
+                             front_step_inset(front_step_heights[position2])),
+               front_step_heights[position] - thickness
+               + height_anim(anim_step_start,
+                             front_step_heights[position],
+                             front_step_heights[position2])])
         children();
 }
 
-module place_platform_at(position) {
+module place_platform_at(position, position2, slide_scale=1) {
     translate([0,
-               bottom_depth - platform_depth,
-               platform_heights[position] - thickness])
+               bottom_depth - platform_depth
+               + slide_anim(anim_platform_start, platform_depth * 1.25)
+               * slide_scale,
+               platform_heights[position] - thickness
+               + height_anim(anim_platform_start,
+                             platform_heights[position],
+                             platform_heights[position2])])
         children();
 }
 
@@ -541,40 +594,45 @@ module assembly_cross_members() {
     }
 }
 
-module assembly_front_step(position) {
-    place_front_step_at(position) {
+module assembly_front_step(position, position2=undef) {
+    def_pos2 = (position2 == undef) ? position : position2;
+    place_front_step_at(position, def_pos2)
         translate([thickness - recess_depth(), 0, 0])
-            front_step();
-        translate([0, 0, thickness / 2])
+        front_step();
+    place_front_step_at(position, def_pos2, slide_scale=0) {
+        translate([-bolt_anim(anim_step_start), 0, thickness / 2])
             rotate([0, 90, 0])
             front_step_bolts();
-        translate([width, 0, thickness / 2])
+        translate([width + bolt_anim(anim_step_start), 0, thickness / 2])
             rotate([0, -90, 0])
             front_step_bolts();
     }
 }
 
-module assembly_platform(position) {
-    place_platform_at(position) {
+module assembly_platform(position, position2=undef) {
+    def_pos2 = (position2 == undef) ? position : position2;
+    place_platform_at(position, def_pos2)
         translate([thickness - recess_depth(), 0, 0])
-            platform();
-        translate([0, 0, thickness / 2])
+        platform();
+    place_platform_at(position, def_pos2, slide_scale=0) {
+        translate([-bolt_anim(anim_platform_start), 0, thickness / 2])
             rotate([0, 90, 0])
             platform_bolts();
-        translate([width, 0, thickness / 2])
+        translate([width + bolt_anim(anim_platform_start), 0, thickness / 2])
             rotate([0, -90, 0])
             platform_bolts();
     }
 }
 
-module assembly(front_step_position=0, platform_position=1) {
+module assembly(front_step_position=0, platform_position=1,
+                front_step_position2=1, platform_position2=2) {
     assembly_side_panels();
 
     assembly_cross_members();
 
-    assembly_platform(platform_position);
+    assembly_platform(platform_position, platform_position2);
 
-    assembly_front_step(front_step_position);
+    assembly_front_step(front_step_position, front_step_position2);
 }
 
 assembly();
