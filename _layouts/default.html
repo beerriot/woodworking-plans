@@ -30,7 +30,8 @@
             <li class="pure-menu-heading menu-item-divided">
               <span>Projects</span>
             </li>
-            {% for navpage in site.pages %}
+            {% assign sorted_pages = site.pages  | sort: "title" %}
+            {% for navpage in sorted_pages %}
             {% if navpage.project %}
             <li class="pure-menu-item {% if page.url == navpage.url %}pure-menu-selected{% endif %}">
               <a href="{{navpage.url}}" class="pure-menu-link">{{navpage.title}}</a>
