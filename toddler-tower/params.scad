@@ -37,20 +37,24 @@ threaded_insert_depth = 1;
 // Diameter of the head of the bolts holding the platform and step.
 bolt_head_diameter = 1.25;
 
-side_color = "#ff9999";
-platform_color = "#ffff99";
-front_step_color = "#99ffff";
-narrow_support_color = "#9999ff";
-wide_support_color = "#ff99ff";
-safety_rail_color = "#99ff99";
-dado_color = "#cccccc";
-rabbet_color = "#999999";
+side_color = "#ffff99";
+dado_color = "#dddd77";
+rabbet_color = dado_color;
 groove_color = rabbet_color;
+
+platform_color = "#9999ff";
+front_step_color = "#99ffff";
+
+narrow_support_color = "#dd7799";
+wide_support_color = "#ffaaff";
+safety_rail_color = "#cc33dd";
+
 bolt_hole_color = "#999999";
-threaded_insert_color = "#000000";
+
+threaded_insert_color = "#999933";
 bolt_color = "#666600";
-screw_color = "#cccccc";
-finish_washer_color = "#ccccff";
+screw_color = "#009966";
+finish_washer_color = "#00ff99";
 
 finish_wood_color = "#ffffdd";
 finish_screw_color = "#cccc99";
