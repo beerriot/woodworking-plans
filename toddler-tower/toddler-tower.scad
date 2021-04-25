@@ -153,11 +153,11 @@ module front_step() {
 
         translate([bolt_hole_depth(), 0, thickness])
             rotate([0, -90, 0])
-            front_step_bolt_holes();
+            front_step_bolt_holes(bolt_hole_depth());
 
         translate([inter_recess_span(), 0, thickness])
             rotate([0, -90, 0])
-            front_step_bolt_holes();
+            front_step_bolt_holes(bolt_hole_depth());
     }
 }
 
@@ -172,15 +172,15 @@ module platform() {
 
         translate([bolt_hole_depth(), 0, thickness])
             rotate([0, -90, 0])
-            platform_bolt_holes();
+            platform_bolt_holes(bolt_hole_depth());
 
         translate([inter_recess_span(), 0, thickness])
             rotate([0, -90, 0])
-            platform_bolt_holes();
+            platform_bolt_holes(bolt_hole_depth());
     }
 }
 
-module bolt_hole(depth=(thickness + 0.02)) {
+module bolt_hole(depth) {
     color(bolt_hole_color)
         translate([-thickness / 2, 0, -0.01])
         cylinder(h=depth, d=threaded_insert_od);
@@ -193,8 +193,8 @@ module front_step_bolt_positions() {
         children();
 }
 
-module front_step_bolt_holes() {
-    front_step_bolt_positions() bolt_hole();
+module front_step_bolt_holes(depth) {
+    front_step_bolt_positions() bolt_hole(depth);
 }
 
 module front_step_bolts() {
@@ -208,8 +208,8 @@ module platform_bolt_positions() {
         children();
 }
 
-module platform_bolt_holes() {
-    platform_bolt_positions() bolt_hole();
+module platform_bolt_holes(depth) {
+    platform_bolt_positions() bolt_hole(depth);
 }
 
 module platform_bolts() {
@@ -355,7 +355,7 @@ module all_platform_dados() {
 module all_platform_bolt_holes() {
     at_platform_heights()
         translate([0, bottom_depth - platform_depth, 0])
-        platform_bolt_holes();
+        platform_bolt_holes(thickness + 0.02);
 }
 
 module at_front_step_heights() {
@@ -368,7 +368,7 @@ module all_front_step_dados() {
 }
 
 module all_front_step_bolt_holes() {
-    at_front_step_heights() front_step_bolt_holes();
+    at_front_step_heights() front_step_bolt_holes(thickness + 0.02);
 }
 
 module all_rabbets_and_grooves() {

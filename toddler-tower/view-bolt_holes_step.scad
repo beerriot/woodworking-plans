@@ -54,7 +54,7 @@ translate([-(front_step_depth() + sizeLabelHeight()),
                            -thickness / 2,
                            inter_recess_span() - bolt_hole_depth()])
                 rotate([0, 0, -90])
-                front_step_bolt_holes();
+                front_step_bolt_holes(bolt_hole_depth());
 
             translate([front_step_depth() - bolt_hole_step_front(),
                        0,

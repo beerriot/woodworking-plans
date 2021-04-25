@@ -81,7 +81,7 @@ translate([thirdAngleSize([bottom_depth, thickness, height],
                            -thickness / 2,
                            inter_recess_span() - bolt_hole_depth()])
                 rotate([0, 0, -90])
-                platform_bolt_holes();
+                platform_bolt_holes(bolt_hole_depth());
 
             translate([platform_depth - bolt_hole_platform_front(),
                        0,
