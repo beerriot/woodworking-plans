@@ -65,6 +65,8 @@ Ruby and Bundler already installed, running `bundler install` in this
 directory will install the tested version of Jekyll and other
 associated gems for you.
 
+You will need [ImageMagick](http://www.imagemagick.org) installed.
+
 You'll also need a scattering of other common command line utilities:
 make, grep, sed, most notably.
 
