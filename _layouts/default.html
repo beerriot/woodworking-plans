@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="/assets/pure-min.css" integrity="sha384-LTIDeidl25h2dPxrB2Ekgc9c7sEC3CWGM6HeFmuDNUjX76Ert4Z4IY714dhZHPLd">
     <link rel="stylesheet" href="/assets/grids-responsive-min.css">
     <link rel="stylesheet" href="/assets/pure-menu-style.css">
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Woodworking Plans{% if page.title %}: {{page.title}}{% endif %}" />
+    <meta property="og:image" content="{% if page.project %}{{ page.url | absolute_url }}view-assembly.png{% else %}{{ "shoe-rack/view-end-assembled.png" | absolute_url }}{% endif %}" />
+    <meta property="og:url" content="{{ page.url | absolute_url}}" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Woodworking Plans{% if page.title %}: {{page.title}}{% endif %}</title>
   </head>
