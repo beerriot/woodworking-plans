@@ -8,6 +8,6 @@ use <../common/labeling.scad>
 $vpr=[ 0.00, 0.00, 0.00 ];
 $vpt=[ 43.02, 54.01, 9.74 ];
 $vpf=22.50;
-$vpd=277.15;
+$vpd=285.15;
 
 narrowArms();

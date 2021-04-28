@@ -6,3 +6,11 @@ OPENSCAD=$(shell which openscad)
 ifeq (${OPENSCAD},)
      $(error "Command openscad not found. Set OPENSCAD in Makefile.paths, or set PATH to include openscad.")
 endif
+
+ifneq ("$(wildcard _config.yaml)", "")
+	JEKYLL_CONFIG=_config.yaml
+else
+	JEKYLL_CONFIG=../_config.yaml
+endif
+
+WEBSITE_URL=$(shell grep url ${JEKYLL_CONFIG} | cut -d " " -f 2)

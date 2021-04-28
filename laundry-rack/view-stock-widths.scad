@@ -1,5 +1,5 @@
 // End-on views of the stock to be used.
-//cmdline: --projection=o --imgsize=400,200
+//cmdline: --projection=o --imgsize=800,400
 include <../common/echo-camera-arg.scad>
 
 use <../common/labeling.scad>

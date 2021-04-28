@@ -15,6 +15,10 @@ DEPS_DIR=deps/
 DEPS_PARAMS_SCAD=${DEPS_DIR}params.scad
 JEKYLL_DATA_FILE=../_data/${PROJECT_NAME}.yaml
 
+ifneq ("${PROJECT_NAME}", "help")
+	WATERMARK=-fill "\#bbbbbb" -pointsize 20 -draw "gravity SouthEast text 10,10 '${WEBSITE_URL}/${PROJECT_NAME}'" -set Source "${WEBSITE_URL}/${PROJECT_NAME}"
+endif
+
 .PHONY: all make_directories
 all: make_directories ${TARGETS_PNG} ${TARGETS_GIF} ${JEKYLL_DATA_FILE}
 
@@ -24,12 +28,14 @@ make_directories:
 
 %.png: %.scad
 	${OPENSCAD} --hardwarnings -m make -o $@ -d ${DEPS_DIR}$(@F).deps --colorscheme Nature ${EXTRA_OPTS} ${CAMERA_OPT} $<
+	mogrify ${WATERMARK} $@
 
 %.gif: %.scad
 	${OPENSCAD} --hardwarnings -m make -o $(subst .scad,.png,$<) -d ${DEPS_DIR}$(@F).deps --colorscheme Nature ${EXTRA_OPTS} ${CAMERA_OPT} $<
 	sed -i '' -e 's/^anim-.*png/$(@F)/' ${DEPS_DIR}$(@F).deps
-	convert -delay 10 $(subst .scad,,$<)*.png half-$@
-	convert half-$@ -loop 0 -coalesce -duplicate 1,-2-1 $@
+	convert -delay 10 $(subst .scad,,$<)*.png \
+		-loop 0 -coalesce -duplicate 1,-2-1 \
+		${WATERMARK} $@
 
 %.png %.gif: EXTRA_OPTS=$(shell grep "//cmdline:" $< | sed -e "s,//cmdline:,,g")
 %.png %.gif: CAMERA_OPT=$(shell ${OPENSCAD} --export-format echo -o - $< | grep "camera" | sed -e 's/.*"\(.*\)"/\1/')
