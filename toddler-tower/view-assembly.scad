@@ -1,9 +1,9 @@
-//cmdline: --imgsize=2048,2048
+//cmdline: --imgsize=2048,1536
 include <../common/echo-camera-arg.scad>
 
 use <toddler-tower.scad>
 
-$vpt = [ 24.34, 38.87, 36.31 ];
+$vpt = [ 16.55, 32.24, 36.31 ];
 $vpr = [ 57.80, 0.00, 40.40 ];
 $vpd = 321.82;
 
