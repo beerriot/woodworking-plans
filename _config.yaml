@@ -1,2 +1,2 @@
-exclude: ["Makefile*", "LICENSE", "README*.md", "*.scad", "common/*", "*/Makefile", "*/deps", "*/anim-*.png", "*/half-*.gif"]
+exclude: ["Makefile*", "LICENSE", "README*.md", "*.scad", "common/*", "*/Makefile", "*/deps", "*/anim-*.png"]
 url: http://woodworking-plans.beerriot.com
