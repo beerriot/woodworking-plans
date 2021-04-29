@@ -324,19 +324,12 @@ module handhold_cutout_circles() {
         cutout_end();
 }
 
-// The full handhold cut. To facilitate step-by-step diagrams, just
-// the circles, and not their connection, will be created if
-// `connect_circles` is `false`. (The view is simpler if it can call
-// `all_handholds` just like the `right_side` module, instead of
-// trying to call handhold_cutout_circles itself.)
+// The full handhold cut.
 //
 // Origin: center of "upper" cutout radius.
 // Orientation: cutout extends down -X.
-module handhold_cutout(connect_circles=true) {
-    if (connect_circles)
-        wood_diagram_color(side_color) hull() handhold_cutout_circles();
-    else
-        handhold_cutout_circles();
+module handhold_cutout() {
+    wood_diagram_color(side_color) hull() handhold_cutout_circles();
 }
 
 // Four cutout_ends spaced for the fourth corners of the window above
@@ -490,22 +483,38 @@ module all_rabbets_and_grooves() {
         safety_rail_groove();
 }
 
-// Creates nodes for all handhold cutouts. Only end circles (and not
-// the connection between them) are included if `connect_cirlces` is
-// false.
-module all_handholds(connect_circles=true) {
-    // handholds for climbing
+function upper_handhold_position() =
+    [height - handhold_size[1],
+     bottom_depth - top_handhold_offset(),
+     0];
+module upper_handhold_position() {
+    translate(upper_handhold_position()) children();
+}
+
+module upper_handhold_rotation() {
+    rotate([0, 0, 90]) children();
+}
+
+module climbing_handhold_positions() {
     for (h = handhold_heights)
         translate([h, inset_for_handhold(h), 0])
-            rotate([0, 0, front_angle()])
-            handhold_cutout(connect_circles);
+            children();
+}
 
-    // one more handhold at the top
-    translate([height - handhold_size[1],
-               bottom_depth - top_handhold_offset(),
-               0])
-        rotate([0, 0, 90])
-        handhold_cutout(connect_circles);
+module climbing_handhold_rotation() {
+    rotate([0, 0, front_angle()]) children();
+}
+
+// Creates nodes for all handhold cutouts.
+module all_handholds() {
+    climbing_handhold_positions()
+        climbing_handhold_rotation()
+        handhold_cutout();
+
+    // one more along the top edge
+    upper_handhold_position()
+        upper_handhold_rotation()
+        handhold_cutout();
 }
 
 function upper_window_position() =
