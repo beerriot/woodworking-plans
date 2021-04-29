@@ -508,11 +508,14 @@ module all_handholds(connect_circles=true) {
         handhold_cutout(connect_circles);
 }
 
+function upper_window_position() =
+    [height - upper_window_inset(),
+     bottom_depth - upper_window_inset(),
+     0];
+
 // Move the upper_window_cutout into position.
 module upper_window_position() {
-    translate([height - upper_window_inset(),
-               bottom_depth - upper_window_inset(),
-               0])
+    translate(upper_window_position())
         children();
 }
 
