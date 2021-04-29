@@ -64,7 +64,7 @@ translate([0, 0, thickness]) {
                0]) {
         viewLabel() sizeLabel(lower_window_height(), rotation=-90, over=true);
         translate([lower_window_height(), 0, 0])
-            viewLabel() sizeLabel(front_step_depth() + handhold_size[1] / 2);
+            viewLabel() sizeLabel(front_step_depth() + cutout_radius());
     }
 
     translate([0,
@@ -73,8 +73,9 @@ translate([0, 0, thickness]) {
                0]) {
         viewLabel() sizeLabel(lower_window_height(), rotation=-90, over=true);
         translate([lower_window_height(), 0, 0])
-            viewLabel() sizeLabel(front_step_depth() * 2
-                                  + handhold_size[1] / 2,
+            viewLabel() sizeLabel(front_step_depth()
+                                  + lower_window_top_depth()
+                                  + cutout_radius(),
                                   over=true);
     }
 
