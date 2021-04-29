@@ -361,18 +361,11 @@ module upper_window_cutout_circles() {
             cutout_end();
 }
 
-// The full upper window cutout. To facilitate step-by-step diagrams,
-// just the circles, and not their connection, will be created if
-// `connect_circles` is `false`. (The view is simpler if it can call
-// `all_windows` just like the `right_side` module, instead of trying
-// to call upper_window_cutout_circles itself.)
+// The full upper window cutout.
 //
 // Origin and orientation ar the same as upper_window_cutout_circles.
-module upper_window_cutout(connect_circles=true) {
-    if (connect_circles)
-        wood_diagram_color(side_color) hull() upper_window_cutout_circles();
-    else
-        upper_window_cutout_circles();
+module upper_window_cutout() {
+    wood_diagram_color(side_color) hull() upper_window_cutout_circles();
 }
 
 // The circles at the upper corners of the window below the
@@ -398,37 +391,29 @@ module lower_window_cutout_circles() {
         cutout_end();
 }
 
-// The full lower window cutout. To facilitate step-by-step diagrams,
-// just the circles, and not their connection, will be created if
-// `connect_circles` is `false`. (The view is simpler if it can call
-// `all_windows` just like the `right_side` module, instead of trying
-// to call lower_window_cutout_circles itself.)
+// The full lower window cutout.
 //
-// Origin and orientation ar the same as lower_window_cutout_circles.
-module lower_window_cutout(connect_circles=true) {
-    if (connect_circles) {
-        wood_diagram_color(side_color) hull() {
-            // lower non-counter-side edge is origin
-            rotate([0, 0, front_angle()])
-                // translated left to avoid rendering conflicts
-                translate([-0.5, 0, 0])
-                sheet_stock(1, 1, [0,0,2]);
+// Origin and orientation are the same as lower_window_cutout_circles.
+module lower_window_cutout() {
+    wood_diagram_color(side_color) hull() {
+        // lower non-counter-side edge is origin
+        rotate([0, 0, front_angle()])
+            // translated left to avoid rendering conflicts
+            translate([-0.5, 0, 0])
+            sheet_stock(1, 1, [0,0,2]);
 
-            lower_window_cutout_circles();
-
-            // lower counter-side edge
-            translate([0, lower_window_bottom_depth(), 0])
-                // the numerator here is the amount the bottom corner
-                // of the window sticks past the top corner
-                rotate([0, 0, -atan((lower_window_bottom_depth()
-                                     - lower_window_top_depth()
-                                     - lower_window_upper_corner_offset())
-                                    / lower_window_height())])
-                translate([-0.5, -1, 0])
-                sheet_stock(1, 1, [0,0,2]);
-        }
-    } else {
         lower_window_cutout_circles();
+
+        // lower counter-side edge
+        translate([0, lower_window_bottom_depth(), 0])
+            // the numerator here is the amount the bottom corner
+            // of the window sticks past the top corner
+            rotate([0, 0, -atan((lower_window_bottom_depth()
+                                 - lower_window_top_depth()
+                                 - lower_window_upper_corner_offset())
+                                / lower_window_height())])
+            translate([-0.5, -1, 0])
+            sheet_stock(1, 1, [0,0,2]);
     }
 }
 
@@ -523,17 +508,24 @@ module all_handholds(connect_circles=true) {
         handhold_cutout(connect_circles);
 }
 
-// Creates nodes for all window cutouts. Only corner circles (and not
-// the connections between them) are included if `connect_circles` is
-// false.
-module all_windows(connect_circles=true) {
+// Move the upper_window_cutout into position.
+module upper_window_position() {
     translate([height - upper_window_inset(),
                bottom_depth - upper_window_inset(),
                0])
-        upper_window_cutout(connect_circles);
+        children();
+}
 
+// Move the lower_window_cutout into position.
+module lower_window_position() {
     translate([0, lower_window_inset(), 0])
-        lower_window_cutout(connect_circles);
+        children();
+}
+
+// Creates nodes for all window cutouts.
+module all_windows() {
+    upper_window_position() upper_window_cutout();
+    lower_window_position() lower_window_cutout();
 }
 
 // Construct the right side panel.

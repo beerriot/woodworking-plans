@@ -17,23 +17,24 @@ module view_windows_circles() {
     difference() {
         view_handholds_flats();
 
-        all_windows(connect_circles=false);
+        upper_window_position() upper_window_cutout_circles();
+        lower_window_position() lower_window_cutout_circles();
     }
 }
 
 showBothSides() view_windows_circles();
 
 // upper window
-translate([height, bottom_depth, thickness]) {
-    translate([0, -upper_window_inset(), 0])
-        viewLabel() sizeLabel(upper_window_inset(), rotation=90, over=true);
-    translate([-upper_window_inset(), 0, 0])
-        viewLabel() sizeLabel(upper_window_inset(), over=true);
+translate([0, 0, thickness]) upper_window_position() {
+    viewLabel() sizeLabel(upper_window_inset(), rotation=-90);
+    viewLabel() sizeLabel(upper_window_inset(), rotation=180);
 
-    translate([0, -(upper_window_inset() + upper_window_top_depth()), 0])
-        viewLabel() sizeLabel(upper_window_inset(), rotation=90, over=true);
-    translate([-upper_window_inset(), 0, 0])
-        viewLabel() sizeLabel(upper_window_inset() + upper_window_top_depth());
+    translate([0, -upper_window_top_depth(), 0]) {
+        viewLabel() sizeLabel(upper_window_inset(), rotation=-90);
+        viewLabel() sizeLabel(upper_window_inset() + upper_window_top_depth(),
+                              rotation=180,
+                              over=true);
+    }
 }
 
 leftOrigin(thickness) {
@@ -58,19 +59,13 @@ leftOrigin(thickness) {
 }
 
 // bottom window
-translate([0, 0, thickness]) {
-    translate([0,
-               lower_window_inset() + lower_window_upper_corner_offset(),
-               0]) {
-        viewLabel() sizeLabel(lower_window_height(), rotation=-90, over=true);
-        translate([lower_window_height(), 0, 0])
-            viewLabel() sizeLabel(front_step_depth() + cutout_radius());
-    }
+translate([0, lower_window_upper_corner_offset(), thickness])
+lower_window_position() {
+    viewLabel() sizeLabel(lower_window_height(), rotation=-90, over=true);
+    translate([lower_window_height(), 0, 0])
+        viewLabel() sizeLabel(front_step_depth() + cutout_radius());
 
-    translate([0,
-               lower_window_inset() + lower_window_upper_corner_offset()
-               + lower_window_top_depth(),
-               0]) {
+    translate([0, lower_window_top_depth(), 0]) {
         viewLabel() sizeLabel(lower_window_height(), rotation=-90, over=true);
         translate([lower_window_height(), 0, 0])
             viewLabel() sizeLabel(front_step_depth()
