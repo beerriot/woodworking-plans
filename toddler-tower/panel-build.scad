@@ -24,8 +24,9 @@ module viewLabel() {
 // Move everything to point relative to the bottom non-cabinet-side
 // corner of the left panel (which is at the bottom left of the
 // diagrams).
+function leftOrigin() = [0, bottom_depth * 2 + center_space, 0];
 module leftOrigin(zoffset=0) {
-    translate([0, bottom_depth * 2 + center_space, zoffset])
+    translate(leftOrigin() + [0, 0, zoffset])
         children();
 }
 

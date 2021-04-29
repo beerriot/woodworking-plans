@@ -38,9 +38,9 @@ translate(upper_window_position() + [0, 0, thickness]) {
     }
 }
 
-leftOrigin(thickness)
-translate(scale([1,-1,1], upper_window_position())
-          - [upper_window_height(), 0, 0]) {
+translate(leftOrigin()
+          + scale([1,-1,1], upper_window_position())
+          + [-upper_window_height(), 0, thickness]) {
     viewLabel() sizeLabel(upper_window_inset() + upper_window_height(),
                           rotation=-90, over=true);
     viewLabel() sizeLabel(upper_window_inset(), over=true);
