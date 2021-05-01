@@ -7,4 +7,4 @@ $vpt = [ 16.55, 32.24, 36.31 ];
 $vpr = [ 57.80, 0.00, 40.40 ];
 $vpd = 321.82;
 
-assembly(use_finish_colors=true);
+assembly($use_finish_colors=true);

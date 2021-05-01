@@ -916,14 +916,14 @@ module assembly_platform(position) {
     }
 }
 
-// The whole assembly. Set `use_finish_colors` to true to color all
-// wood one (wood-like) color, bolts a second color, and screws and
-// washers a third - as opposed to the rainbow colors used to
-// differentiate the parts in construction descriptions.
-module assembly(front_step_position=0, platform_position=1,
-                use_finish_colors=false) {
-    $use_finish_colors = use_finish_colors;
-
+// The whole assembly.
+//
+// Default colors are a bright rainbow to make the mapping from names
+// in the key to assembly position clearer. Set the special parameter
+// `$use_finish_colors` to true to color all wood one (wood-like)
+// color, bolts a second (bolt-like) color, and screws and washers a
+// third (metallic) color.
+module assembly(front_step_position=0, platform_position=1) {
     assembly_side_panels();
 
     assembly_cross_members();
