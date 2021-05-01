@@ -780,131 +780,17 @@ module safety_rail() {
 
 // ASSEMBLY
 
-// Animation timeline:
-// major sections [start, end]
-anim_platform_start = 0;
-anim_step_start = 0.5;
-
-// subsections [relative start, duration]
-anim_remove_bolts = [0, 0.1];
-anim_slide_out = [0.1, 0.1];
-anim_change_height = [0.2, 0.1];
-anim_slide_in = [0.3, 0.1];
-anim_replace_bolts = [0.4, 0.1];
-
-// Compute the amount of `distance` that should be applied based on
-// the current time. This animation cycles: wait, out, wait, in.
-//
-// Starting at `$t = base_t+out_t[0]`, larger percentages of
-// `distance` will be returned until 100% of `distance` is returned at
-// `$t = base_t+out_t[0]+out_t[1]`.
-//
-// 100% of distance will continue to be returned until `$t =
-// base_t+in_t[0]`, at which point smaller percentages will be
-// returned, until 0 is returned at `$t = base_t+in_t[0]+in_t[1]`.
-function out_in_anim(base_t, out_t, in_t, distance) =
-    let (out_rel_t = $t - base_t - out_t[0],
-         in_rel_t = $t - base_t - in_t[0])
-    ((out_rel_t < 0) || (in_rel_t > in_t[1]))
-    ? 0                                    // before out, or after in
-    : ((out_rel_t < out_t[1])
-       ? (distance * out_rel_t / out_t[1]) // moving out
-       : ((in_rel_t > 0)
-          ? (distance * (in_t[1] - in_rel_t) / in_t[1])  // moving in
-          : distance));               // moved out, not yet moving in
-
-// Do an out-in animation based on the slide_out and slide_in times.
-function slide_anim(base_t, distance) =
-    out_in_anim(base_t, anim_slide_out, anim_slide_in, distance);
-
-// Do an out-in animation based on the remove_bolt and replace_bolt
-// times.
-function bolt_anim(base_t) =
-    out_in_anim(base_t,
-                anim_remove_bolts,
-                anim_replace_bolts,
-                bolt_length() * 1.25);
-
-// Compute the amount of distance between `height1` and `height2` that
-// should be applied, based on the current time. This animation is
-// does not cycle: wait, move, wait. It is also based only on
-// `anim_change_height`.
-//
-// Abbreviating: `ach` == `anim_change_height`
-//               `diff` = `height2 - height1`
-//
-// Starting at `$t = base_t+ach[0]`, larger percentages of `diff` are
-// returned, until 100% is returned at `$t = base_t+ach[0]+ach[1]`.
-function height_anim(base_t, height1, height2) =
-    let (height_diff = height2 - height1,
-         rel_t = $t - base_t - anim_change_height[0])
-    (rel_t < 0)
-    ? 0                                 // before anim_change_height
-    : ((rel_t < anim_change_height[1])
-       ? (height_diff * rel_t / anim_change_height[1]) // during ach
-       : height_diff);                   // after anim_change_height
-
-// Compute where to place the front step, based on the current
-// time. It will be at `position` from `$t = 0` until `$t =
-// anim_step_start[0]+anim_slide_out[0]`, when it will begin moving
-// until it reaches its final destination at `$t =
-// anim_step_start[0]+anim_slide_in[0]+anim_slide_in[1]`, when it will
-// be at `position2`.
-//
-// The `slide_scale` parameter allows this function to compute
-// positions for the bolts as well. They do not move back and forth
-// with the step (except to realign with the front angle slope), but
-// they do move up and down. Setting `slide_scale` to 0 cancels the
-// back and forth motion.
+// Compute where to place the front step.
 module place_front_step_at(position, position2, slide_scale=1) {
-    translate([0,
-
-               // basic out-in
-               slide_anim(anim_step_start, -front_step_depth() * 1.25)
-               * slide_scale
-               // plus the change in offset, due to the front angle.
-               // note that this component is not canceled by
-               // slide_scale, because the bolts do have to move to
-               // the new step offset
-               + height_anim(anim_step_start,
-                             front_step_inset(front_step_heights[position]),
-                             front_step_inset(front_step_heights[position2])),
-
-               // base height
-               front_step_heights[position] - thickness
-               // plus change
-               + height_anim(anim_step_start,
-                             front_step_heights[position],
-                             front_step_heights[position2])])
+    translate([0, 0, front_step_heights[position] - thickness])
         children();
 }
 
-// Compute where to place the platform, based on the current time. It
-// will be at `position` from `$t = 0` until `$t =
-// anim_platform_start[0]+anim_slide_out[0]`, when it will begin
-// moving until it reaches its final destination at `$t =
-// anim_platform_start[0]+anim_slide_in[0]+anim_slide_in[1]`, when it
-// will be at `position2`.
-//
-// The `slide_scale` parameter allows this function to compute
-// positions for the bolts as well. They do not move back and forth
-// with the platform, but they do move up and down. Setting
-// `slide_scale` to 0 cancels the back and forth motion.
-module place_platform_at(position, position2, slide_scale=1) {
+// Compute where to place the platform.
+module place_platform_at(position) {
     translate([0,
-
-               // base depth
-               bottom_depth - platform_depth
-               // plus the animation distance
-               + slide_anim(anim_platform_start, platform_depth * 1.25)
-               * slide_scale,
-
-               // base height
-               platform_heights[position] - thickness
-               // plus the animation difference
-               + height_anim(anim_platform_start,
-                             platform_heights[position],
-                             platform_heights[position2])])
+               bottom_depth - platform_depth,
+               platform_heights[position] - thickness])
         children();
 }
 
@@ -1001,51 +887,40 @@ module assembly_cross_members() {
 }
 
 // The front step, at its correct position, with bolts in place.
-module assembly_front_step(position, position2=undef) {
-    // Attempting to hide some of the animation mess. If animation
-    // isn't relevant to the view, omit position2, and this just sets
-    // it equal to position.
-    def_pos2 = (position2 == undef) ? position : position2;
-    place_front_step_at(position, def_pos2)
+module assembly_front_step(position) {
+    place_front_step_at(position) {
         translate([thickness - recess_depth(), 0, 0])
         front_step();
-    place_front_step_at(position, def_pos2, slide_scale=0) {
-        translate([-bolt_anim(anim_step_start), 0, thickness / 2])
+
+        translate([0, 0, thickness / 2])
             rotate([0, 90, 0])
             front_step_bolts();
-        translate([width + bolt_anim(anim_step_start), 0, thickness / 2])
+        translate([width, 0, thickness / 2])
             rotate([0, -90, 0])
             front_step_bolts();
     }
 }
 
 // The platform, at its correct position, with bolts in place.
-module assembly_platform(position, position2=undef) {
-    // Attempting to hide some of the animation mess. If animation
-    // isn't relevant to the view, omit position2, and this just sets
-    // it equal to position.
-    def_pos2 = (position2 == undef) ? position : position2;
-    place_platform_at(position, def_pos2)
+module assembly_platform(position) {
+    place_platform_at(position) {
         translate([thickness - recess_depth(), 0, 0])
-        platform();
-    place_platform_at(position, def_pos2, slide_scale=0) {
-        translate([-bolt_anim(anim_platform_start), 0, thickness / 2])
+            platform();
+
+        translate([0, 0, thickness / 2])
             rotate([0, 90, 0])
             platform_bolts();
-        translate([width + bolt_anim(anim_platform_start), 0, thickness / 2])
+        translate([width, 0, thickness / 2])
             rotate([0, -90, 0])
             platform_bolts();
     }
 }
 
-// The whole assembly. Step and platform will be placed in "position",
-// and animate to "position2" if animation is enabled. Set
-// `use_finish_colors` to true to color all wood one (wood-like)
-// color, bolts a second color, and screws and washers a third - as
-// opposed to the rainbow colors used to differentiate the parts in
-// construction descriptions.
+// The whole assembly. Set `use_finish_colors` to true to color all
+// wood one (wood-like) color, bolts a second color, and screws and
+// washers a third - as opposed to the rainbow colors used to
+// differentiate the parts in construction descriptions.
 module assembly(front_step_position=0, platform_position=1,
-                front_step_position2=1, platform_position2=2,
                 use_finish_colors=false) {
     $use_finish_colors = use_finish_colors;
 
@@ -1053,9 +928,9 @@ module assembly(front_step_position=0, platform_position=1,
 
     assembly_cross_members();
 
-    assembly_platform(platform_position, platform_position2);
+    assembly_platform(platform_position);
 
-    assembly_front_step(front_step_position, front_step_position2);
+    assembly_front_step(front_step_position);
 }
 
 // Put an assembly in the scene. All views should `use` this SCAD, so
