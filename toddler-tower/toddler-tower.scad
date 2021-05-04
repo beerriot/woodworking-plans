@@ -189,7 +189,7 @@ module screw_with_washer() {
 // Orientation: Length along the +X axis, Width along +Y, thickness
 // above the Z=0 plane.
 module sheet_stock(length, width, errs=[0,0,0]) {
-    squareStock(length, width, thickness, errs);
+    squareStock([length, width, thickness], errs);
 }
 
 // Side Panel.

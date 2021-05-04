@@ -72,11 +72,11 @@ module shelfSupportColor() color(shelfSupportColor) children();
 
 // default errs must be specified, or the call to squareStock will pass `undefined`, overriding the default there
 module endStock(length, errs=[0,0,0]) {
-    squareStock(length, endStockThickness, endStockWidth, errs);
+    squareStock([length, endStockThickness, endStockWidth], errs);
 }
 
 module slatStock(length, errs=[0,0,0]) {
-    squareStock(length, slatStockThickness, slatStockWidth, errs);
+    squareStock([length, slatStockThickness, slatStockWidth], errs);
 }
 
 // `render()` is necessary to prevent z-index conflicts

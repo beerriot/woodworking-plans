@@ -98,7 +98,7 @@ module dowel(length, errs=[0,0])
 
 module armLegStock(length, errs=[0,0,0])
     translate([0, 0, -squareStockWidth / 2])
-    squareStock(length, squareStockThickness, squareStockWidth, errs);
+    squareStock([length, squareStockThickness, squareStockWidth], errs);
 
 module longDowel() longDowelColor() dowel(longDowelLength);
 

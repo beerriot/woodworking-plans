@@ -34,3 +34,7 @@ function rotate(axes, vec) =
 // Scale vec3 `vector` by the given amount of each component of axes.
 function scale(axes, vec) =
     vec * [[axes.x, 0, 0], [0, axes.y, 0], [0, 0, axes.z]];
+
+// Absolute value of each element in the vector.
+function vabs(vec) =
+    [ for (e = vec) abs(e) ];
