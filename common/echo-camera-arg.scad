@@ -1,6 +1,6 @@
 // This file supports the build process by converting a files $vp*
 // settings to a --camera argument to be used at the commandline (see
-// Makefile.common and choose_camera.zsh).
+// CAMERA_OPT in Makefile.common).
 
 // Two ways to used this file:
 //
