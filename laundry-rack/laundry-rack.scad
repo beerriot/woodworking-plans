@@ -27,7 +27,7 @@ function legLength() =
     // hypotenuse of desired height plus half the width to hold the dowel
     (hangingHeight / heightToLegRatio()) + (squareStockWidth / 2);
 
-// Positions of each dowel hole in the leg, relative to the floor end    
+// Positions of each dowel hole in the leg, relative to the floor end
 function topLegDowelDistance() = legLength() - squareStockWidth / 2;
 function middleLegDowelDistance() =
     (topLegDowelDistance() / (upperRatio + lowerRatio)) * lowerRatio;
@@ -52,12 +52,12 @@ function armHangDowelSpan() = armPivotDowelSpan() / (innerDowels + 1);
 function armLength() =
     // distances between dowel centers, plus the overhang at each end
     armHangDowelSpan() * (innerDowels + outerDowels + 1) + squareStockWidth;
-        
+
 // Position of each whole in each arm, relative to the end.
 // They're symmetrical, so which end doesn't matter.
 function armDowelHoles() =
     [for (i = [0 : (innerDowels + outerDowels + 1)])
-        (squareStockWidth / 2) + i * armHangDowelSpan()];
+            (squareStockWidth / 2) + i * armHangDowelSpan()];
 
 // Defining this may seem extraneous, but it makes the value available for
 // HTML insertion.
@@ -68,7 +68,7 @@ function armDowelHoleCount() = len(armDowelHoles());
 // the arm assembly into position.
 function endOfLeftArm() =
     legShift() - squareStockThickness -
-        (armHangDowelSpan() * (len(armDowelHoles()) - 1));
+    (armHangDowelSpan() * (len(armDowelHoles()) - 1));
 
 // 5: the four pivots, plus the foot of the wide legs
 function longDowelCount() = 5 + innerDowels + outerDowels;
@@ -76,7 +76,7 @@ function nonPivotLongDowelCount() = longDowelCount() - 4;
 
 // Counted for just one arm.
 function nonPivotHangingDowelCount() = innerDowels + outerDowels;
-    
+
 // 1: the foot of the narrow legs
 function shortDowelCount() = 1 + innerDowels + outerDowels;
 
@@ -85,57 +85,87 @@ function hookWireRadius() = paracordRadius() / 2;
 function hookShaftLength() = dowelDiameter * 2;
 
 // COLORS
-module longDowelColor() color(longDowelColor) children();
-module shortDowelColor() color(shortDowelColor) children();
-module legColor() color(legColor) children();
-module armColor() color(armColor) children();
-module paracordColor() color(paracordColor) children();
-module hookColor() color(hookColor) children();
+
+module longDowelColor() {
+    color(longDowelColor) children();
+}
+module shortDowelColor() {
+    color(shortDowelColor) children();
+}
+module legColor() {
+    color(legColor) children();
+}
+module armColor() {
+    color(armColor) children();
+}
+module paracordColor() {
+    color(paracordColor) children();
+}
+module hookColor() {
+    color(hookColor) children();
+}
 
 // COMPONENTS
-module dowel(length, errs=[0,0])
+
+module dowel(length, errs=[0,0]) {
     rotate([0, 0, 90]) roundStock(length, dowelRadius(), errs);
+}
 
-module armLegStock(length, errs=[0,0,0])
+module armLegStock(length, errs=[0,0,0]) {
     translate([0, 0, -squareStockWidth / 2])
-    squareStock([length, squareStockThickness, squareStockWidth], errs);
+        squareStock([length, squareStockThickness, squareStockWidth], errs);
+}
 
-module longDowel() longDowelColor() dowel(longDowelLength);
-
-module shortDowel() shortDowelColor() dowel(shortDowelLength());
+module longDowel() {
+    longDowelColor() dowel(longDowelLength);
+}
+module shortDowel() {
+    shortDowelColor() dowel(shortDowelLength());
+}
 
 // subtract this from arm & leg
-module dowelHole(distance)
+module dowelHole(distance) {
     translate([distance, 0]) dowel(squareStockThickness, [2, 0]);
-
-module legBlank() legColor() armLegStock(legLength());
-
-module leg() difference() {
-    legBlank();
-    dowelHole(bottomLegDowelDistance());
-    dowelHole(middleLegDowelDistance());
-    dowelHole(topLegDowelDistance());
-    
-    rotate([0, legAngle, 0]) translate([0, 0, -squareStockWidth / 2])
-        armLegStock(squareStockWidth, [-1, 2, 0]);
 }
 
-module armBlank() armColor() armLegStock(armLength());
-
-module arm() armColor() difference() {
-    armBlank();
-    for (i = armDowelHoles()) dowelHole(i);
+module legBlank() {
+    legColor() armLegStock(legLength());
 }
-    
-module paracordLine(length)
-    paracordColor() cylinder(length, r=paracordRadius());
 
-module paracordLoop()
+module leg() {
+    difference() {
+        legBlank();
+        dowelHole(bottomLegDowelDistance());
+        dowelHole(middleLegDowelDistance());
+        dowelHole(topLegDowelDistance());
+
+        rotate([0, legAngle, 0]) translate([0, 0, -squareStockWidth / 2])
+            armLegStock(squareStockWidth, [-1, 2, 0]);
+    }
+}
+
+module armBlank() {
+    armColor() armLegStock(armLength());
+}
+
+module arm() {
+    armColor() difference() {
+        armBlank();
+        for (i = armDowelHoles()) dowelHole(i);
+    }
+}
+
+module paracordLine(length) {
+     paracordColor() cylinder(length, r=paracordRadius());
+}
+
+module paracordLoop() {
     paracordColor()
-    rotate([90, 0, 0])
-    rotate_extrude(convexity=10)
-    translate([dowelRadius() + paracordRadius(), 0])
-    circle(paracordRadius());
+        rotate([90, 0, 0])
+        rotate_extrude(convexity=10)
+        translate([dowelRadius() + paracordRadius(), 0])
+        circle(paracordRadius());
+}
 
 module hook() {
     hookLevel = -(paracordRadius() * 1.5 + dowelDiameter * 2);
@@ -160,7 +190,9 @@ module hook() {
 
 module lock() {
     // hooks are asymetric, so cord has to run to the side of the dowel
-    paracordAngle = atan((dowelRadius() + hookWireRadius())/pivotVerticalSpan());
+    paracordAngle =
+        atan((dowelRadius() + hookWireRadius())/pivotVerticalSpan());
+
     // length of the unit, given the swing out of the way
     hypLength = pivotVerticalSpan() / cos(paracordAngle);
 
@@ -196,8 +228,9 @@ module wideArms(includeTop=true, includePivot=true) {
     if (includeTop) arm();
     translate([0, longDowelLength - squareStockThickness]) arm();
     for (i = [0 : len(armDowelHoles()) - 2])
-       if (i != outerDowels || includePivot)
-           translate([armDowelHoles()[i], 0]) longDowel();
+        if (i != outerDowels || includePivot)
+            translate([armDowelHoles()[i], 0])
+                longDowel();
 }
 
 module legs(includeInnerTop=true, includeOuterTop=true) {
@@ -207,10 +240,12 @@ module legs(includeInnerTop=true, includeOuterTop=true) {
         translate([middleLegDowelDistance(), 0]) longDowel();
         translate([0, longDowelLength - squareStockThickness]) leg();
     }
-        
+
     translate([legShift() * 2, 0]) rotate([0, legAngle, 0]) {
-        if (includeInnerTop) translate([0, squareStockThickness])
-            mirror([1, 0, 0]) leg();
+        if (includeInnerTop)
+            translate([0, squareStockThickness])
+                mirror([1, 0, 0])
+                leg();
         translate([0, shortDowelLength()]) mirror([1, 0, 0]) leg();
         translate([-bottomLegDowelDistance(), squareStockThickness])
             shortDowel();
@@ -222,18 +257,18 @@ module assembly() {
 
     translate([endOfLeftArm(), 0, hangingHeight]) {
         wideArms();
-                
+
         translate([armDowelHoles()[len(armDowelHoles())-1], 0]) {
             translate([0, squareStockThickness * 2 + paracordRadius()])
                 lock();
             translate([0,
                        longDowelLength - squareStockThickness * 2 -
-                           paracordRadius()])
-            lock();
+                       paracordRadius()])
+                lock();
         }
     }
     translate([legShift() - dowelInset(), 0, hangingHeight])
         narrowArms();
 }
-    
+
 assembly();
