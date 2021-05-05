@@ -27,7 +27,7 @@ module view_handholds_circles() {
     }
 }
 
-showBothSides() view_handholds_circles();
+show_both_sides() view_handholds_circles();
 
 // climbing handholds
 inset_for_lowest_handhold = inset_for_handhold(handhold_heights[0]);
@@ -36,28 +36,28 @@ for (i = [0 : len(handhold_heights) - 1]) {
                max(size_label_height() * i + inset_for_lowest_handhold,
                    inset_for_handhold(handhold_heights[i])),
                thickness])
-        viewLabel() size_label(handhold_heights[i], rotation=-90, over=true);
+        view_label() size_label(handhold_heights[i], rotation=-90, over=true);
  }
 translate([handhold_heights[0], inset_for_lowest_handhold, thickness])
-viewLabel() size_label(handhold_size[1], rotation=-front_angle());
+view_label() size_label(handhold_size[1], rotation=-front_angle());
 
 circle_center_distance = handhold_size[0] - handhold_size[1];
 
 // standing handhold
 translate(upper_handhold_position() + [0, 0, thickness]) {
-    viewLabel() size_label(top_handhold_offset(), rotation=180, over=true);
-    viewLabel() size_label(circle_center_distance);
+    view_label() size_label(top_handhold_offset(), rotation=180, over=true);
+    view_label() size_label(circle_center_distance);
     translate([0, -circle_center_distance, 0])
-        viewLabel() size_label(handhold_size[1], rotation=-90);
+        view_label() size_label(handhold_size[1], rotation=-90);
 }
 
-translate(leftOrigin()
+translate(left_origin()
           + [handhold_heights[0], -inset_for_lowest_handhold, thickness]) {
-    viewLabel() size_label(circle_center_distance,
+    view_label() size_label(circle_center_distance,
                           rotation=90 + front_angle());
     translate([-cos(front_angle()) * circle_center_distance,
                sin(front_angle()) * circle_center_distance
                + cutout_radius(),
                0])
-        viewLabel() size_label(handhold_size[1]);
+        view_label() size_label(handhold_size[1]);
 }

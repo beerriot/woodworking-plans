@@ -21,4 +21,4 @@ module view_handholds_flats() {
     }
 }
 
-showBothSides() view_handholds_flats();
+show_both_sides() view_handholds_flats();

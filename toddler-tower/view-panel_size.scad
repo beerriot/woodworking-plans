@@ -15,13 +15,13 @@ module view_panel_size() {
     side_panel_blank();
 }
 
-showBothSides() view_panel_size();
+show_both_sides() view_panel_size();
 
 translate([0, bottom_depth, 0]) {
-    viewLabel() size_label(bottom_depth);
-    viewLabel() size_label(height, over=true, rotation=-90);
+    view_label() size_label(bottom_depth);
+    view_label() size_label(height, over=true, rotation=-90);
 }
 
-leftOrigin() {
-    viewLabel() size_label(bottom_depth);
+left_origin() {
+    view_label() size_label(bottom_depth);
 }

@@ -21,10 +21,10 @@ module view_windows_flats() {
     }
 }
 
-showBothSides() view_windows_flats();
+show_both_sides() view_windows_flats();
 
 translate([0, lower_window_inset(), thickness])
-viewLabel() size_label(lower_window_inset());
+view_label() size_label(lower_window_inset());
 
 translate([0, bottom_depth, thickness])
-viewLabel() size_label(bottom_depth - lower_window_bottom_depth() - lower_window_inset());
+view_label() size_label(bottom_depth - lower_window_bottom_depth() - lower_window_inset());
