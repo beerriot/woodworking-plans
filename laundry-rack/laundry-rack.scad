@@ -108,12 +108,12 @@ module hookColor() {
 // COMPONENTS
 
 module dowel(length, errs=[0,0]) {
-    rotate([0, 0, 90]) roundStock(length, dowelRadius(), errs);
+    rotate([0, 0, 90]) round_stock(length, dowelRadius(), errs);
 }
 
 module armLegStock(length, errs=[0,0,0]) {
     translate([0, 0, -squareStockWidth / 2])
-        squareStock([length, squareStockThickness, squareStockWidth], errs);
+        square_stock([length, squareStockThickness, squareStockWidth], errs);
 }
 
 module longDowel() {

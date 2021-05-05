@@ -43,7 +43,7 @@ function err(vec) = $err * vec;
 //      (i.e. add err to each end)
 // Using errs prevents the need for +/-err to appear in object
 // creation code.
-module squareStock(size, errs=[0,0,0]) {
+module square_stock(size, errs=[0,0,0]) {
     // If adding err to both ends or toward the negative axis, shift
     // err in the negative axis direction. This makes the cube run
     // from -err to size.d+err for 2 or to size.d for -1.
@@ -55,9 +55,10 @@ module squareStock(size, errs=[0,0,0]) {
 //   1. length=x (not height=z, as with cylinder)
 //   2. errs vec for less noisy slicing
 //
-// See `squareStock` for description of errs. errs[0] applies to length.
-// errs[1] applies to radius, but does not shift position for -1 or 2.
-module roundStock(length, radius, errs=[0,0]) {
+// See `square_stock` for description of errs. errs[0] applies to
+// length.  errs[1] applies to radius, but does not shift position for
+// -1 or 2.
+module round_stock(length, radius, errs=[0,0]) {
     translate([errs.x == 2 || errs.x == -1 ? -$err : 0, 0, 0])
     rotate([0, 90, 0])
     cylinder(length + ($err * abs(errs.x)),
