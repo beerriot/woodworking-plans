@@ -12,12 +12,12 @@ $vpf=22.50;
 $vpd=74.72;
 
 translate([0, 0, size_label_height() * 1.5]) {
-    rotate([90, 0, 0]) endFrontBack();
-    translate([0, 0, lapJointDepth()])
-        size_label(lapJointDepth(), rotation=90);
+    rotate([90, 0, 0]) end_front_back();
+    translate([0, 0, lap_joint_depth()])
+        size_label(lap_joint_depth(), rotation=90);
 }
 
-size_label(endStockWidth, over=true);
-rotate([-90, 0, 0]) endTopBottom();
+size_label(end_stock_width, over=true);
+rotate([-90, 0, 0]) end_top_bottom();
 
-size_label(lapJointDepth(), rotation=90);
+size_label(lap_joint_depth(), rotation=90);

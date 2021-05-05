@@ -1,4 +1,4 @@
-// The lap joint assembly
+// Cutting the bottom front corner off the bottom shelf.
 //cmdline: --projection=o --imgsize=1000,600
 include <../common/echo-camera-arg.scad>
 
@@ -14,10 +14,10 @@ $vpd=51.55;
 $fa = 1;
 $fs = 0.1;
 
-shelfSupport(bottomShelfMountingAngle(), bottom=true);
+shelf_support(bottom_shelf_mounting_angle(), bottom=true);
 
-translate([0, 0, endStockWidth])
-angle_label(-bottomShelfMountingAngle(),
-           0,
-           shelfDepth(bottomShelfMountingAngle()) * 0.7,
-           color="white");
+translate([0, 0, end_stock_width])
+angle_label(-bottom_shelf_mounting_angle(),
+            0,
+            shelf_depth(bottom_shelf_mounting_angle()) * 0.7,
+            color="white");

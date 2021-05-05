@@ -11,18 +11,18 @@ $vpt=[ 9.70, 0.00, 7.22 ];
 $vpf=22.50;
 $vpd=112.59;
 
-module labeledEndBlank(length) {
+module labeled_end_blank(length) {
     translate([0, 0, size_label_height()]) {
-        endStock(length);
+        end_stock(length);
         size_label(length);
     }
 }
 
-function keySize(length) =
-    [length, endStockThickness, endStockWidth + size_label_height()];
+function key_size(length) =
+    [length, end_stock_thickness, end_stock_width + size_label_height()];
 
-key([["TOP/BOTTOM", 4, keySize(endDepth)],
-     ["FRONT/BACK", 4, keySize(endHeight)]]) {
-    endTopBottomColor() labeledEndBlank(endDepth);
-    endFrontBackColor() labeledEndBlank(endHeight);
+key([["TOP/BOTTOM", 4, key_size(end_depth)],
+     ["FRONT/BACK", 4, key_size(end_height)]]) {
+    end_top_bottom_color() labeled_end_blank(end_depth);
+    end_front_back_color() labeled_end_blank(end_height);
 }

@@ -1,4 +1,4 @@
-// The lap joint assembly
+// Showing an end assembly prepapred, and glued.
 //cmdline: --imgsize=800,600
 include <../common/echo-camera-arg.scad>
 
@@ -13,17 +13,17 @@ $vpd=240.87;
 
 rotate([0, 0, -90]) {
     // aligned
-    translate([endStockThickness * 2, 0]) {
-        rotate([-90, -90, 0]) endFrontBack();
-        translate([0, endDepth - endStockWidth]) rotate([-90, -90, 0]) endFrontBack();
+    translate([end_stock_thickness * 2, 0]) {
+        rotate([-90, -90, 0]) end_front_back();
+        translate([0, end_depth - end_stock_width])
+            rotate([-90, -90, 0])
+            end_front_back();
     }
-    rotate([0, 0, 90]) endTopBottom();
-    translate([0, 0, endHeight - endStockWidth])
+    rotate([0, 0, 90]) end_top_bottom();
+    translate([0, 0, end_height - end_stock_width])
         rotate([0, 0, 90])
-        endTopBottom();
-
-
+        end_top_bottom();
 
     // assembled
-    translate([0, endDepth * 1.5]) end();
+    translate([0, end_depth * 1.5]) end();
 }
