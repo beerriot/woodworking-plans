@@ -11,17 +11,17 @@ $vpt=[ 58.59, -204.62, 43.92 ];
 $vpf=22.50;
 $vpd=325.80;
 
-module assemblyKey() thirdAngle([length, endDepth, endHeight]) {
+module assemblyKey() third_angle([length, endDepth, endHeight]) {
     assembly();
     
-    sizeLabel(length);
+    size_label(length);
     
-    taRightSide(length) {
-        sizeLabel(endDepth);
-        translate([endDepth, 0]) sizeLabel(endHeight, rotation=-90);
+    ta_right_side(length) {
+        size_label(endDepth);
+        translate([endDepth, 0]) size_label(endHeight, rotation=-90);
     }
     
-    taTopSide(endHeight) {}
+    ta_top_side(endHeight) {}
 }
 
 assemblyKey();

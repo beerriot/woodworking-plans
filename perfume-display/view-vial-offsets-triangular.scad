@@ -19,22 +19,22 @@ inset = staticBorder() + dynamicBorder() + rowOffset(0);
 translate([0, 0, plankSize.z]) {
     color("#00ff00") {
         rotate([-90, 0, 0])
-            sizeLabel(inset.x);
+            size_label(inset.x);
         translate([inset.x - 0.05, 0]) cube([0.1, plankSize.y, 0.1]);
 
         rotate([-90, 0, 0])
-            sizeLabel(inset.y, rotation=-90, over=true);
+            size_label(inset.y, rotation=-90, over=true);
         translate([0, inset.y - 0.05, 0]) cube([plankSize.x, 0.1, 0.1]);
     }
 
     color("#00ccff")
         translate(inset + [vialCenterDistance() , 0, 0]) {
         rotate([-90, 0, 0])
-            sizeLabel(vialCenterDistance());
+            size_label(vialCenterDistance());
         rotate([-90, 0, 0])
-            sizeLabel(vialCenterDistance(), rotation=-60, over=true);
+            size_label(vialCenterDistance(), rotation=-60, over=true);
 
         rotate([-90, 0, 0])
-            angleLabel(-60, 60, vialCenterDistance() * 5);
+            angle_label(-60, 60, vialCenterDistance() * 5);
     }
 }

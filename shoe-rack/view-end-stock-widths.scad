@@ -12,5 +12,5 @@ $vpf=22.50;
 $vpd=28.22;
 
 rotate([0, 0, -90]) endStock(1);
-sizeLabel(endStockThickness);
-translate([endStockThickness, 0]) sizeLabel(endStockWidth, rotation=-90);
+size_label(endStockThickness);
+translate([endStockThickness, 0]) size_label(endStockWidth, rotation=-90);

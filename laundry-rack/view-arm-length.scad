@@ -13,4 +13,4 @@ $vpf=22.50;
 $vpd=armLength() * 0.65;
 
 armBlank();
-translate([0, 0, -squareStockWidth / 2]) sizeLabel(armLength());
+translate([0, 0, -squareStockWidth / 2]) size_label(armLength());

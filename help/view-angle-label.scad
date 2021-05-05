@@ -1,4 +1,4 @@
-// Example sizeLabel
+// Example angle_label
 //cmdline: --projection=o --imgsize=400,200
 include <../common/echo-camera-arg.scad>
 
@@ -11,4 +11,4 @@ $vpf=22.50;
 
 $fs = 0.1;
 
-angleLabel(20, 0, 10);
+angle_label(20, 0, 10);

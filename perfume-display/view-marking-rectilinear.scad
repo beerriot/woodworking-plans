@@ -40,10 +40,10 @@ module narrowRowMarks() {
 translate([0, 0, plankSize.z]) {
     color("#00ff00") {
         rotate([-90, 0, 0])
-            sizeLabel(inset.x);
+            size_label(inset.x);
 
         rotate([-90, 0, 0])
-            sizeLabel(inset.y, rotation=-90, over=true);
+            size_label(inset.y, rotation=-90, over=true);
         translate([0, inset.y])
             for (i = [0 : intMaxVials().y - 1])
                 if (i % 2 == 0)
@@ -52,25 +52,25 @@ translate([0, 0, plankSize.z]) {
                         if (i > 0)
                             translate([0, -interRowSpace()])
                                 rotate([-90, 0, 0])
-                                sizeLabel(interRowSpace(),
+                                size_label(interRowSpace(),
                                           rotation=-90,
                                           over=true);
                     }
     }
 
     color("#00ccff") {
-        translate([0, -sizeLabelHeight()]) {
+        translate([0, -size_label_height()]) {
             rotate([-90, 0, 0])
-                sizeLabel((inset + rowOffset(1)).x);
+                size_label((inset + rowOffset(1)).x);
             translate([(inset + rowOffset(1)).x - 0.05, 0])
                 cube([0.1,
                       (staticBorder() + dynamicBorder() + rowOffset(1)).y +
-                      sizeLabelHeight(),
+                      size_label_height(),
                       0.1]);
         }
         translate([0, inset.y]) {
             rotate([-90, 0, 0])
-                sizeLabel(rowOffset(1).y, rotation=-90, over=true);
+                size_label(rowOffset(1).y, rotation=-90, over=true);
             for (i = [0 : intMaxVials().y - 1])
                 if (i % 2 == 1)
                     translate([0, interRowSpace() * i]) {
@@ -78,7 +78,7 @@ translate([0, 0, plankSize.z]) {
                         if (i > 0)
                             translate([0, -interRowSpace()])
                                 rotate([-90, 0, 0])
-                                sizeLabel(interRowSpace(),
+                                size_label(interRowSpace(),
                                           rotation=-90,
                                           over=true);
                     }
@@ -88,7 +88,7 @@ translate([0, 0, plankSize.z]) {
     color("#ff99ff") {
         translate(inset + [vialCenterDistance() , 0, 0])
             rotate([-90, 0, 0])
-            sizeLabel(vialCenterDistance());
+            size_label(vialCenterDistance());
     }
 
 }

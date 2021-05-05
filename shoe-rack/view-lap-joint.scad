@@ -11,13 +11,13 @@ $vpt=[ 27.22, 0.00, 1.21 ];
 $vpf=22.50;
 $vpd=74.72;
 
-translate([0, 0, sizeLabelHeight() * 1.5]) {
+translate([0, 0, size_label_height() * 1.5]) {
     rotate([90, 0, 0]) endFrontBack();
     translate([0, 0, lapJointDepth()])
-        sizeLabel(lapJointDepth(), rotation=90);
+        size_label(lapJointDepth(), rotation=90);
 }
 
-sizeLabel(endStockWidth, over=true);
+size_label(endStockWidth, over=true);
 rotate([-90, 0, 0]) endTopBottom();
 
-sizeLabel(lapJointDepth(), rotation=90);
+size_label(lapJointDepth(), rotation=90);

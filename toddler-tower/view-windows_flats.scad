@@ -24,7 +24,7 @@ module view_windows_flats() {
 showBothSides() view_windows_flats();
 
 translate([0, lower_window_inset(), thickness])
-viewLabel() sizeLabel(lower_window_inset());
+viewLabel() size_label(lower_window_inset());
 
 translate([0, bottom_depth, thickness])
-viewLabel() sizeLabel(bottom_depth - lower_window_bottom_depth() - lower_window_inset());
+viewLabel() size_label(bottom_depth - lower_window_bottom_depth() - lower_window_inset());

@@ -43,11 +43,11 @@ module circle(conflict) {
 translate([0, 0, plankSize.z]) {
     color("#00ff00") {
         rotate([-90, 0, 0])
-            sizeLabel(inset.x);
+            size_label(inset.x);
         //        translate([inset.x - 0.05, 0]) cube([0.1, plankSize.y, 0.1]);
 
         rotate([-90, 0, 0])
-            sizeLabel(inset.y, rotation=-90, over=true);
+            size_label(inset.y, rotation=-90, over=true);
         translate([0, inset.y - 0.05, 0]) wideRowMarks();
     }
 

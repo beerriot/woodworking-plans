@@ -38,15 +38,15 @@ module pencil() {
     }
 }
 
-key([keyChildInfo("PENCIL", 3, [pencilLength, pencilDiameter, pencilDiameter]),
-     keyChildInfo("BOOK", 1, [10,5,15])]) {
-         thirdAngle([pencilLength, pencilDiameter, pencilDiameter],
-                    frontLabels=undef,
-                    spacing=pencilLength * 0.1) {
+key([["PENCIL", 3, [pencilLength, pencilDiameter, pencilDiameter]],
+     ["BOOK", 1, [10,5,15]]]) {
+         third_angle([pencilLength, pencilDiameter, pencilDiameter],
+                     front_labels=undef,
+                     spacing=pencilLength * 0.1) {
              translate([0, 0, pencilRadius]) pencil();
              union() {} union() {} // no labels for this example
          }
-         translate([0.65, 0]) thirdAngle([10, 5, 15], frontLabels=[0,0,0]) {
+         translate([0.65, 0]) third_angle([10, 5, 15], front_labels=[0,0,0]) {
              book();
              union() {} union() {} union() {}
          }

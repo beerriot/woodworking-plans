@@ -17,21 +17,21 @@ $fs = 0.1;
 leg();
 
 translate([0, 0, squareStockWidth / 2])
-    sizeLabel(bottomLegDowelDistance(), over=true);
+    size_label(bottomLegDowelDistance(), over=true);
 
-translate([0, 0, squareStockWidth / 2 + sizeLabelHeight()])
-    sizeLabel(middleLegDowelDistance(), over=true);
+translate([0, 0, squareStockWidth / 2 + size_label_height()])
+    size_label(middleLegDowelDistance(), over=true);
 translate([middleLegDowelDistance() - 0.1,
            0,
-           squareStockWidth / 2 + sizeLabelHeight() * 0.25 ])
-    cube([0.1, 1, sizeLabelHeight() * 0.5]);
+           squareStockWidth / 2 + size_label_height() * 0.25 ])
+    cube([0.1, 1, size_label_height() * 0.5]);
     
-translate([0, 0, squareStockWidth / 2 + sizeLabelHeight() * 2])
-    sizeLabel(topLegDowelDistance(), over=true);
+translate([0, 0, squareStockWidth / 2 + size_label_height() * 2])
+    size_label(topLegDowelDistance(), over=true);
 translate([topLegDowelDistance() - 0.1,
            0,
-           squareStockWidth / 2 + sizeLabelHeight() * 0.25 ])
-    cube([0.1, 1, sizeLabelHeight() * 1.5]);
+           squareStockWidth / 2 + size_label_height() * 0.25 ])
+    cube([0.1, 1, size_label_height() * 1.5]);
     
 translate([topLegDowelDistance(), 0, -squareStockWidth / 2])
-    sizeLabel(legLength() - topLegDowelDistance(), over=false);
+    size_label(legLength() - topLegDowelDistance(), over=false);

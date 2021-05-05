@@ -26,23 +26,23 @@ mirror([0, 1, 0])
 view_bolt_holes_step();
 
 translate([0, -thickness, front_step_heights[0] - thickness / 2]) {
-    sizeLabel(bolt_hole_step_front());
-    sizeLabel(bolt_hole_step_rear(), over=true);
+    size_label(bolt_hole_step_front());
+    size_label(bolt_hole_step_rear(), over=true);
 }
 
-translate([-(front_step_depth() + sizeLabelHeight()),
+translate([-(front_step_depth() + size_label_height()),
            0,
            front_step_heights[len(front_step_heights)-1]
-           - thirdAngleSize([front_step_depth(),
-                             thickness,
-                             inter_recess_span()],
-                            frontLabels=[0,0,0],
-                            rightLabels=undef,
-                            topLabels=[0,0,1]).z]) {
-    thirdAngle([front_step_depth(), thickness, inter_recess_span()],
-               frontLabels=[1,0,0],
-               rightLabels=undef,
-               topLabels=[1,0,0]) {
+           - third_angle_size([front_step_depth(),
+                               thickness,
+                               inter_recess_span()],
+                              front_labels=[0,0,0],
+                              right_labels=undef,
+                              top_labels=[0,0,1]).z]) {
+    third_angle([front_step_depth(), thickness, inter_recess_span()],
+                front_labels=[1,0,0],
+                right_labels=undef,
+                top_labels=[1,0,0]) {
         translate([0, thickness, inter_recess_span()])
             rotate([90, 0, 0])
             rotate([0, 0, -90])
@@ -59,17 +59,17 @@ translate([-(front_step_depth() + sizeLabelHeight()),
             translate([front_step_depth() - bolt_hole_step_front(),
                        -thickness,
                        inter_recess_span() - bolt_hole_depth()])
-                sizeLabel(bolt_hole_depth(), rotation=-90);
+                size_label(bolt_hole_depth(), rotation=-90);
         }
 
         union() {
             /* no right side */
         }
 
-        taTopSide(inter_recess_span()) {
+        ta_top_side(inter_recess_span()) {
             translate([0, 0, thickness / 2]) {
-                sizeLabel(bolt_hole_step_front());
-                sizeLabel(bolt_hole_step_rear(), over=true);
+                size_label(bolt_hole_step_front());
+                size_label(bolt_hole_step_rear(), over=true);
             }
         }
     }

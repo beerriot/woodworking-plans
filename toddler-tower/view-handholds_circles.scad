@@ -33,31 +33,31 @@ showBothSides() view_handholds_circles();
 inset_for_lowest_handhold = inset_for_handhold(handhold_heights[0]);
 for (i = [0 : len(handhold_heights) - 1]) {
     translate([0,
-               max(sizeLabelHeight() * i + inset_for_lowest_handhold,
+               max(size_label_height() * i + inset_for_lowest_handhold,
                    inset_for_handhold(handhold_heights[i])),
                thickness])
-        viewLabel() sizeLabel(handhold_heights[i], rotation=-90, over=true);
+        viewLabel() size_label(handhold_heights[i], rotation=-90, over=true);
  }
 translate([handhold_heights[0], inset_for_lowest_handhold, thickness])
-viewLabel() sizeLabel(handhold_size[1], rotation=-front_angle());
+viewLabel() size_label(handhold_size[1], rotation=-front_angle());
 
 circle_center_distance = handhold_size[0] - handhold_size[1];
 
 // standing handhold
 translate(upper_handhold_position() + [0, 0, thickness]) {
-    viewLabel() sizeLabel(top_handhold_offset(), rotation=180, over=true);
-    viewLabel() sizeLabel(circle_center_distance);
+    viewLabel() size_label(top_handhold_offset(), rotation=180, over=true);
+    viewLabel() size_label(circle_center_distance);
     translate([0, -circle_center_distance, 0])
-        viewLabel() sizeLabel(handhold_size[1], rotation=-90);
+        viewLabel() size_label(handhold_size[1], rotation=-90);
 }
 
 translate(leftOrigin()
           + [handhold_heights[0], -inset_for_lowest_handhold, thickness]) {
-    viewLabel() sizeLabel(circle_center_distance,
+    viewLabel() size_label(circle_center_distance,
                           rotation=90 + front_angle());
     translate([-cos(front_angle()) * circle_center_distance,
                sin(front_angle()) * circle_center_distance
                + cutout_radius(),
                0])
-        viewLabel() sizeLabel(handhold_size[1]);
+        viewLabel() size_label(handhold_size[1]);
 }

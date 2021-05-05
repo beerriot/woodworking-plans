@@ -10,18 +10,18 @@ $vpt = [ 54.17, 38.87, 72.47 ];
 $vpr = [ 90.00, 0.00, 0.00 ];
 $vpd = 395.22;
 
-thirdAngle([width, bottom_depth + thickness, height],
-           frontLabels=[1,0,1]) {
+third_angle([width, bottom_depth + thickness, height],
+            front_labels=[1,0,1]) {
     assembly();
 
-    sizeLabel(width);
+    size_label(width);
 
-    taRightSide(bottom_depth) {
-        sizeLabel(bottom_depth);
-        translate([bottom_depth, 0, 0]) sizeLabel(height, rotation=-90);
+    ta_right_side(bottom_depth) {
+        size_label(bottom_depth);
+        translate([bottom_depth, 0, 0]) size_label(height, rotation=-90);
         translate([bottom_depth - platform_depth, 0, height])
-            sizeLabel(platform_depth, over=true);
+            size_label(platform_depth, over=true);
     }
 
-    taTopSide(height) { }
+    ta_top_side(height) { }
 };

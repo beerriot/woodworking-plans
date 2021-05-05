@@ -18,86 +18,79 @@ narrow_support_size =
     [inter_recess_span(), thickness, narrow_support_height()];
 safety_rail_size = [inter_recess_span(), thickness, safety_rail_height()];
 
-key([keyChildInfo("RIGHT SIDE", 1,
-                  thirdAngleSize(side_size, topLabels=[1,0,0])),
-     keyChildInfo("LEFT_SIDE", 1,
-                  thirdAngleSize(side_size, topLabels=[1,0,0])),
-     keyChildInfo("PLATFORM", 1,
-                  thirdAngleSize(platform_size)),
-     keyChildInfo("STEP", 1,
-                  thirdAngleSize(step_size)),
-     keyChildInfo("WIDE SUPPORT", 1,
-                  thirdAngleSize(wide_support_size)),
-     keyChildInfo("NARROW SUPPORT", 3,
-                  thirdAngleSize(narrow_support_size)),
-     keyChildInfo("SAFETY_RAIL", 1,
-                  thirdAngleSize(safety_rail_size))]) {
-    thirdAngle(side_size, rightLabels=undef) {
+key([["RIGHT SIDE", 1, third_angle_size(side_size, top_labels=[1,0,0])],
+     ["LEFT_SIDE", 1, third_angle_size(side_size, top_labels=[1,0,0])],
+     ["PLATFORM", 1, third_angle_size(platform_size)],
+     ["STEP", 1, third_angle_size(step_size)],
+     ["WIDE SUPPORT", 1, third_angle_size(wide_support_size)],
+     ["NARROW SUPPORT", 3, third_angle_size(narrow_support_size)],
+     ["SAFETY_RAIL", 1, third_angle_size(safety_rail_size)]]) {
+    third_angle(side_size, right_labels=undef) {
         translate([0, thickness, 0]) rotate([90, 0, 0]) right_side();
 
         translate([height, 0, bottom_depth - platform_depth])
-            sizeLabel(platform_depth, rotation=-90);
-        taRightSide(height) {}
-        taTopSide(bottom_depth) {
-            translate([0, 0, thickness]) sizeLabel(height, over=true);
+            size_label(platform_depth, rotation=-90);
+        ta_right_side(height) {}
+        ta_top_side(bottom_depth) {
+            translate([0, 0, thickness]) size_label(height, over=true);
         }
 
     }
-    thirdAngle(side_size) {
+    third_angle(side_size) {
         translate([0, thickness, bottom_depth])
             rotate([-90, 0, 0])
             left_side();
         union() {}
-        taRightSide(height) {
-            sizeLabel(thickness);
-            translate([thickness, 0, 0]) sizeLabel(bottom_depth, rotation=-90);
+        ta_right_side(height) {
+            size_label(thickness);
+            translate([thickness, 0, 0]) size_label(bottom_depth, rotation=-90);
         }
-        taTopSide(bottom_depth) {}
+        ta_top_side(bottom_depth) {}
     }
-    thirdAngle(platform_size) {
+    third_angle(platform_size) {
         translate([0, thickness, 0]) rotate([90, 0, 0]) platform();
 
-        sizeLabel(inter_recess_span());
-        taRightSide(inter_recess_span()) {
-            translate([0, 0, platform_depth]) sizeLabel(thickness, over=true);
+        size_label(inter_recess_span());
+        ta_right_side(inter_recess_span()) {
+            translate([0, 0, platform_depth]) size_label(thickness, over=true);
             translate([thickness, 0, 0])
-                sizeLabel(platform_depth, rotation=-90);
+                size_label(platform_depth, rotation=-90);
         }
     }
-    thirdAngle(step_size) {
+    third_angle(step_size) {
         translate([0, thickness, 0]) rotate([90, 0, 0]) front_step();
 
         union() {}
-        taRightSide(inter_recess_span()) {
+        ta_right_side(inter_recess_span()) {
             translate([thickness, 0, 0])
-                sizeLabel(front_step_depth(), rotation=-90);
+                size_label(front_step_depth(), rotation=-90);
         }
     }
-    thirdAngle(wide_support_size) {
+    third_angle(wide_support_size) {
         translate([0, thickness, 0]) rotate([90, 0, 0]) wide_support();
 
         union() {}
-        taRightSide(inter_recess_span()) {
+        ta_right_side(inter_recess_span()) {
             translate([thickness, 0, 0])
-                sizeLabel(wide_support_height(), rotation=-90);
+                size_label(wide_support_height(), rotation=-90);
         }
     }
-    thirdAngle(narrow_support_size) {
+    third_angle(narrow_support_size) {
         translate([0, thickness, 0]) rotate([90, 0, 0]) narrow_support();
 
         union() {}
-        taRightSide(inter_recess_span()) {
+        ta_right_side(inter_recess_span()) {
             translate([thickness, 0, 0])
-                sizeLabel(narrow_support_height(), rotation=-90);
+                size_label(narrow_support_height(), rotation=-90);
         }
     }
-    thirdAngle(safety_rail_size) {
+    third_angle(safety_rail_size) {
         translate([0, thickness, 0]) rotate([90, 0, 0]) safety_rail();
 
         union() {}
-        taRightSide(inter_recess_span()) {
+        ta_right_side(inter_recess_span()) {
             translate([thickness, 0, 0])
-                sizeLabel(safety_rail_height(), rotation=-90);
+                size_label(safety_rail_height(), rotation=-90);
         }
     }
 }

@@ -20,25 +20,25 @@ function combinedWidthOf(i) =
 function centerOf(i) = shelfDepth(uniqueShelfAngles()[i][0]) / 2 +
     combinedWidthOf(i-1);
 
-endSize = thirdAngleSize([shelfDepth(maxShelfAngle()),
-                          endStockThickness,
-                          endStockWidth],
-                         frontLabels=[1,0,1],
-                         rightLabels=undef,
-                         topLabels=undef);
-centerSize = thirdAngleSize([shelfDepth(maxShelfAngle()),
-                             slatStockWidth,
-                             slatStockThickness],
-                            frontLabels=[0,0,1],
-                            rightLabels=undef,
-                            topLabels=undef);
+endSize = third_angle_size([shelfDepth(maxShelfAngle()),
+                            endStockThickness,
+                            endStockWidth],
+                           front_labels=[1,0,1],
+                           right_labels=undef,
+                           top_labels=undef);
+centerSize = third_angle_size([shelfDepth(maxShelfAngle()),
+                               slatStockWidth,
+                               slatStockThickness],
+                              front_labels=[0,0,1],
+                              right_labels=undef,
+                              top_labels=undef);
 
-key([keyChildInfo("SHELF CENTER", len(shelfHeightsAndAngles), centerSize),
-     keyChildInfo("SHELF SUPPORT", len(shelfHeightsAndAngles) * 2, endSize)]) {
+key([["SHELF CENTER", len(shelfHeightsAndAngles), centerSize],
+     ["SHELF SUPPORT", len(shelfHeightsAndAngles) * 2, endSize]]) {
     for (i = [0 : len(uniqueShelfAngles())-1]) {
         shelfAngle = uniqueShelfAngles()[i];
         translate([combinedWidthOf(i-1), 0, 0]) {
-            thirdAngle(centerSize) {
+            third_angle(centerSize) {
                 union() {
                     translate([0, 0, slatStockThickness / 2])
                         shelfCenter(shelfAngle[0]);
@@ -50,14 +50,14 @@ key([keyChildInfo("SHELF CENTER", len(shelfHeightsAndAngles), centerSize),
                              size=endStockWidth * 0.65);
                 }
 
-                sizeLabel(shelfDepth(shelfAngle[0]));
+                size_label(shelfDepth(shelfAngle[0]));
             }
         }
     }
     for (i = [0 : len(uniqueShelfAngles())-1]) {
         shelfAngle = uniqueShelfAngles()[i];
         translate([combinedWidthOf(i-1), 0, 0]) {
-            thirdAngle(endSize, rightLabels=undef) {
+            third_angle(endSize, right_labels=undef) {
                 union() {
                     shelfSupport(shelfAngle[0]);
                     translate([shelfDepth(shelfAngle[0]) + endStockWidth / 4,
@@ -69,11 +69,11 @@ key([keyChildInfo("SHELF CENTER", len(shelfHeightsAndAngles), centerSize),
                 }
 
                 union() {
-                    sizeLabel(shelfDepth(shelfAngle[0]));
+                    size_label(shelfDepth(shelfAngle[0]));
 
                     if (shelfAngle[0] > 0)
                         translate([0, 0, endStockWidth])
-                            angleLabel(shelfAngle[0], -90, endStockWidth*1.25);
+                            angle_label(shelfAngle[0], -90, endStockWidth*1.25);
 
                     sp = [ for (x = slatPositions(shelfAngle[0])) x ];
                     translate([0, 0, endStockWidth]) {
@@ -81,11 +81,11 @@ key([keyChildInfo("SHELF CENTER", len(shelfHeightsAndAngles), centerSize),
                             if (x > 0 ||
                                 shelfAngle[0] < raisedFrontSlatMinAngle)
                                 translate([sp[x], 0, 0])
-                                    color("white") sizeLabel(slatStockWidth);
+                                    color("white") size_label(slatStockWidth);
 
                             if (x > 0)
-                                translate([0, 0, sizeLabelHeight() * (x - 1)])
-                                    sizeLabel(sp[x], over=true);
+                                translate([0, 0, size_label_height() * (x - 1)])
+                                    size_label(sp[x], over=true);
                         }
                     }
                 }
@@ -98,7 +98,7 @@ for (i = [0 : len(uniqueShelfAngles())-1]) {
     shelfAngle = uniqueShelfAngles()[i];
     translate([combinedWidthOf(i-1) + shelfDepth(shelfAngle[0]) / 2,
                0,
-               -sizeLabelHeight()])
+               -size_label_height()])
         rotate([90, 0, 0])
         text(str(shelfAngle[0], "º"),
              halign="center",

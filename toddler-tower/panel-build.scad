@@ -7,16 +7,16 @@ use <../common/labeling.scad>
 include <params.scad>
 
 // How much space between the panels.
-center_space = sizeLabelHeight() * len(platform_heights);
+center_space = size_label_height() * len(platform_heights);
 
 // The viewpoint settings.
 function panel_vpt() = [ height / 2, bottom_depth + center_space / 2, -17.52 ];
 function panel_vpr() = [ 0.00, 0.00, -90 ];
 function panel_vpd() = 277.20;
 
-// These panels are lying on the Z=0 plane. The sizeLabel module
+// These panels are lying on the Z=0 plane. The size_label module
 // expect to be shown next to things in the Y=0 plane. This module
-// rotates the sizeLabel to face "up" instead of "forward".
+// rotates the size_label to face "up" instead of "forward".
 module viewLabel() {
     rotate([-90, 0, -90]) children();
 }

@@ -15,6 +15,6 @@ $vpd=23.32;
 $fs = 0.1;
 
 leg();
-angleLabel(legAngleComplement(), -90, squareStockWidth);
+angle_label(legAngleComplement(), -90, squareStockWidth);
 translate([0, 0, squareStockWidth / 2])
-    sizeLabel(squareStockWidth / 2, rotation=90);
+    size_label(squareStockWidth / 2, rotation=90);

@@ -12,28 +12,28 @@ $vpf=22.50;
 $vpd=206.02;
 
 module endPieceKey(length)
-    thirdAngle([length, endStockThickness, endStockWidth],
-               topLabels=[0,1,1]) {
+    third_angle([length, endStockThickness, endStockWidth],
+                top_labels=[0,1,1]) {
         children();
 
-        sizeLabel(length);
+        size_label(length);
 
-        taRightSide(length) {
+        ta_right_side(length) {
             translate([endStockThickness, 0])
-                sizeLabel(endStockWidth, rotation=-90);
-            sizeLabel(endStockThickness);
+                size_label(endStockWidth, rotation=-90);
+            size_label(endStockThickness);
         }
 
-        taTopSide(endStockWidth) {
+        ta_top_side(endStockWidth) {
             translate([length, 0, 0])
-                sizeLabel(endStockThickness / 2, rotation=-90);
+                size_label(endStockThickness / 2, rotation=-90);
             translate([length - endStockWidth, 0, 0])
-                sizeLabel(endStockWidth);
+                size_label(endStockWidth);
         }
     }
 function endPieceKeySize(length) =
-    thirdAngleSize([length, endStockThickness, endStockWidth],
-                   topLabels=[0,1,1]);
+    third_angle_size([length, endStockThickness, endStockWidth],
+                     top_labels=[0,1,1]);
 
 module shelfSupportOrCenterKey(shelfAngle, height, thickness) {
     cutAngle = shelfCutAngle(shelfAngle);
@@ -41,45 +41,45 @@ module shelfSupportOrCenterKey(shelfAngle, height, thickness) {
 
     cutDistance = height * tan(cutAngle);
 
-    thirdAngle([depth, thickness, height],
-               frontLabels=[1,0,1],
-               topLabels=(cutAngle == 0 ? undef : [1,0,0])) {
+    third_angle([depth, thickness, height],
+                front_labels=[1,0,1],
+                top_labels=(cutAngle == 0 ? undef : [1,0,0])) {
         children();
 
         union() {
-            translate([cutDistance, 0]) sizeLabel(depth - cutDistance*2);
+            translate([cutDistance, 0]) size_label(depth - cutDistance*2);
 
             sp = [ for (x = slatPositions(shelfAngle)) x ];
             for (x = [1:len(sp)-1]) {
                 translate([sp[x-1], 0, height])
-                    sizeLabel(sp[x]-sp[x-1], over=true);
+                    size_label(sp[x]-sp[x-1], over=true);
             }
 
             translate([sp[len(sp)-1], 0, height])
-                sizeLabel(slatStockWidth, over=true);
+                size_label(slatStockWidth, over=true);
             if (cutAngle > 0)
-                translate([0, 0, height]) angleLabel(cutAngle, -90, height);
+                translate([0, 0, height]) angle_label(cutAngle, -90, height);
         }
 
-        taRightSide(depth) {
-            sizeLabel(thickness);
-            translate([thickness, 0]) sizeLabel(height, rotation=-90);
+        ta_right_side(depth) {
+            size_label(thickness);
+            translate([thickness, 0]) size_label(height, rotation=-90);
         }
 
         // This generates a fourth child, even if cutAngle == 0, which
-        // is why topLabels must be set to undef in the module
+        // is why top_labels must be set to undef in the module
         // parameters.
         if (cutAngle != 0)
             translate([0, thickness, height])
                 rotate([-90, 0, 0])
-                sizeLabel(depth, over=true);
+                size_label(depth, over=true);
     }
 }
 
 function shelfSupportOrCenterKeySize(shelfAngle, height, thickness) =
-    thirdAngleSize([shelfDepth(shelfAngle), thickness, height],
-                   frontLabels=[1,0,1],
-                   topLabels=[1,0,0]);
+    third_angle_size([shelfDepth(shelfAngle), thickness, height],
+                     front_labels=[1,0,1],
+                     top_labels=[1,0,0]);
 
 module shelfSupportKey(shelfAngle)
      shelfSupportOrCenterKey(shelfAngle, endStockWidth, endStockThickness)
@@ -95,20 +95,20 @@ function shelfCenterKeySize(shelfAngle) =
     shelfSupportOrCenterKeySize(shelfAngle, slatStockThickness, slatStockWidth);
 
 module slatKey()
-    thirdAngle([slatLength(), slatStockWidth, slatStockThickness]) {
+    third_angle([slatLength(), slatStockWidth, slatStockThickness]) {
     slat();
 
-    sizeLabel(slatLength());
+    size_label(slatLength());
 
-    taRightSide(slatLength()) {
-        sizeLabel(slatStockWidth);
+    ta_right_side(slatLength()) {
+        size_label(slatStockWidth);
         translate([slatStockWidth, 0])
-            sizeLabel(slatStockThickness, rotation=-90);
+            size_label(slatStockThickness, rotation=-90);
     }
 }
 function slatKeySize() =
-    thirdAngleSize([slatLength(), slatStockWidth, slatStockThickness],
-                   topLabels=undef);
+    third_angle_size([slatLength(), slatStockWidth, slatStockThickness],
+                     top_labels=undef);
 
 // KEY
 module partsKey() {
@@ -125,7 +125,7 @@ module partsKey() {
                                                    height,
                                                    thickness).x+1,
                        0,
-                       height / 2 + sizeLabelHeight()])
+                       height / 2 + size_label_height()])
                 rotate([90, 0, 0])
                 text(str("(", uniqueShelfAngles()[i][1]*2, ")"),
                      size=endStockWidth / 2,
@@ -133,15 +133,15 @@ module partsKey() {
         }
     }
 
-    key([keyChildInfo("END FRONT/BACK", 4, endPieceKeySize(endDepth)),
-         keyChildInfo("END TOP/BOTTOM", 4, endPieceKeySize(endHeight)),
-         keyChildInfo("SHELF SLAT", totalSlats(), slatKeySize()),
-         keyChildInfo("SHELF SUPPORT",
-                      len(shelfHeightsAndAngles) * 2,
-                      shelfSupportKeySize(0)),
-         keyChildInfo("SHELF CENTER",
-                      len(shelfHeightsAndAngles) * 2,
-                      shelfCenterKeySize(0))]) {
+    key([["END FRONT/BACK", 4, endPieceKeySize(endDepth)],
+         ["END TOP/BOTTOM", 4, endPieceKeySize(endHeight)],
+         ["SHELF SLAT", totalSlats(), slatKeySize()],
+         ["SHELF SUPPORT",
+          len(shelfHeightsAndAngles) * 2,
+          shelfSupportKeySize(0)],
+         ["SHELF CENTER",
+          len(shelfHeightsAndAngles) * 2,
+          shelfCenterKeySize(0)]]) {
         endPieceKey(endDepth) endTopBottom();
         endPieceKey(endHeight) endFrontBack();
         slatKey();

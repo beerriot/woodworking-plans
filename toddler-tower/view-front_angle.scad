@@ -25,8 +25,8 @@ showBothSides() view_front_angle();
 
 // top of bottom step
 viewLabel()
-sizeLabel(front_step_heights[0], rotation=-90);
+size_label(front_step_heights[0], rotation=-90);
 
 // safety rail
 translate([height, bottom_depth, thickness])
-    viewLabel() sizeLabel(platform_depth, over=true);
+    viewLabel() size_label(platform_depth, over=true);

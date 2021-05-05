@@ -13,4 +13,4 @@ $vpf=22.50;
 $vpd=legLength() * 0.65;
 
 legBlank();
-translate([0, 0, -squareStockWidth / 2]) sizeLabel(legLength());
+translate([0, 0, -squareStockWidth / 2]) size_label(legLength());

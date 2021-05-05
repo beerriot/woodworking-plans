@@ -16,11 +16,11 @@ module legArmExample() {
     translate([squareStockThickness, 0, squareStockWidth / 2])
         rotate([0, 0, 90]) legColor() armLegStock(1);
 
-    sizeLabel(squareStockThickness);
+    size_label(squareStockThickness);
 
     translate([squareStockThickness, 0])
-        sizeLabel(squareStockWidth, rotation=-90);
-    translate([squareStockThickness / 2, 0, -sizeLabelHeight() * 1.5])
+        size_label(squareStockWidth, rotation=-90);
+    translate([squareStockThickness / 2, 0, -size_label_height() * 1.5])
         rotate([90, 0, 0])
         text("LEG / ARM",
              size=squareStockThickness,
@@ -31,9 +31,9 @@ module legArmExample() {
 module dowelExample() {
     longDowelColor() dowel(1);
 
-    translate([-dowelRadius(), 0]) sizeLabel(dowelDiameter);
+    translate([-dowelRadius(), 0]) size_label(dowelDiameter);
 
-    translate([0, 0, -sizeLabelHeight() * 1.5])
+    translate([0, 0, -size_label_height() * 1.5])
         rotate([90, 0, 0])
         text("DOWEL", size=squareStockThickness, halign="center", valign="top");
 }

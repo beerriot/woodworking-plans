@@ -12,17 +12,17 @@ $vpf=22.50;
 $vpd=112.59;
 
 module labeledEndBlank(length) {
-    translate([0, 0, sizeLabelHeight()]) {
+    translate([0, 0, size_label_height()]) {
         endStock(length);
-        sizeLabel(length);
+        size_label(length);
     }
 }
 
 function keySize(length) =
-    [length, endStockThickness, endStockWidth + sizeLabelHeight()];
+    [length, endStockThickness, endStockWidth + size_label_height()];
 
-key([keyChildInfo("TOP/BOTTOM", 4, keySize(endDepth)),
-     keyChildInfo("FRONT/BACK", 4, keySize(endHeight))]) {
+key([["TOP/BOTTOM", 4, keySize(endDepth)],
+     ["FRONT/BACK", 4, keySize(endHeight)]]) {
     endTopBottomColor() labeledEndBlank(endDepth);
     endFrontBackColor() labeledEndBlank(endHeight);
 }

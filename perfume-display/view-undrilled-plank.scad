@@ -11,16 +11,16 @@ $vpr = [ 90.00, 0.00, 0.00 ];
 $vpt = [ 15.47, 6.62, 12.22 ];
 $vpd = 73.83;
 
-thirdAngle([plankSize.x, plankSize.z, plankSize.y]) {
+third_angle([plankSize.x, plankSize.z, plankSize.y]) {
     color(plankColor)
         translate([0, plankSize.z, 0])
         rotate([90, 0, 0])
         plank();
 
-    sizeLabel(plankSize.x);
+    size_label(plankSize.x);
 
-    taRightSide(plankSize.x) {
-        sizeLabel(plankSize.z);
-        translate([plankSize.z, 0]) sizeLabel(plankSize.y, rotation=-90);
+    ta_right_side(plankSize.x) {
+        size_label(plankSize.z);
+        translate([plankSize.z, 0]) size_label(plankSize.y, rotation=-90);
     }
 }

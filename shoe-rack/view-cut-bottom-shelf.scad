@@ -17,7 +17,7 @@ $fs = 0.1;
 shelfSupport(bottomShelfMountingAngle(), bottom=true);
 
 translate([0, 0, endStockWidth])
-angleLabel(-bottomShelfMountingAngle(),
+angle_label(-bottomShelfMountingAngle(),
            0,
            shelfDepth(bottomShelfMountingAngle()) * 0.7,
            color="white");

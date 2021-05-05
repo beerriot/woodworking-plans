@@ -12,5 +12,5 @@ $vpf=22.50;
 $vpd=17.66;
 
 rotate([0, 0, -90]) slatStock(1);
-sizeLabel(slatStockThickness);
-translate([slatStockThickness, 0]) sizeLabel(slatStockWidth, rotation=-90);
+size_label(slatStockThickness);
+translate([slatStockThickness, 0]) size_label(slatStockWidth, rotation=-90);

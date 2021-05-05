@@ -18,10 +18,10 @@ module view_panel_size() {
 showBothSides() view_panel_size();
 
 translate([0, bottom_depth, 0]) {
-    viewLabel() sizeLabel(bottom_depth);
-    viewLabel() sizeLabel(height, over=true, rotation=-90);
+    viewLabel() size_label(bottom_depth);
+    viewLabel() size_label(height, over=true, rotation=-90);
 }
 
 leftOrigin() {
-    viewLabel() sizeLabel(bottom_depth);
+    viewLabel() size_label(bottom_depth);
 }

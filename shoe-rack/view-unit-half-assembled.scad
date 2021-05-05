@@ -15,10 +15,10 @@ assembly(includeSecondEnd=false);
 
 for (i = [0:len(shelfHeightsAndAngles)-1]) {
     translate([(len(shelfHeightsAndAngles)-i-1) * endStockThickness,
-               -i * sizeLabelHeight() * 1.2,
+               -i * size_label_height() * 1.2,
                shelfHeightsAndAngles[i][0]])
         rotate([0, 90, 0])
-        sizeLabel(shelfHeightsAndAngles[i][0]);
+        size_label(shelfHeightsAndAngles[i][0]);
  }
 
 /*
@@ -29,8 +29,8 @@ $vpf=22.50;
 $vpd=243.84;
 
 for (i = [0:len(shelfHeightsAndAngles)-1]) {
-    translate([0, -i * sizeLabelHeight() * 1.2, 0])
+    translate([0, -i * size_label_height() * 1.2, 0])
         rotate([0, 0, 90])
-        sizeLabel(shelfHeightsAndAngles[i][0], rotation=-90, over=true);
+        size_label(shelfHeightsAndAngles[i][0], rotation=-90, over=true);
  }
 */
