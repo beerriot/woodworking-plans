@@ -12,6 +12,6 @@ $vpt=[ 16.83, 58.80, 64.40 ];
 $vpf=22.50;
 $vpd=351.91;
 
-legs(includeInnerTop=false, includeOuterTop=false);
-translate([endOfLeftArm(), 0, hangingHeight])
-    wideArms(includeTop=false, includePivot=true);
+legs(include_inner_top=false, include_outer_top=false);
+translate([end_of_left_arm(), 0, hanging_height])
+    wide_arms(include_top=false, include_pivot=true);

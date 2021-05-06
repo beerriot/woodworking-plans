@@ -8,9 +8,9 @@ include <params.scad>
 use <laundry-rack.scad>
 
 $vpr=[ 90.00, 0.00, 0.00 ];
-$vpt=[ armLength() / 2, -armLength(), 0 ];
+$vpt=[ arm_length() / 2, -arm_length(), 0 ];
 $vpf=22.50;
-$vpd=armLength() * 0.65;
+$vpd=arm_length() * 0.65;
 
-armBlank();
-translate([0, 0, -squareStockWidth / 2]) size_label(armLength());
+arm_blank();
+translate([0, 0, -square_stock_width / 2]) size_label(arm_length());

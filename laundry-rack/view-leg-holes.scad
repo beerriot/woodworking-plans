@@ -8,30 +8,30 @@ include <params.scad>
 use <laundry-rack.scad>
 
 $vpr=[ 90.00, 0.00, 0.00 ];
-$vpt=[ legLength() / 2, -legLength(), 0 ];
+$vpt=[ leg_length() / 2, -leg_length(), 0 ];
 $vpf=22.50;
-$vpd=legLength() * 0.65;
+$vpd=leg_length() * 0.65;
 
 $fs = 0.1;
 
 leg();
 
-translate([0, 0, squareStockWidth / 2])
-    size_label(bottomLegDowelDistance(), over=true);
+translate([0, 0, square_stock_width / 2])
+    size_label(bottom_leg_dowel_distance(), over=true);
 
-translate([0, 0, squareStockWidth / 2 + size_label_height()])
-    size_label(middleLegDowelDistance(), over=true);
-translate([middleLegDowelDistance() - 0.1,
+translate([0, 0, square_stock_width / 2 + size_label_height()])
+    size_label(middle_leg_dowel_distance(), over=true);
+translate([middle_leg_dowel_distance() - 0.1,
            0,
-           squareStockWidth / 2 + size_label_height() * 0.25 ])
+           square_stock_width / 2 + size_label_height() * 0.25 ])
     cube([0.1, 1, size_label_height() * 0.5]);
-    
-translate([0, 0, squareStockWidth / 2 + size_label_height() * 2])
-    size_label(topLegDowelDistance(), over=true);
-translate([topLegDowelDistance() - 0.1,
+
+translate([0, 0, square_stock_width / 2 + size_label_height() * 2])
+    size_label(top_leg_dowel_distance(), over=true);
+translate([top_leg_dowel_distance() - 0.1,
            0,
-           squareStockWidth / 2 + size_label_height() * 0.25 ])
+           square_stock_width / 2 + size_label_height() * 0.25 ])
     cube([0.1, 1, size_label_height() * 1.5]);
-    
-translate([topLegDowelDistance(), 0, -squareStockWidth / 2])
-    size_label(legLength() - topLegDowelDistance(), over=false);
+
+translate([top_leg_dowel_distance(), 0, -square_stock_width / 2])
+    size_label(leg_length() - top_leg_dowel_distance(), over=false);

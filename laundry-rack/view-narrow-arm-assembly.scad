@@ -10,4 +10,4 @@ $vpt=[ 43.02, 54.01, 9.74 ];
 $vpf=22.50;
 $vpd=285.15;
 
-narrowArms();
+narrow_arms();
