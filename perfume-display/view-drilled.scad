@@ -1,4 +1,4 @@
-// Label offsets for drilling holes.
+// Show the tray with holes drilled.
 //cmdline: --projection=o --imgsize=2048,1280
 include <../common/echo-camera-arg.scad>
 
@@ -12,4 +12,4 @@ $vpt = [ 12.78, 10.39, 12.22 ];
 $vpd = 60.33;
 
 assembly(chamfer=false, groove=false);
-fillHolesForOrthographic();
+fill_holes_for_orthographic();
