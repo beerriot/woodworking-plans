@@ -76,6 +76,15 @@ module leg() {
                 translate([0, 0, -leg_size().z] - err([1,1,0]))
                 cube(leg_size() + err([0,2,0]));
         }
+
+        for (h = brace_elevations)
+            translate([(wood_tower_height / sin(leg_angle()))
+                       - (h / sin(leg_angle())
+                          - (leg_size().z / 2) / tan(leg_angle())
+                          + (brace_height / 2) / sin(leg_angle())),
+                       0,
+                       leg_size().z / 2])
+                bolt_hole();
     }
 }
 
@@ -101,8 +110,22 @@ module brace(at_height) {
             rotate([0, 0, -60])
             translate([0, -size.y, 0] - err([1, 0, 1]))
             cube(size + err([0, 1, 2]));
+
+        translate([size.x
+                   - (size.y / 2) * sin(leg_angle())
+                   - (leg_size().z / 2) / sin(leg_angle()),
+                   0,
+                   size.z / 2])
+        bolt_hole();
     }
 }
+
+module bolt_hole() {
+    translate(-err([0,1,0]))
+        rotate([-90, 0, 0])
+        cylinder(d=bolt_diameter, h=(leg_size() + err([0,2,0])).y);
+}
+
 
 module tower_leg() {
     leg();

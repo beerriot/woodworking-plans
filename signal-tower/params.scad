@@ -26,6 +26,9 @@ brace_height = 15;
 // The size of the brace material, tangent to the tower radius.
 brace_thickness = 3.8;
 
+// Diameter of the shafts of the bolts securing the braces to the legs.
+bolt_diameter = 1;
+
 leg_color = "#667700";
 pipe_color = "#cccccc";
 brace_color = "#778800";
