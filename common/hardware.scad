@@ -37,6 +37,15 @@ module finish_washer() {
     }
 }
 
+module washer(od, id, thickness) {
+    difference() {
+        cylinder(h=thickness, d=od);
+
+        translate([0, 0, -0.01])
+            cylinder(h=thickness + 0.02, d=id);
+    }
+}
+
 module hex_bolt(diameter, length, head_diameter, head_thickness, hex_size) {
     cylinder(h=length, d=diameter);
     translate([0, 0, -(head_thickness - 0.01)])
@@ -48,6 +57,44 @@ module hex_bolt(diameter, length, head_diameter, head_thickness, hex_size) {
     }
 
     threads(length, 10, 0.05, diameter);
+}
+
+// `shaft_length` gives the total length of the bolt after the head.
+// The unthreaded portion of the shaft will have a length of
+// `shaft_length - thread_length`. That is, to make a fully-threaded
+// bolt set `shaft_length` and `thread_lenth` to the same value.
+module bolt(shaft_length,
+            shaft_diameter,
+            head_thickness,
+            head_size,
+            thread_length,
+            thread_pitch,
+            thread_depth) {
+    // head of the bolt
+    translate([0, 0, -(head_thickness - 0.01)])
+        cylinder(h=head_thickness, d=head_size, $fn=6);
+
+    // unthreaded shaft
+    cylinder(h=shaft_length - thread_length, d=shaft_diameter);
+
+    // threaded shaft
+    translate([0, 0, shaft_length - thread_length - 0.1]) {
+        cylinder(h=thread_length, d=shaft_diameter - (thread_depth * 2));
+        threads(thread_length,
+                thread_pitch,
+                thread_depth,
+                shaft_diameter - (thread_depth * 2));
+    }
+}
+
+module nut(thickness, size, id, thread_pitch, thread_depth) {
+    difference() {
+        cylinder(h=thickness, d=size, $fn=6);
+
+        translate([0, 0, -0.01])
+            cylinder(h=thickness + 0.02, d=id);
+    }
+    threads(thickness, thread_pitch, thread_depth, id - thread_depth * 2);
 }
 
 module threaded_insert(id, od, depth, od_pitch=3, od_thread_depth=0.2) {
@@ -67,6 +114,12 @@ key([keyChildInfo("DECK_SCREW", 1,
                    deck_screw_head_diameter + 0.3]),
      keyChildInfo("HEX_BOLT", 1,
                   [5, 2.5, 2.5]),
+     keyChildInfo("BOLT", 1,
+                  [5, 1.5, 1.5]),
+     keyChildInfo("NUT", 1,
+                  [5, 1.5, 1.5]),
+     keyChildInfo("WASHER", 1,
+                  [5, 1.5, 1.5]),
      keyChildInfo("THREADED_INSERT", 1, [1, 0.6, 0.6])]) {
     translate([0, deck_screw_head_diameter / 2, deck_screw_head_diameter / 2])
         rotate([0, 90, 0])
@@ -79,6 +132,15 @@ key([keyChildInfo("DECK_SCREW", 1,
     translate([0.15, 1.25, 1.25])
         rotate([0, 90, 0])
         hex_bolt(0.3, 5, 2.5, 0.15, 0.3);
+    translate([0.6, 0.75, 0.75])
+        rotate([0, 90, 0])
+        bolt(4, 0.8, 0.6, 1.5, 1, 10, 0.1);
+    translate([0.6, 0.75, 0.75])
+        rotate([-90, 0, 0])
+        nut(0.6, 1.5, 0.8, 10, 0.1);
+    translate([0.6, 0.75, 0.75])
+        rotate([-90, 0, 0])
+        washer(1.5, 0.8, 0.1);
     translate([0, 0.3, 0.3])
         rotate([0, 90, 0])
         threaded_insert(0.3, 0.6, 1);
