@@ -126,6 +126,33 @@ module bolt_hole() {
         cylinder(d=bolt_diameter, h=(leg_size() + err([0,2,0])).y);
 }
 
+function leg_bolt_length() = leg_size().y + brace_thickness * 1.5;
+
+module leg_bolt() {
+    bolt(leg_bolt_length(),
+         bolt_diameter,
+         head_thickness=bolt_diameter,
+         head_size=bolt_diameter * 1.5,
+         thread_length=brace_thickness / 2,
+         thread_pitch=10,
+         thread_depth=bolt_diameter * 0.05);
+}
+
+module leg_washer() {
+    washer(od=bolt_diameter * 3,
+           id=bolt_diameter,
+           thickness=bolt_diameter * 0.05);
+}
+
+module leg_nut() {
+    nut(thickness=bolt_diameter,
+        size=bolt_diameter * 1.5,
+        id=bolt_diameter,
+        thread_pitch=10,
+        thread_depth=bolt_diameter * 0.05);
+}
+
+// ASSEMBLY
 
 module tower_leg() {
     leg();
@@ -162,8 +189,46 @@ sizeLabel(wood_tower_height + pipe_length
 translate([wood_tower_base_radius, 0, 0]) {
     sizeLabel(leg_size().x, rotation=-(180-leg_angle()));
 }
-for (h = brace_elevations)
+for (h = brace_elevations) {
     translate([-brace_length_past_pipe(),
                leg_size().y / 2 + brace_thickness,
-               h])
+               h]) {
         sizeLabel(brace_length(h));
+        translate([brace_size(h).y * tan(30), 0, 0])
+            sizeLabel(leg_size().z / tan(30));
+
+
+        translate([0, 0, brace_size(h).z / 2])
+            sizeLabel(brace_size(h).x
+                      - (brace_size(h).y / 2) * sin(leg_angle())
+                      - (leg_size().z / 2) / sin(leg_angle()));
+
+    }
+    translate([wood_tower_base_radius, 0, 0]) {
+        sizeLabel((h + brace_height / 2) / sin(leg_angle()), rotation=-(180-leg_angle()));
+    }
+ }
+
+module pipe_lock() {
+    translate([-7.5/2, -7.5/2])
+        difference() {
+        // made of three layers of 1x8 ...
+        cube([7.5, 7.5, 0.75 * 3]);
+
+        // ... with a bolt hole
+        translate([7.5/2, -0.01, 0.75 * 3 / 2])
+            rotate([-90, 0, 0])
+            cylinder(h=7.5 / 2, d=3/8);
+
+        // ... and a pipe hole
+        translate([7.5/2, 7.5/2, -0.01])
+            cylinder(h=0.75 * 3 + 0.02, d=pipe_diameter);
+    }
+}
+
+translate([0, 0, brace_elevations[len(brace_elevations)-1]+brace_height])
+pipe_lock();
+
+rotate([0, 0, 15])
+translate([0, 0, wood_tower_height])
+pipe_lock();
