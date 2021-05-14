@@ -28,6 +28,11 @@ clamp_bolt_diameter = 3/8;
 // Wrench size for the pipe-brace bolts
 clamp_bolt_head_size = 9/16;
 
+// Thickness of metal for the hangers connecting the braces to each other.
+hanger_thickness = 1/16;
+
+hanger_screw_size = [1/8, brace_profile.y * 0.75];
+
 leg_color = "#ee9900";
 pipe_color = "#cccccc";
 brace_color = "#55bbee";

@@ -117,6 +117,34 @@ module brace(at_height) {
     }
 }
 
+module brace_hanger() {
+    // slightly less tall than the braces, each side half as wide as tall
+    panel_size = [brace_profile.z * 0.45,
+                  hanger_thickness,
+                  brace_profile.z * 0.9];
+    screw_positions = [scale([0.3, 0, 0.2], panel_size),
+                       scale([0.6, 0, 0.4], panel_size),
+                       scale([0.3, 0, 0.6], panel_size),
+                       scale([0.6, 0, 0.8], panel_size)];
+
+    module brace_hanger_side() {
+        translate([0, 0, brace_profile.z * 0.05])
+            difference() {
+            cube(panel_size);
+
+            for (p = screw_positions) {
+                translate(p-err([0, 1, 0]))
+                    rotate([-90, 0, 0])
+                    cylinder(h=(brace_profile + err([0, 0, 2])).y,
+                             d=hanger_screw_size.x);
+            }
+        }
+    }
+
+    brace_hanger_side();
+    rotate([0, 0, -60]) mirror([1, 0, 0]) brace_hanger_side();
+}
+
 module bolt_hole() {
     translate(-err([0,1,0]))
         rotate([-90, 0, 0])
@@ -186,6 +214,14 @@ module leg_bolt_with_nut_and_washers() {
     }
 }
 
+module brace_with_hanger(elevation) {
+    brace(elevation);
+    translate([-brace_length_past_pipe(),
+               leg_size.y / 2 + brace_profile.y,
+               elevation])
+        brace_hanger();
+}
+
 module tower_leg() {
     leg();
     for (i = [0 : len(brace_elevations) - 1]) {
@@ -194,11 +230,11 @@ module tower_leg() {
             + brace_bolt_hole_position(brace_size(e))
             - [brace_length_past_pipe(), 0, 0];
         if (i % 2 == 0) {
-            mirror([0, 1, 0]) brace(e);
+            mirror([0, 1, 0]) brace_with_hanger(e);
             translate(bolt_base_position - [0, brace_profile.y, 0])
                 leg_bolt_with_nut_and_washers();
         } else {
-            brace(e);
+            brace_with_hanger(e);
             translate(bolt_base_position)
                 leg_bolt_with_nut_and_washers();
         }
