@@ -152,7 +152,8 @@ module leg_nut() {
 }
 
 module pipe_clamp() {
-    translate(scale([-0.5, -0.5, 0], clamp_layer_size))
+    color(clamp_color)
+        translate(scale([-0.5, -0.5, 0], clamp_layer_size))
         difference() {
         // made of three layers of material ...
         cube(scale([1, 1, 3], clamp_layer_size));

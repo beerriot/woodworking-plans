@@ -28,7 +28,7 @@ clamp_bolt_diameter = 3/8;
 // Wrench size for the pipe-brace bolts
 clamp_bolt_head_size = 9/16;
 
-leg_color = "#667700";
+leg_color = "#ee9900";
 pipe_color = "#cccccc";
-brace_color = "#778800";
-clamp_color = "#000099";
+brace_color = "#55bbee";
+clamp_color = "#cc77aa";
