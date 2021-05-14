@@ -202,7 +202,7 @@ module pipe_clamp() {
 // ASSEMBLY
 
 module leg_bolt_with_nut_and_washers() {
-    rotate([-90, 0, 0]) {
+    rotate([90, 0, 0]) {
         translate([0, 0, -leg_washer_size().z]) {
             leg_bolt();
             leg_washer();
@@ -214,29 +214,29 @@ module leg_bolt_with_nut_and_washers() {
     }
 }
 
-module brace_with_hanger(elevation) {
+module brace_with_hanger_and_bolt(elevation) {
     brace(elevation);
+
     translate([-brace_length_past_pipe(),
                leg_size.y / 2 + brace_profile.y,
                elevation])
         brace_hanger();
+
+    bolt_base_position = [0, leg_size.y / 2 + brace_profile.y, elevation]
+        + brace_bolt_hole_position(brace_size(elevation))
+        - [brace_length_past_pipe(), 0, 0];
+    translate(bolt_base_position)
+        leg_bolt_with_nut_and_washers();
 }
 
 module tower_leg() {
     leg();
     for (i = [0 : len(brace_elevations) - 1]) {
-        e = brace_elevations[i];
-        bolt_base_position = [0, -leg_size.y / 2, e]
-            + brace_bolt_hole_position(brace_size(e))
-            - [brace_length_past_pipe(), 0, 0];
         if (i % 2 == 0) {
-            mirror([0, 1, 0]) brace_with_hanger(e);
-            translate(bolt_base_position - [0, brace_profile.y, 0])
-                leg_bolt_with_nut_and_washers();
+            mirror([0, 1, 0])
+                brace_with_hanger_and_bolt(brace_elevations[i]);
         } else {
-            brace_with_hanger(e);
-            translate(bolt_base_position)
-                leg_bolt_with_nut_and_washers();
+            brace_with_hanger_and_bolt(brace_elevations[i]);
         }
     }
 }
