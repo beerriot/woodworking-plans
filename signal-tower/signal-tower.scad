@@ -168,8 +168,11 @@ module pipe_clamp() {
 
 module tower_leg() {
     leg();
-    for (h = brace_elevations) {
-        brace(h);
+    for (i = [0 : len(brace_elevations) -1]) {
+        if (i % 2 == 0)
+            mirror([0, 1, 0]) brace(brace_elevations[i]);
+        else
+            brace(brace_elevations[i]);
     }
 }
 
