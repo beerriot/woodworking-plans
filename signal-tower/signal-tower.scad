@@ -3,6 +3,7 @@
 use <../common/common.scad>
 use <../common/labeling.scad>
 use <../common/math_funcs.scad>
+use <../common/hardware.scad>
 
 include <params.scad>
 
@@ -91,6 +92,13 @@ module pipe() {
     }
 }
 
+function brace_bolt_hole_position(size) =
+    [size.x
+     - (size.y / 2) * sin(leg_angle)
+     - (leg_size.z / 2) / sin(leg_angle),
+     0,
+     size.z / 2];
+
 module brace(at_height) {
     size = brace_size(at_height);
 
@@ -104,12 +112,8 @@ module brace(at_height) {
             translate([0, -size.y, 0] - err([1, 0, 1]))
             cube(size + err([0, 1, 2]));
 
-        translate([size.x
-                   - (size.y / 2) * sin(leg_angle)
-                   - (leg_size.z / 2) / sin(leg_angle),
-                   0,
-                   size.z / 2])
-        bolt_hole();
+        translate(brace_bolt_hole_position(size))
+            bolt_hole();
     }
 }
 
@@ -119,7 +123,7 @@ module bolt_hole() {
         cylinder(d=leg_bolt_diameter, h=(leg_size + err([0,2,0])).y);
 }
 
-function leg_bolt_length() = leg_size.y + brace_size.y * 1.5;
+function leg_bolt_length() = leg_size.y + brace_profile.y * 1.5;
 
 module leg_bolt() {
     bolt(leg_bolt_length(),
@@ -128,13 +132,16 @@ module leg_bolt() {
          head_size=leg_bolt_head_size,
          thread_length=brace_profile.y / 2,
          thread_pitch=10,
-         thread_depth=bolt_diameter * 0.05);
+         thread_depth=leg_bolt_diameter * 0.05);
 }
 
+// [OD, ID, thickness]
+function leg_washer_size() =
+    [leg_bolt_diameter * 3, leg_bolt_diameter, leg_bolt_diameter * 0.05];
+
 module leg_washer() {
-    washer(od=leg_bolt_diameter * 3,
-           id=leg_bolt_diameter,
-           thickness=leg_bolt_diameter * 0.05);
+    size = leg_washer_size();
+    washer(od=size.x, id=size.y, thickness=size.z);
 }
 
 module leg_nut() {
@@ -166,13 +173,35 @@ module pipe_clamp() {
 
 // ASSEMBLY
 
+module leg_bolt_with_nut_and_washers() {
+    rotate([-90, 0, 0]) {
+        translate([0, 0, -leg_washer_size().z]) {
+            leg_bolt();
+            leg_washer();
+        }
+        translate([0, 0, leg_size.y + brace_profile.y]) {
+            leg_washer();
+            translate([0, 0, leg_washer_size().z]) leg_nut();
+        }
+    }
+}
+
 module tower_leg() {
     leg();
-    for (i = [0 : len(brace_elevations) -1]) {
-        if (i % 2 == 0)
-            mirror([0, 1, 0]) brace(brace_elevations[i]);
-        else
-            brace(brace_elevations[i]);
+    for (i = [0 : len(brace_elevations) - 1]) {
+        e = brace_elevations[i];
+        bolt_base_position = [0, -leg_size.y / 2, e]
+            + brace_bolt_hole_position(brace_size(e))
+            - [brace_length_past_pipe(), 0, 0];
+        if (i % 2 == 0) {
+            mirror([0, 1, 0]) brace(e);
+            translate(bolt_base_position - [0, brace_profile.y, 0])
+                leg_bolt_with_nut_and_washers();
+        } else {
+            brace(e);
+            translate(bolt_base_position)
+                leg_bolt_with_nut_and_washers();
+        }
     }
 }
 
