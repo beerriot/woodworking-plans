@@ -1,4 +1,4 @@
-// The lap joint assembly
+// Clear view of cuts for shelf supports.
 //cmdline: --projection=o --imgsize=1200,600
 include <../common/echo-camera-arg.scad>
 
@@ -14,78 +14,87 @@ $vpd=145.77;
 $fa=1;
 $fs=0.1;
 
-spaceBetweenParts = endStockWidth * 2;
-function combinedWidthOf(i) =
-    (i < 0) ? 0 : shelfDepth(uniqueShelfAngles()[i][0]) + spaceBetweenParts;
-function centerOf(i) = shelfDepth(uniqueShelfAngles()[i][0]) / 2 +
-    combinedWidthOf(i-1);
+space_between_parts = end_stock_width * 2;
+function combined_width_of(i) =
+    (i < 0)
+    ? 0
+    : shelf_depth(unique_shelf_angles()[i][0]) + space_between_parts;
 
-endSize = thirdAngleSize([shelfDepth(maxShelfAngle()),
-                          endStockThickness,
-                          endStockWidth],
-                         frontLabels=[1,0,1],
-                         rightLabels=undef,
-                         topLabels=undef);
-centerSize = thirdAngleSize([shelfDepth(maxShelfAngle()),
-                             slatStockWidth,
-                             slatStockThickness],
-                            frontLabels=[0,0,1],
-                            rightLabels=undef,
-                            topLabels=undef);
+function center_of(i) =
+    shelf_depth(unique_shelf_angles()[i][0]) / 2
+    + combined_width_of(i - 1);
 
-key([keyChildInfo("SHELF CENTER", len(shelfHeightsAndAngles), centerSize),
-     keyChildInfo("SHELF SUPPORT", len(shelfHeightsAndAngles) * 2, endSize)]) {
-    for (i = [0 : len(uniqueShelfAngles())-1]) {
-        shelfAngle = uniqueShelfAngles()[i];
-        translate([combinedWidthOf(i-1), 0, 0]) {
-            thirdAngle(centerSize) {
+end_size = third_angle_size([shelf_depth(max_shelf_angle()),
+                             end_stock_thickness,
+                             end_stock_width],
+                            front_labels=[1,0,1],
+                            right_labels=undef,
+                            top_labels=undef);
+center_size = third_angle_size([shelf_depth(max_shelf_angle()),
+                                slat_stock_width,
+                                slat_stock_thickness],
+                               front_labels=[0,0,1],
+                               right_labels=undef,
+                               top_labels=undef);
+
+key([["SHELF CENTER", len(shelf_heights_and_angles), center_size],
+     ["SHELF SUPPORT", len(shelf_heights_and_angles) * 2, end_size]]) {
+    for (i = [0 : len(unique_shelf_angles()) - 1]) {
+        shelf_angle = unique_shelf_angles()[i];
+        translate([combined_width_of(i-1), 0, 0]) {
+            third_angle(center_size) {
                 union() {
-                    translate([0, 0, slatStockThickness / 2])
-                        shelfCenter(shelfAngle[0]);
-                    translate([shelfDepth(shelfAngle[0]) + endStockWidth / 4,
+                    translate([0, 0, slat_stock_thickness / 2])
+                        shelf_center(shelf_angle[0]);
+                    translate([shelf_depth(shelf_angle[0])
+                               + end_stock_width / 4,
                                0])
                         rotate([90, 0, 0])
-                        text(str("(",shelfAngle[1],")"),
+                        text(str("(",shelf_angle[1],")"),
                              halign="left",
-                             size=endStockWidth * 0.65);
+                             size=end_stock_width * 0.65);
                 }
 
-                sizeLabel(shelfDepth(shelfAngle[0]));
+                size_label(shelf_depth(shelf_angle[0]));
             }
         }
     }
-    for (i = [0 : len(uniqueShelfAngles())-1]) {
-        shelfAngle = uniqueShelfAngles()[i];
-        translate([combinedWidthOf(i-1), 0, 0]) {
-            thirdAngle(endSize, rightLabels=undef) {
+    for (i = [0 : len(unique_shelf_angles()) - 1]) {
+        shelf_angle = unique_shelf_angles()[i];
+        translate([combined_width_of(i - 1), 0, 0]) {
+            third_angle(end_size, right_labels=undef) {
                 union() {
-                    shelfSupport(shelfAngle[0]);
-                    translate([shelfDepth(shelfAngle[0]) + endStockWidth / 4,
+                    shelf_support(shelf_angle[0]);
+                    translate([shelf_depth(shelf_angle[0])
+                               + end_stock_width / 4,
                                0])
                         rotate([90, 0, 0])
-                        text(str("(",shelfAngle[1] * 2,")"),
+                        text(str("(",shelf_angle[1] * 2,")"),
                              halign="left",
-                             size=endStockWidth * 0.65);
+                             size=end_stock_width * 0.65);
                 }
 
                 union() {
-                    sizeLabel(shelfDepth(shelfAngle[0]));
+                    size_label(shelf_depth(shelf_angle[0]));
 
-                    if (shelfAngle[0] > 0)
-                        translate([0, 0, endStockWidth])
-                            angleLabel(shelfAngle[0], -90, endStockWidth*1.25);
+                    if (shelf_angle[0] > 0)
+                        translate([0, 0, end_stock_width])
+                            angle_label(shelf_angle[0],
+                                        -90,
+                                        end_stock_width*1.25);
 
-                    sp = [ for (x = slatPositions(shelfAngle[0])) x ];
-                    translate([0, 0, endStockWidth]) {
+                    sp = [ for (x = slat_positions(shelf_angle[0])) x ];
+                    translate([0, 0, end_stock_width]) {
                         for (x = [0 : ceil(len(sp) / 2)-1]) {
                             if (x > 0 ||
-                                shelfAngle[0] < raisedFrontSlatMinAngle)
+                                shelf_angle[0] < raised_front_slat_min_angle)
                                 translate([sp[x], 0, 0])
-                                    color("white") sizeLabel(slatStockWidth);
+                                    color("white")
+                                    size_label(slat_stock_width);
 
                             if (x > 0)
-                                translate([0, 0, sizeLabelHeight() * (x - 1)])
-                                    sizeLabel(sp[x], over=true);
+                                translate([0, 0, size_label_height() * (x - 1)])
+                                    size_label(sp[x], over=true);
                         }
                     }
                 }
@@ -94,14 +103,14 @@ key([keyChildInfo("SHELF CENTER", len(shelfHeightsAndAngles), centerSize),
     }
 }
 
-for (i = [0 : len(uniqueShelfAngles())-1]) {
-    shelfAngle = uniqueShelfAngles()[i];
-    translate([combinedWidthOf(i-1) + shelfDepth(shelfAngle[0]) / 2,
+for (i = [0 : len(unique_shelf_angles()) - 1]) {
+    shelf_angle = unique_shelf_angles()[i];
+    translate([combined_width_of(i-1) + shelf_depth(shelf_angle[0]) / 2,
                0,
-               -sizeLabelHeight()])
+               -size_label_height()])
         rotate([90, 0, 0])
-        text(str(shelfAngle[0], "º"),
+        text(str(shelf_angle[0], "º"),
              halign="center",
              valign="top",
-             size=endStockWidth);
+             size=end_stock_width);
  }

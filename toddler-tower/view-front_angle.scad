@@ -21,12 +21,12 @@ module view_front_angle() {
     }
 }
 
-showBothSides() view_front_angle();
+show_both_sides() view_front_angle();
 
 // top of bottom step
-viewLabel()
-sizeLabel(front_step_heights[0], rotation=-90);
+view_label()
+size_label(front_step_heights[0], rotation=-90);
 
 // safety rail
 translate([height, bottom_depth, thickness])
-    viewLabel() sizeLabel(platform_depth, over=true);
+    view_label() size_label(platform_depth, over=true);

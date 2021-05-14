@@ -183,13 +183,13 @@ module screw_with_washer() {
 
 // Convenience function for starting parts. This mainly abstracts
 // `thickness`, but also provides the `errs` facility of
-// `common/squareStock` to make cuts without rendering conflicts.
+// `common/square_stock` to make cuts without rendering conflicts.
 //
 // Origin: corner.
 // Orientation: Length along the +X axis, Width along +Y, thickness
 // above the Z=0 plane.
 module sheet_stock(length, width, errs=[0,0,0]) {
-    squareStock(length, width, thickness, errs);
+    square_stock([length, width, thickness], errs);
 }
 
 // Side Panel.

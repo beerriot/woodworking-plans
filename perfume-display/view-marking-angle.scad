@@ -1,4 +1,4 @@
-// Label offsets for drilling holes.
+// Demonstrate how to mark the hole placement using angled lines.
 //cmdline: --projection=o --imgsize=2048,1280
 include <../common/echo-camera-arg.scad>
 
@@ -11,54 +11,55 @@ $vpr = [ 0.00, 0.00, 0.00 ];
 $vpt = [ 12.46, 8.62, 3.58 ];
 $vpd = 73.83;
 
-color(plankColor) plank();
+color(plank_color) {
+    plank();
+}
 
-inset = staticBorder() + dynamicBorder();
+inset = static_border() + dynamic_border();
 
-module wideRowMarks() {
+module wide_row_marks() {
     color("#00ff00") {
-        translate([0, -0.05]) cube([plankSize.x, 0.1, 0.1]);
+        translate([0, -0.05]) cube([plank_size.x, 0.1, 0.1]);
 
-    for (i = [0 : vialsInRow(0) - 1])
-        translate([inset.x + (vialCenterDistance() * i) - 0.05, -0.25])
-            cube([0.1, 0.5, 0.1]);
+        for (i = [0 : vials_in_row(0) - 1])
+            translate([inset.x + (vial_center_distance() * i) - 0.05, -0.25])
+                cube([0.1, 0.5, 0.1]);
     }
 }
 
-translate([0, 0, plankSize.z]) {
+translate([0, 0, plank_size.z]) {
     color("#00ff00") {
         rotate([-90, 0, 0])
-            sizeLabel(inset.x);
-        //        translate([inset.x - 0.05, 0]) cube([0.1, plankSize.y, 0.1]);
+            size_label(inset.x);
 
         rotate([-90, 0, 0])
-            sizeLabel(inset.y, rotation=-90, over=true);
-        translate([0, inset.y - 0.05, 0]) wideRowMarks();
+            size_label(inset.y, rotation=-90, over=true);
+        translate([0, inset.y - 0.05, 0]) wide_row_marks();
 
-        translate(inset + [vialCenterDistance() , 0, 0])
+        translate(inset + [vial_center_distance() , 0, 0])
             rotate([-90, 0, 0])
-            sizeLabel(vialCenterDistance());
+            size_label(vial_center_distance());
     }
 
     intersection() {
         color("#00ccff")
-            for (i = [0 : vialsInRow(0) -1])
-                translate([inset.x + (vialCenterDistance() * i), inset.y]) {
+            for (i = [0 : vials_in_row(0) -1])
+                translate([inset.x + (vial_center_distance() * i), inset.y]) {
                     rotate([0, 0, 60])
                         translate([0, -0.05, 0])
-                        cube([max(plankSize), 0.1, 0.1]);
+                        cube([max(plank_size), 0.1, 0.1]);
                     rotate([0, 0, 120])
                         translate([0, -0.05, 0])
-                        cube([max(plankSize), 0.1, 0.1]);
+                        cube([max(plank_size), 0.1, 0.1]);
                 }
 
-        translate([0, 0, -plankSize.z / 2]) plank();
+        translate([0, 0, -plank_size.z / 2]) plank();
     }
 
     color("#ff99ff")
-        for (i = [2 : intMaxVials().y - 1])
-            translate(inset + rowOffset(i) + [-0.5, -0.05, 0])
-                cube([plankSize.x - (inset.x + rowOffset(i).x) * 2 + 1,
+        for (i = [2 : int_max_vials().y - 1])
+            translate(inset + row_offset(i) + [-0.5, -0.05, 0])
+                cube([plank_size.x - (inset.x + row_offset(i).x) * 2 + 1,
                       0.1,
                       0.1]);
 

@@ -17,25 +17,25 @@ narrow_support_size =
     [inter_recess_span(), thickness, narrow_support_height()];
 safety_rail_size = [inter_recess_span(), thickness, safety_rail_height()];
 
-key([keyChildInfo("NARROW SUPPORT", 3, narrow_support_size),
-     keyChildInfo("WIDE SUPPORT", 1, wide_support_size),
-     keyChildInfo("SAFETY_RAIL", 1, safety_rail_size),
-     keyChildInfo("STEP", 1, step_size),
-     keyChildInfo("PLATFORM", 1, platform_size)]) {
+key([["NARROW SUPPORT", 3, narrow_support_size],
+     ["WIDE SUPPORT", 1, wide_support_size],
+     ["SAFETY_RAIL", 1, safety_rail_size],
+     ["STEP", 1, step_size],
+     ["PLATFORM", 1, platform_size]]) {
     union() {
         rotate([90, 0, 0]) narrow_support();
         translate([inter_recess_span(), 0, 0])
-            sizeLabel(narrow_support_height(), rotation=-90);
+            size_label(narrow_support_height(), rotation=-90);
     }
     union() {
         rotate([90, 0, 0]) wide_support();
         translate([inter_recess_span(), 0, 0])
-            sizeLabel(wide_support_height(), rotation=-90);
+            size_label(wide_support_height(), rotation=-90);
     }
     union() {
         rotate([90, 0, 0]) safety_rail();
         translate([inter_recess_span(), 0, 0])
-            sizeLabel(safety_rail_height(), rotation=-90);
+            size_label(safety_rail_height(), rotation=-90);
     }
     union() {
         // -0.01 gets the curve out of the plane of the platform's
@@ -44,13 +44,13 @@ key([keyChildInfo("NARROW SUPPORT", 3, narrow_support_size),
             rotate([-90, 0, 0])
             front_step();
         translate([inter_recess_span(), 0, 0])
-            sizeLabel(front_step_depth(), rotation=-90);
+            size_label(front_step_depth(), rotation=-90);
     }
     union() {
         rotate([90, 0, 0]) platform();
         translate([inter_recess_span(), 0, 0])
-            sizeLabel(platform_depth, rotation=-90);
+            size_label(platform_depth, rotation=-90);
     }
 }
 
-sizeLabel(inter_recess_span());
+size_label(inter_recess_span());

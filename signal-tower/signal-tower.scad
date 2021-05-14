@@ -177,35 +177,35 @@ module ground() {
 tower();
 //ground();
 
-sizeLabel(wood_tower_base_radius, over=true);
+size_label(wood_tower_base_radius, over=true);
 translate([wood_tower_base_radius - leg_size().z / sin(leg_angle()), -leg_size().y, 0]) {
-    angleLabel(leg_angle(), 180 - leg_angle(), wood_tower_height / 15);
+    angle_label(leg_angle(), 180 - leg_angle(), wood_tower_height / 15);
 }
-sizeLabel(wood_tower_height, rotation=-90);
-sizeLabel(wood_tower_height + pipe_length
+size_label(wood_tower_height, rotation=-90);
+size_label(wood_tower_height + pipe_length
           - (wood_tower_height - brace_elevations[len(brace_elevations) - 1]),
           rotation=-90,
           over=true);
 translate([wood_tower_base_radius, 0, 0]) {
-    sizeLabel(leg_size().x, rotation=-(180-leg_angle()));
+    size_label(leg_size().x, rotation=-(180-leg_angle()));
 }
 for (h = brace_elevations) {
     translate([-brace_length_past_pipe(),
                leg_size().y / 2 + brace_thickness,
                h]) {
-        sizeLabel(brace_length(h));
+        size_label(brace_length(h));
         translate([brace_size(h).y * tan(30), 0, 0])
-            sizeLabel(leg_size().z / tan(30));
+            size_label(leg_size().z / tan(30));
 
 
         translate([0, 0, brace_size(h).z / 2])
-            sizeLabel(brace_size(h).x
+            size_label(brace_size(h).x
                       - (brace_size(h).y / 2) * sin(leg_angle())
                       - (leg_size().z / 2) / sin(leg_angle()));
 
     }
     translate([wood_tower_base_radius, 0, 0]) {
-        sizeLabel((h + brace_height / 2) / sin(leg_angle()), rotation=-(180-leg_angle()));
+        size_label((h + brace_height / 2) / sin(leg_angle()), rotation=-(180-leg_angle()));
     }
  }
 

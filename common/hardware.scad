@@ -106,21 +106,15 @@ module threaded_insert(id, od, depth, od_pitch=3, od_thread_depth=0.2) {
     threads(depth, od_pitch, od_thread_depth, od);
 }
 
-key([keyChildInfo("DECK_SCREW", 1,
-                  [5, deck_screw_head_diameter, deck_screw_head_diameter]),
-     keyChildInfo("FINISH_WASHER", 1,
-                  [5,
-                   deck_screw_head_diameter + 0.3,
-                   deck_screw_head_diameter + 0.3]),
-     keyChildInfo("HEX_BOLT", 1,
-                  [5, 2.5, 2.5]),
-     keyChildInfo("BOLT", 1,
-                  [5, 1.5, 1.5]),
-     keyChildInfo("NUT", 1,
-                  [5, 1.5, 1.5]),
-     keyChildInfo("WASHER", 1,
-                  [5, 1.5, 1.5]),
-     keyChildInfo("THREADED_INSERT", 1, [1, 0.6, 0.6])]) {
+key([["DECK_SCREW", 1,
+      [5, deck_screw_head_diameter, deck_screw_head_diameter]],
+     ["FINISH_WASHER", 1,
+      [5, deck_screw_head_diameter + 0.3, deck_screw_head_diameter + 0.3]],
+     ["HEX_BOLT", 1, [5, 2.5, 2.5]],
+     ["BOLT", 1, [5, 1.5, 1.5]],
+     ["NUT", 1, [5, 1.5, 1.5]],
+     ["WASHER", 1, [5, 1.5, 1.5]],
+     ["THREADED_INSERT", 1, [1, 0.6, 0.6]]]) {
     translate([0, deck_screw_head_diameter / 2, deck_screw_head_diameter / 2])
         rotate([0, 90, 0])
         deck_screw(5);

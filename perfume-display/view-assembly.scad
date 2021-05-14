@@ -21,17 +21,17 @@ module example_vial(diameter, height) {
         cylinder(r=radius, h=height * 0.15);
 }
 
-function startOfRow(r, currentRow=0, vialsPassed=0) =
-    (r == currentRow)
-    ? vialsPassed
-    : startOfRow(r, currentRow+1, vialsPassed + vialsInRow(currentRow));
+function start_of_row(r, current_row=0, vials_passed=0) =
+    (r == current_row)
+    ? vials_passed
+    : start_of_row(r, current_row+1, vials_passed + vials_in_row(current_row));
 
-vials = vialPositions();
+vials = vial_positions();
 
 assembly();
 
-for (i = [0 : intMaxVials().y - 1])
-    let (start = startOfRow(i))
-        for (j = [start : start + floor(vialsInRow(i) / 2) - 1])
-            translate(staticBorder() + dynamicBorder() + vials[j][0])
-                example_vial(vials[j][1], (plankSize.z - vials[j][0].z) * 3);
+for (i = [0 : int_max_vials().y - 1])
+    let (start = start_of_row(i))
+        for (j = [start : start + floor(vials_in_row(i) / 2) - 1])
+            translate(static_border() + dynamic_border() + vials[j][0])
+                example_vial(vials[j][1], (plank_size.z - vials[j][0].z) * 3);

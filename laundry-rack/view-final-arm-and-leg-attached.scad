@@ -13,5 +13,5 @@ $vpf=22.50;
 $vpd=351.91;
 
 legs();
-translate([endOfLeftArm(), 0, hangingHeight]) wideArms();
-translate([legShift() - dowelInset(), 0, hangingHeight]) narrowArms();
+translate([end_of_left_arm(), 0, hanging_height]) wide_arms();
+translate([leg_shift() - dowel_inset(), 0, hanging_height]) narrow_arms();

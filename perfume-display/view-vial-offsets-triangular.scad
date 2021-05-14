@@ -12,29 +12,29 @@ $vpt = [ 12.46, 6.62, 3.58 ];
 $vpd = 73.83;
 
 assembly();
-fillHolesForOrthographic();
+fill_holes_for_orthographic();
 
-inset = staticBorder() + dynamicBorder() + rowOffset(0);
+inset = static_border() + dynamic_border() + row_offset(0);
 
-translate([0, 0, plankSize.z]) {
+translate([0, 0, plank_size.z]) {
     color("#00ff00") {
         rotate([-90, 0, 0])
-            sizeLabel(inset.x);
-        translate([inset.x - 0.05, 0]) cube([0.1, plankSize.y, 0.1]);
+            size_label(inset.x);
+        translate([inset.x - 0.05, 0]) cube([0.1, plank_size.y, 0.1]);
 
         rotate([-90, 0, 0])
-            sizeLabel(inset.y, rotation=-90, over=true);
-        translate([0, inset.y - 0.05, 0]) cube([plankSize.x, 0.1, 0.1]);
+            size_label(inset.y, rotation=-90, over=true);
+        translate([0, inset.y - 0.05, 0]) cube([plank_size.x, 0.1, 0.1]);
     }
 
     color("#00ccff")
-        translate(inset + [vialCenterDistance() , 0, 0]) {
+        translate(inset + [vial_center_distance() , 0, 0]) {
         rotate([-90, 0, 0])
-            sizeLabel(vialCenterDistance());
+            size_label(vial_center_distance());
         rotate([-90, 0, 0])
-            sizeLabel(vialCenterDistance(), rotation=-60, over=true);
+            size_label(vial_center_distance(), rotation=-60, over=true);
 
         rotate([-90, 0, 0])
-            angleLabel(-60, 60, vialCenterDistance() * 5);
+            angle_label(-60, 60, vial_center_distance() * 5);
     }
 }

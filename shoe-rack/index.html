@@ -14,8 +14,8 @@ project: true
 </div>
 <div class="pure-u-1">
   <p>This small ({{site.data.shoe-rack.length}}cm x
-  {{site.data.shoe-rack.endHeight}}cm x
-  {{site.data.shoe-rack.endDepth}}cm) shelving unit can conveniently
+  {{site.data.shoe-rack.end_height}}cm x
+  {{site.data.shoe-rack.end_depth}}cm) shelving unit can conveniently
   organize shoes in a closet or entryway. Its light, open design
   allows for plenty of air cirulation. The lower shelves are tilted
   downward in the front, to make shoes resting on them easier to see
@@ -53,11 +53,12 @@ caption="Ends and shelf support stock dimensions." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     The end pieces and the shelf supports are the same width and
-    thickness: {{site.data.shoe-rack.endStockWidth}}cm x
-    {{site.data.shoe-rack.endStockThickness}}cm. ({% include
+    thickness: {{site.data.shoe-rack.end_stock_width}}cm x
+    {{site.data.shoe-rack.end_stock_thickness}}cm. ({% include
     figure_link.html number=figure_end_stock %}) You will need about
-    {{site.data.shoe-rack.totalEndStockLengthEstimate}}cm total stock
-    (plus a bit extra for saw kerfs and offcuts) in this dimension.
+    {{site.data.shoe-rack.total_end_stock_length_estimate}}cm total
+    stock (plus a bit extra for saw kerfs and offcuts) in this
+    dimension.
   </p>
 </div>
 
@@ -72,8 +73,8 @@ caption="Pieces for the ends of the unit." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     From the stock you prepared in the last step, cut four pieces
-    {{site.data.shoe-rack.endHeight}}cm long, and four pieces
-    {{site.data.shoe-rack.endDepth}}cm long.
+    {{site.data.shoe-rack.end_height}}cm long, and four pieces
+    {{site.data.shoe-rack.end_depth}}cm long.
   </p>
 </div>
 
@@ -88,9 +89,9 @@ caption="Prepare half-laps in each end." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     Prepare half-lap joints in the ends by removing half the thickness
-    ({{site.data.shoe-rack.lapJointDepth}}cm) from one face of both
+    ({{site.data.shoe-rack.lap_joint_depth}}cm) from one face of both
     ends of each board, to a distance equal to the width of the board
-    ({{site.data.shoe-rack.endStockWidth}}cm). It's best to sneak up
+    ({{site.data.shoe-rack.end_stock_width}}cm). It's best to sneak up
     on this cut, to get the fit as close as possible.
   </p>
   <p>
@@ -154,9 +155,9 @@ caption="Glue each end together." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     Glue and clamp the end assemblies together. One
-    {{site.data.shoe-rack.endDepth}}cm piece goes at either end of two
-    {{site.data.shoe-rack.endHeight}}cm pieces. You should end up with
-    two separate rectangular assemblies.
+    {{site.data.shoe-rack.end_depth}}cm piece goes at either end of
+    two {{site.data.shoe-rack.end_height}}cm pieces. You should end up
+    with two separate rectangular assemblies.
   </p>
   <p>
     To ensure that each end is square, measure diagonally from one
@@ -185,21 +186,21 @@ image="view-slat-dimensions.png"
 caption="Cut the slats for the shelves." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
-    You will need {{site.data.shoe-rack.totalSlats}} slats, each
-    {{site.data.shoe-rack.slatLength}}cm long,
-    {{site.data.shoe-rack.slatStockWidth}}cm wide, and
-    {{site.data.shoe-rack.slatStockThickness}}cm thick. A good way to
-    make these is to find a long board that is
-    {{site.data.shoe-rack.slatStockWidth}}cm thick, then set a power
-    saw fence {{site.data.shoe-rack.slatStockThickness}}cm away from
+    You will need {{site.data.shoe-rack.total_slats}} slats, each
+    {{site.data.shoe-rack.slat_length}}cm long,
+    {{site.data.shoe-rack.slat_stock_width}}cm wide, and
+    {{site.data.shoe-rack.slat_stock_thickness}}cm thick. A good way
+    to make these is to find a long board that is
+    {{site.data.shoe-rack.slat_stock_width}}cm thick, then set a power
+    saw fence {{site.data.shoe-rack.slat_stock_thickness}}cm away from
     its blade, and cut several strips along the length of the board.
     Also cut enough extra strips to use as center supports in the next
     step.
   </p>
   <p>
     Once you have enough strips, cut them into
-    {{site.data.shoe-rack.slatLength}}cm sections.  While cutting the
-    slats to exactly {{site.data.shoe-rack.slatLength}}cm will ensure
+    {{site.data.shoe-rack.slat_length}}cm sections.  While cutting the
+    slats to exactly {{site.data.shoe-rack.slat_length}}cm will ensure
     that the unit is exactly {{site.data.shoe-rack.length}}cm wide, it
     is far more important to make sure that the slats are all exactly
     the same length, regardless what that length is. If the slats are
@@ -220,16 +221,16 @@ image="view-shelf-support-detail.png"
 caption="Shelf support detail." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <!-- TODO need logic to say or not say this, depending on
-      reduceUnique parts and given shelf angles.  -->
+      reduce_unique parts and given shelf angles.  -->
   <p>
     For each shelf, cut two end supports and one center support to the
     length given in {% include figure_link.html
     number=figure_cut_supports %} (between
-    {{site.data.shoe-rack.shallowestShelfDepth}}cm and
-    {{site.data.shoe-rack.deepestShelfDepth}}cm, depending on mounting
-    angle). The end supports are made of the same stock that the ends
-    were made of, and the center support is made from the same stock
-    as the slats.
+    {{site.data.shoe-rack.shallowest_shelf_depth}}cm and
+    {{site.data.shoe-rack.deepest_shelf_depth}}cm, depending on
+    mounting angle). The end supports are made of the same stock that
+    the ends were made of, and the center support is made from the
+    same stock as the slats.
   </p>
   <p>
     Next, cut rebates for the slats to fit into. The positions of the
@@ -238,10 +239,10 @@ caption="Shelf support detail." %}
     example), you can cut two rebates in the correct positions by
     cutting one, then flipping the piece around and cutting the
     second. Note that for shelves that will be mounted at greater than
-    {{site.data.shoe-rack.raisedFrontSlatMinAngle}}, no rebate is cut
-    for the front slat. This will leave the front slat sitting higher
-    that the others, to provide a small lip to keep shoes from sliding
-    off.
+    {{site.data.shoe-rack.raised_front_slat_min_angle}}, no rebate is
+    cut for the front slat. This will leave the front slat sitting
+    higher that the others, to provide a small lip to keep shoes from
+    sliding off.
   </p>
   <p>
     Finally, ease the front and back of the shelf support by cutting
@@ -267,8 +268,8 @@ caption="Cut the bottom shelf even with the floor." %}
   <p>
     The supports for the bottom shelf need to be further trimmed so
     that they don't stick out from the bottom. Cut an angle
-    {{site.data.shoe-rack.bottomShelfMountingAngle}}&deg; from the top
-    edge of two supports, starting at the front corner.
+    {{site.data.shoe-rack.bottom_shelf_mounting_angle}}&deg; from the
+    top edge of two supports, starting at the front corner.
   </p>
   <p>
     This can be a difficult cut to make, because it's such a small

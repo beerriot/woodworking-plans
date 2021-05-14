@@ -10,4 +10,4 @@ $vpt=[ 43.02, 54.01, 9.74 ];
 $vpf=22.50;
 $vpd=277.15;
 
-wideArms(includeTop=false, includePivot=false);
+wide_arms(include_top=false, include_pivot=false);

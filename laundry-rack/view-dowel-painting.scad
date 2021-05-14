@@ -12,37 +12,35 @@ $vpt=[ -7.08, -108.00, 9.74 ];
 $vpf=22.50;
 $vpd=70.41;
 
-space = dowelDiameter + sizeLabelHeight();
+space = dowel_diameter + size_label_height();
 
 module paint() {
     color([0.8, 0.8, 0.8, 0.9]) rotate([0, 0, -90])
-        dowel(longDowelLength, errs=[0.01, 0]);
+        dowel(long_dowel_length, errs=[0.01, 0]);
 }
 
-key([keyChildInfo("LONG DOWEL", 4, [0, 0, space]),
-     keyChildInfo("LONG DOWEL", nonPivotLongDowelCount(),
-                  [0, 0, space]),
-     keyChildInfo("SHORT DOWEL", shortDowelCount(),
-                  [0, 0, space])]) {
-    translate([0,0,sizeLabelHeight()]) {
-        translate([0, 0, dowelRadius()]) {
-            rotate([0, 0, -90]) longDowel();
-            translate([doubleSquareStockThickness(), 0]) paint();
+key([["LONG DOWEL", 4, [0, 0, space]],
+     ["LONG DOWEL", non_pivot_long_dowel_count(), [0, 0, space]],
+     ["SHORT DOWEL", short_dowel_count(), [0, 0, space]]]) {
+    translate([0,0,size_label_height()]) {
+        translate([0, 0, dowel_radius()]) {
+            rotate([0, 0, -90]) long_dowel();
+            translate([double_square_stock_thickness(), 0]) paint();
         }
-        sizeLabel(doubleSquareStockThickness());
+        size_label(double_square_stock_thickness());
     }
-    translate([0,0,sizeLabelHeight()]) {
-        translate([0, 0, dowelRadius()]) {
-            rotate([0, 0, -90]) longDowel();
-            translate([squareStockThickness, 0]) paint();
+    translate([0,0,size_label_height()]) {
+        translate([0, 0, dowel_radius()]) {
+            rotate([0, 0, -90]) long_dowel();
+            translate([square_stock_thickness, 0]) paint();
         }
-        sizeLabel(squareStockThickness);
+        size_label(square_stock_thickness);
     }
-    translate([0,0,sizeLabelHeight()]) {
-        translate([0, 0, dowelRadius()]) {
-            rotate([0, 0, -90]) shortDowel();
-            translate([squareStockThickness, 0]) paint();
+    translate([0,0,size_label_height()]) {
+        translate([0, 0, dowel_radius()]) {
+            rotate([0, 0, -90]) short_dowel();
+            translate([square_stock_thickness, 0]) paint();
         }
-        sizeLabel(squareStockThickness);
+        size_label(square_stock_thickness);
     }
 }

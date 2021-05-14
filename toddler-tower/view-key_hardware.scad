@@ -16,54 +16,50 @@ bolt_size = [bolt_head_diameter, bolt_length(), bolt_head_diameter];
 screw_size = [0.6, screw_length(), 0.6];
 washer_size = [0.8, 0.3, 0.8];
 
-key([keyChildInfo("DECK SCREW", 18,
-                  thirdAngleSize(screw_size, topLabels=undef)),
-     keyChildInfo("FINISH_WASHER", 18,
-                  thirdAngleSize(washer_size, topLabels=undef)),
-     keyChildInfo("BOLT", 8,
-                  thirdAngleSize(bolt_size, topLabels=undef)),
-     keyChildInfo("THREADED_INSERT", 8,
-                  thirdAngleSize(insert_size, topLabels=undef))]) {
-    thirdAngle(screw_size) {
+key([["DECK SCREW", 18, third_angle_size(screw_size, top_labels=undef)],
+     ["FINISH_WASHER", 18, third_angle_size(washer_size, top_labels=undef)],
+     ["BOLT", 8, third_angle_size(bolt_size, top_labels=undef)],
+     ["THREADED_INSERT", 8, third_angle_size(insert_size, top_labels=undef)]]) {
+    third_angle(screw_size) {
         translate([0.3, 0, 0.3]) rotate([-90, 0, 0]) screw();
 
         union() {}
-        taRightSide(screw_length()) {
+        ta_right_side(screw_length()) {
             translate([finish_washer_height(), 0, 0])
-                sizeLabel(screw_length());
+                size_label(screw_length());
         }
     }
-    thirdAngle(washer_size) {
+    third_angle(washer_size) {
         translate([0.4, 0, 0.4]) rotate([-90, 0, 0]) tt_finish_washer();
 
         union() {}
-        taRightSide(finish_washer_height()) {}
+        ta_right_side(finish_washer_height()) {}
     }
-    thirdAngle(bolt_size, frontLabels=[0,0.5,1]) {
+    third_angle(bolt_size, front_labels=[0,0.5,1]) {
         translate([bolt_head_diameter / 2, 0, bolt_head_diameter / 2])
             rotate([-90, 0, 0])
             bolt();
 
         union() {
-            sizeLabel(bolt_head_diameter);
+            size_label(bolt_head_diameter);
         }
 
-        taRightSide(bolt_length()) {
-            translate([0.1, 0, 0]) sizeLabel(bolt_length());
+        ta_right_side(bolt_length()) {
+            translate([0.1, 0, 0]) size_label(bolt_length());
         }
     }
-    thirdAngle(insert_size) {
+    third_angle(insert_size) {
         translate([threaded_insert_od / 2, 0, threaded_insert_od / 2])
             rotate([-90, 0, 0])
             tt_threaded_insert();
 
         union() {
-            sizeLabel(threaded_insert_od);
+            size_label(threaded_insert_od);
             translate([threaded_insert_od / 4, 0, 0])
-                sizeLabel(threaded_insert_od / 2, over=true);
+                size_label(threaded_insert_od / 2, over=true);
         }
-        taRightSide(1) {
-            sizeLabel(1);
+        ta_right_side(1) {
+            size_label(1);
         }
     }
 }

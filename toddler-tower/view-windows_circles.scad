@@ -23,32 +23,32 @@ module view_windows_circles() {
     }
 }
 
-showBothSides() view_windows_circles();
+show_both_sides() view_windows_circles();
 
 // upper window
 translate(upper_window_position() + [0, 0, thickness]) {
-    viewLabel() sizeLabel(upper_window_inset(), rotation=-90);
-    viewLabel() sizeLabel(upper_window_inset(), rotation=180);
+    view_label() size_label(upper_window_inset(), rotation=-90);
+    view_label() size_label(upper_window_inset(), rotation=180);
 
     translate([0, -upper_window_top_depth(), 0]) {
-        viewLabel() sizeLabel(upper_window_inset(), rotation=-90);
-        viewLabel() sizeLabel(upper_window_inset() + upper_window_top_depth(),
+        view_label() size_label(upper_window_inset(), rotation=-90);
+        view_label() size_label(upper_window_inset() + upper_window_top_depth(),
                               rotation=180,
                               over=true);
     }
 }
 
-translate(leftOrigin()
+translate(left_origin()
           + scale([1,-1,1], upper_window_position())
           + [-upper_window_height(), 0, thickness]) {
-    viewLabel() sizeLabel(upper_window_inset() + upper_window_height(),
+    view_label() size_label(upper_window_inset() + upper_window_height(),
                           rotation=-90, over=true);
-    viewLabel() sizeLabel(upper_window_inset(), over=true);
+    view_label() size_label(upper_window_inset(), over=true);
 
     translate([0, upper_window_bottom_depth(), 0]) {
-        viewLabel() sizeLabel(upper_window_inset() + upper_window_height(),
+        view_label() size_label(upper_window_inset() + upper_window_height(),
                               rotation=-90, over=true);
-        viewLabel() sizeLabel(upper_window_bottom_depth() +
+        view_label() size_label(upper_window_bottom_depth() +
                               upper_window_inset());
     }
 }
@@ -56,14 +56,14 @@ translate(leftOrigin()
 // bottom window
 translate([0, lower_window_upper_corner_offset(), thickness])
 lower_window_position() {
-    viewLabel() sizeLabel(lower_window_height(), rotation=-90, over=true);
+    view_label() size_label(lower_window_height(), rotation=-90, over=true);
     translate([lower_window_height(), 0, 0])
-        viewLabel() sizeLabel(front_step_depth() + cutout_radius());
+        view_label() size_label(front_step_depth() + cutout_radius());
 
     translate([0, lower_window_top_depth(), 0]) {
-        viewLabel() sizeLabel(lower_window_height(), rotation=-90, over=true);
+        view_label() size_label(lower_window_height(), rotation=-90, over=true);
         translate([lower_window_height(), 0, 0])
-            viewLabel() sizeLabel(front_step_depth()
+            view_label() size_label(front_step_depth()
                                   + lower_window_top_depth()
                                   + cutout_radius(),
                                   over=true);
