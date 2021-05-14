@@ -178,6 +178,13 @@ module tower() {
     rotate([0, 0, 120]) tower_leg();
     rotate([0, 0, -120]) tower_leg();
     translate([0, 0, max(brace_elevations)]) pipe();
+
+    translate([0, 0, max(brace_elevations) + brace_profile.z])
+        pipe_clamp();
+
+    rotate([0, 0, 15])
+        translate([0, 0, wood_tower_height()])
+        pipe_clamp();
 }
 
 module ground() {
@@ -221,10 +228,3 @@ for (h = brace_elevations) {
                    rotation=-(180-leg_angle));
     }
  }
-
-translate([0, 0, max(brace_elevations) + brace_profile.z])
-pipe_clamp();
-
-rotate([0, 0, 15])
-translate([0, 0, wood_tower_height()])
-pipe_clamp();
