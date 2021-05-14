@@ -99,12 +99,6 @@ module brace(at_height) {
     difference() {
         cube(size);
 
-        translate([size.x, 0, 0])
-            rotate([0, leg_angle, 0])
-            translate([-size.x, 0, 0] - err([0, 1, 0]))
-            cube(size + err([1, 2, 0]));
-
-
         translate([0, size.y, 0])
             rotate([0, 0, -60])
             translate([0, -size.y, 0] - err([1, 0, 1]))
