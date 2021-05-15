@@ -117,32 +117,53 @@ module brace(at_height) {
     }
 }
 
-module brace_hanger() {
+function brace_hanger_panel_size() =
     // slightly less tall than the braces, each side half as wide as tall
-    panel_size = [brace_profile.z * 0.45,
-                  hanger_thickness,
-                  brace_profile.z * 0.9];
-    screw_positions = [scale([0.3, 0, 0.2], panel_size),
-                       scale([0.6, 0, 0.4], panel_size),
-                       scale([0.3, 0, 0.6], panel_size),
-                       scale([0.6, 0, 0.8], panel_size)];
+    [brace_profile.z * 0.45, hanger_thickness, brace_profile.z * 0.9];
 
+function brace_hanger_screw_positions() =
+    let (panel_size = brace_hanger_panel_size())
+    [scale([0.3, 0, 0.2], panel_size),
+     scale([0.6, 0, 0.4], panel_size),
+     scale([0.3, 0, 0.6], panel_size),
+     scale([0.6, 0, 0.8], panel_size)];
+
+module brace_hanger() {
     module brace_hanger_side() {
-        translate([0, 0, brace_profile.z * 0.05])
-            difference() {
-            cube(panel_size);
+        difference() {
+            cube(brace_hanger_panel_size());
 
-            for (p = screw_positions) {
+            for (p = brace_hanger_screw_positions()) {
                 translate(p-err([0, 1, 0]))
                     rotate([-90, 0, 0])
                     cylinder(h=(brace_profile + err([0, 0, 2])).y,
-                             d=hanger_screw_size.x);
+                             d=hanger_screw_size.y);
             }
         }
     }
 
-    brace_hanger_side();
-    rotate([0, 0, -60]) mirror([1, 0, 0]) brace_hanger_side();
+    color(hanger_color) {
+        brace_hanger_side();
+        rotate([0, 0, -60]) mirror([1, 0, 0]) brace_hanger_side();
+    }
+}
+
+module brace_hanger_screws() {
+    module one_side() {
+        for (p = brace_hanger_screw_positions()) {
+            translate(p)
+                rotate([85, 0, 0])
+                translate([0, 0, -hanger_thickness*3])
+                deck_screw(hanger_screw_size.z,
+                           hanger_screw_size.y,
+                           hanger_screw_size.x);
+        }
+    }
+
+    color(hardware_color) {
+        one_side();
+        rotate([0, 0, -60]) mirror([1, 0, 0]) one_side();
+    }
 }
 
 module bolt_hole() {
@@ -202,7 +223,8 @@ module pipe_clamp() {
 // ASSEMBLY
 
 module leg_bolt_with_nut_and_washers() {
-    rotate([90, 0, 0]) {
+    color(hardware_color)
+        rotate([90, 0, 0]) {
         translate([0, 0, -leg_washer_size().z]) {
             leg_bolt();
             leg_washer();
@@ -219,8 +241,10 @@ module brace_with_hanger_and_bolt(elevation) {
 
     translate([-brace_length_past_pipe(),
                leg_size.y / 2 + brace_profile.y,
-               elevation])
+               elevation + brace_profile.z * 0.05]) {
         brace_hanger();
+        brace_hanger_screws();
+    }
 
     bolt_base_position = [0, leg_size.y / 2 + brace_profile.y, elevation]
         + brace_bolt_hole_position(brace_size(elevation))

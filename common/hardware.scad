@@ -12,15 +12,17 @@ module threads(length, pitch, depth, id) {
 }
 
 deck_screw_head_diameter = 0.6;
-module deck_screw(length) {
+module deck_screw(length,
+                  diameter=0.3,
+                  head_diameter=deck_screw_head_diameter) {
     difference() {
-        cylinder(h=0.3, d1=deck_screw_head_diameter, d2=0.3);
+        cylinder(h=0.3, d1=deck_screw_head_diameter, d2=diameter);
         cube([0.3, 0.1, 0.15], center=true);
         cube([0.1, 0.3, 0.15], center=true);
     }
-    translate([0, 0, 0.29]) cylinder(h=length-0.3, d=0.3);
-    translate([0, 0, length-0.02]) cylinder(h=0.3, d1=0.3, d2=0.01);
-    translate([0, 0, 0.3]) threads(length - 0.3, 6, 0.05, 0.3);
+    translate([0, 0, 0.29]) cylinder(h=length-0.3, d=diameter);
+    translate([0, 0, length-0.02]) cylinder(h=0.3, d1=diameter, d2=0.01);
+    translate([0, 0, 0.3]) threads(length - 0.3, 6, 0.05, diameter);
 }
 
 function finish_washer_height() = 0.3;
