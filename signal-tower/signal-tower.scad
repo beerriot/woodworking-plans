@@ -201,7 +201,7 @@ module leg_nut() {
         thread_depth=leg_bolt_diameter * 0.05);
 }
 
-module pipe_clamp() {
+module pipe_clamp_block() {
     color(clamp_color)
         translate(scale([-0.5, -0.5, 0], clamp_layer_size))
         difference() {
@@ -211,16 +211,64 @@ module pipe_clamp() {
         // ... with a bolt hole
         translate(scale([0.5, 0, 1.5], clamp_layer_size) - err([0, 1, 0]))
             rotate([-90, 0, 0])
-            cylinder(h=clamp_layer_size.y / 2, d=clamp_bolt_diameter);
+            cylinder(h=clamp_layer_size.y / 2, d=clamp_t_nut_diameter);
 
         // ... and a pipe hole
         translate(scale([0.5, 0.5, 0], clamp_layer_size) - err([0, 0, 1]))
             cylinder(h=(clamp_layer_size * 3 + err([0, 0, 2])).z,
                      d=pipe_size.x);
+
+        // ... with extra room for the T-nut
+        translate(scale([0.5, 0.5, 0], clamp_layer_size)
+                  - [clamp_t_nut_diameter * 1.5,
+                     pipe_size.x / 2 + clamp_bolt_diameter,
+                     0]
+                  - err([0, 0, 1]))
+            cube([clamp_t_nut_diameter * 3,
+                  pipe_size.x / 2 + clamp_bolt_diameter,
+                  clamp_layer_size.z * 3]
+                 + err([0, 0, 2]));
     }
 }
 
+module pipe_clamp_t_nut() {
+    color(hardware_color)
+    t_nut(clamp_bolt_diameter,
+          clamp_t_nut_diameter,
+          clamp_bolt_diameter * 2,
+          10);
+}
+
+function pipe_clamp_bolt_length() = clamp_layer_size.y / 2;
+
+module pipe_clamp_bolt() {
+    color(hardware_color)
+    bolt(pipe_clamp_bolt_length(),
+         clamp_bolt_diameter,
+         head_thickness=clamp_bolt_diameter,
+         head_size=clamp_bolt_head_size,
+         thread_length=pipe_clamp_bolt_length(),
+         thread_pitch=10,
+         thread_depth=clamp_bolt_diameter * 0.05);
+}
+
 // ASSEMBLY
+
+module pipe_clamp() {
+    pipe_clamp_block();
+
+    translate(scale([0, 0, 1.5], clamp_layer_size)
+              - [0,
+                 pipe_size.x / 2 + clamp_bolt_diameter,
+                 0])
+        rotate([90, 0, 0])
+        pipe_clamp_t_nut();
+
+    translate(scale([0, 0, 1.5], clamp_layer_size)
+              + [0, -(pipe_size.x / 2 + pipe_clamp_bolt_length()), 0])
+        rotate([-90, 0, 0])
+        pipe_clamp_bolt();
+}
 
 module leg_bolt_with_nut_and_washers() {
     color(hardware_color)

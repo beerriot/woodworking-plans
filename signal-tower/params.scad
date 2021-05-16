@@ -28,6 +28,9 @@ clamp_bolt_diameter = 3/8;
 // Wrench size for the pipe-brace bolts
 clamp_bolt_head_size = 9/16;
 
+// Outer diameter of the barrel of the T-nut in the pipe clamp
+clamp_t_nut_diameter = 7/16;
+
 // Thickness of metal for the hangers connecting the braces to each other.
 hanger_thickness = 1/16;
 
