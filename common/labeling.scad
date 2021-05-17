@@ -67,7 +67,7 @@ module size_label(distance,
 
 //TODO: currently only works for 0 <= |angle| <= 180
 module angle_label(angle, reference_angle, size, color="grey") {
-    assert((0 <= angle) && (angle <= 180));
+    assert((-180 <= angle) && (angle <= 180));
     color(color) {
         rotate([0, -reference_angle, 0]) {
             cube([size, 0.1, 0.1]);

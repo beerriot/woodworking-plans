@@ -69,8 +69,6 @@ module metal_diagram_color(diagram_color) {
 
 module leg() {
     wood_diagram_color(leg_color)
-        translate([pipe_size.x / 2, -leg_size.y / 2, wood_tower_height()])
-        rotate([0, leg_angle, 0])
         difference() {
         cube(leg_size);
 
@@ -115,7 +113,6 @@ module brace(at_height) {
     size = brace_size(at_height);
 
     wood_diagram_color(brace_color)
-    translate([-brace_length_past_pipe(), leg_size.y / 2, at_height])
     difference() {
         cube(size);
 
@@ -213,12 +210,14 @@ module leg_nut() {
         thread_depth=leg_bolt_diameter * 0.05);
 }
 
+// made of three layers of material
+function pipe_clamp_size() = scale([1, 1, 3], clamp_layer_size);
+
 module pipe_clamp_block() {
     wood_diagram_color(clamp_color)
         translate(scale([-0.5, -0.5, 0], clamp_layer_size))
         difference() {
-        // made of three layers of material ...
-        cube(scale([1, 1, 3], clamp_layer_size));
+        cube(pipe_clamp_size());
 
         // ... with a bolt hole
         translate(scale([0.5, 0, 1.5], clamp_layer_size) - err([0, 1, 0]))
@@ -297,7 +296,8 @@ module leg_bolt_with_nut_and_washers() {
 }
 
 module brace_with_hanger_and_bolt(elevation) {
-    brace(elevation);
+    translate([-brace_length_past_pipe(), leg_size.y / 2, elevation])
+        brace(elevation);
 
     translate([-brace_length_past_pipe(),
                leg_size.y / 2 + brace_profile.y,
@@ -314,7 +314,9 @@ module brace_with_hanger_and_bolt(elevation) {
 }
 
 module tower_leg() {
-    leg();
+    translate([pipe_size.x / 2, -leg_size.y / 2, wood_tower_height()])
+        rotate([0, leg_angle, 0])
+        leg();
     for (i = [0 : len(brace_elevations) - 1]) {
         if (i % 2 == 0) {
             mirror([0, 1, 0])
