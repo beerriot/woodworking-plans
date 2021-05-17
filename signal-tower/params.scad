@@ -42,7 +42,7 @@ brace_color = "#55bbee";
 clamp_color = "#cc77aa";
 hanger_color = "#cccccc";
 hardware_color = "#cccccc";
-ground_color = "#cccc0099";
+ground_color = "#66cc0099";
 
 finish_wood_color = "#dd9966";
 finish_metal_color = "#cccccc";
