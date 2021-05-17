@@ -55,8 +55,20 @@ function brace_length(at_height) =
 function brace_size(at_height) =
     [brace_length(at_height), 0, 0] + brace_profile;
 
+// COMPONENTS
+
+$use_finish_colors = false;
+
+module wood_diagram_color(diagram_color) {
+    color($use_finish_colors ? finish_wood_color : diagram_color) children();
+}
+
+module metal_diagram_color(diagram_color) {
+    color($use_finish_colors ? finish_metal_color : diagram_color) children();
+}
+
 module leg() {
-    color(leg_color)
+    wood_diagram_color(leg_color)
         translate([pipe_size.x / 2, -leg_size.y / 2, wood_tower_height()])
         rotate([0, leg_angle, 0])
         difference() {
@@ -83,7 +95,7 @@ module leg() {
 }
 
 module pipe() {
-    color(pipe_color)
+    metal_diagram_color(pipe_color)
         difference() {
         cylinder(h=pipe_size.z, d=pipe_size.x);
 
@@ -102,7 +114,7 @@ function brace_bolt_hole_position(size) =
 module brace(at_height) {
     size = brace_size(at_height);
 
-    color(brace_color)
+    wood_diagram_color(brace_color)
     translate([-brace_length_past_pipe(), leg_size.y / 2, at_height])
     difference() {
         cube(size);
@@ -142,7 +154,7 @@ module brace_hanger() {
         }
     }
 
-    color(hanger_color) {
+    metal_diagram_color(hanger_color) {
         brace_hanger_side();
         rotate([0, 0, -60]) mirror([1, 0, 0]) brace_hanger_side();
     }
@@ -160,7 +172,7 @@ module brace_hanger_screws() {
         }
     }
 
-    color(hardware_color) {
+    metal_diagram_color(hardware_color) {
         one_side();
         rotate([0, 0, -60]) mirror([1, 0, 0]) one_side();
     }
@@ -202,7 +214,7 @@ module leg_nut() {
 }
 
 module pipe_clamp_block() {
-    color(clamp_color)
+    wood_diagram_color(clamp_color)
         translate(scale([-0.5, -0.5, 0], clamp_layer_size))
         difference() {
         // made of three layers of material ...
@@ -232,7 +244,7 @@ module pipe_clamp_block() {
 }
 
 module pipe_clamp_t_nut() {
-    color(hardware_color)
+    metal_diagram_color(hardware_color)
     t_nut(clamp_bolt_diameter,
           clamp_t_nut_diameter,
           clamp_bolt_diameter * 2,
@@ -242,7 +254,7 @@ module pipe_clamp_t_nut() {
 function pipe_clamp_bolt_length() = clamp_layer_size.y / 2;
 
 module pipe_clamp_bolt() {
-    color(hardware_color)
+    metal_diagram_color(hardware_color)
     bolt(pipe_clamp_bolt_length(),
          clamp_bolt_diameter,
          head_thickness=clamp_bolt_diameter,
@@ -271,7 +283,7 @@ module pipe_clamp() {
 }
 
 module leg_bolt_with_nut_and_washers() {
-    color(hardware_color)
+    metal_diagram_color(hardware_color)
         rotate([90, 0, 0]) {
         translate([0, 0, -leg_washer_size().z]) {
             leg_bolt();
@@ -319,16 +331,17 @@ module tower() {
     rotate([0, 0, -120]) tower_leg();
     translate([0, 0, max(brace_elevations)]) pipe();
 
+    rotate([0, 0, 60])
     translate([0, 0, max(brace_elevations) + brace_profile.z])
         pipe_clamp();
 
-    rotate([0, 0, 15])
+    rotate([0, 0, 30])
         translate([0, 0, wood_tower_height()])
         pipe_clamp();
 }
 
 module ground() {
-    color("#cccc0099")
+    color(ground_color)
         translate([0, 0, -1])
         cylinder(r=wood_tower_base_radius() * 3, h=1);
 }
