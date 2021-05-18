@@ -13,11 +13,11 @@ $vpr = [ 90.00, 0.00, 0.00 ];
 $vpd = 260.59;
 $vpf = 22.50;
 
-key([["LEG", 3, third_angle_size(leg_size)],
+key([["LEG", 3, third_angle_size(leg_size, top_labels=[1,0,0])],
      ["BRACE",
       3 * len(brace_elevations),
-      third_angle_size(brace_size(brace_elevations[0]))],
-     ["CLAMP", 2, third_angle_size(pipe_clamp_size())],
+      third_angle_size(brace_size(brace_elevations[0]), top_labels=[1,0,0])],
+     ["CLAMP", 2, third_angle_size(pipe_clamp_size(), top_labels=[1,0,0])],
      ["PIPE",
       1,
       third_angle_size([pipe_size.z, pipe_size.x, pipe_size.x],
@@ -48,17 +48,44 @@ key([["LEG", 3, third_angle_size(leg_size)],
 
     third_angle(brace_size(brace_elevations[0])) {
         brace(brace_elevations[0]);
-        union() {}
-        ta_right_side(brace_size(brace_elevations[0]).x) { }
-        ta_top_side(brace_profile.z) { }
+        union() {
+            size_label(brace_bolt_hole_position(brace_size(brace_elevations[0])).x);
+        }
+        ta_right_side(brace_size(brace_elevations[0]).x) {
+            size_label(brace_profile.y);
+            translate([brace_profile.y, 0, 0])
+                size_label(brace_profile.z, rotation=-90);
+        }
+        ta_top_side(brace_profile.z) {
+            translate([0, 0, brace_profile.y]) {
+                size_label(brace_size(brace_elevations[0]).x, over=true);
+                angle_label(30, -90, brace_profile.y);
+            }
+        }
     }
 
     third_angle(pipe_clamp_size()) {
         translate(scale([0.5, 0.5, 0], pipe_clamp_size()))
             pipe_clamp_block();
-        union() {}
-        ta_right_side(pipe_clamp_size().x) {}
-        ta_top_side(pipe_clamp_size().z) {}
+        union() {
+            size_label(pipe_clamp_size().x);
+        }
+        ta_right_side(pipe_clamp_size().x) {
+            size_label(pipe_clamp_size().x);
+            translate([pipe_clamp_size().x, 0, 0])
+                size_label(pipe_clamp_size().z, rotation=-90);
+        }
+        ta_top_side(pipe_clamp_size().z) {
+            translate([(pipe_clamp_size().x - pipe_size.x) / 2,
+                       0,
+                       pipe_clamp_size().y])
+                size_label(pipe_size.x, over=true);
+            translate([pipe_clamp_size().x,
+                       0,
+                       (pipe_clamp_size().y - pipe_size.x) / 2
+                       - clamp_bolt_diameter])
+                size_label(pipe_size.x + clamp_bolt_diameter, rotation=-90);
+        }
     }
 
     third_angle([pipe_size.z, pipe_size.x, pipe_size.x],
@@ -66,7 +93,13 @@ key([["LEG", 3, third_angle_size(leg_size)],
         translate([0, pipe_size.x / 2, pipe_size.x / 2])
             rotate([0, 90, 0])
             pipe();
-        union() {}
-        ta_right_side(pipe_size.z) {}
+        union() {
+            size_label(pipe_size.z);
+        }
+        ta_right_side(pipe_size.z) {
+            size_label(pipe_size.x);
+            translate([0, 0, pipe_size.x])
+                size_label(pipe_size.y, over=true);
+        }
     }
 }
