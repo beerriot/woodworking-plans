@@ -1,4 +1,4 @@
-// Key to the wood parts, plus the pipe because it's on the same scale.
+// Key to the bolts, screws, and such.
 //cmdline: --projection=o --imgsize=2048,4096
 include <../common/echo-camera-arg.scad>
 
