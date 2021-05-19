@@ -27,6 +27,8 @@ project: true
   </p>
 </div>
 
+{% assign st=site.data.signal-tower %}
+
 <div class="pure-u-1">
   <h2>Building Guidelines</h2>
 </div>
@@ -37,17 +39,18 @@ project: true
     few tips and the parts diagrams should get some of you started.
   </p>
   <p>
-    The legs are designed to stand at {{leg_angle}}&deg; off
-    vertical. The top and bottom are cut to match that angle, so that
-    the clamp sits flush at the top, and the feet sit flush on the
-    ground.
+    The legs are designed to stand at {{st.leg_angle}}&deg; off
+    horizontal. The top and bottom are cut to complement that angle
+    (at {{st.leg_angle | times: -1 | plus: 90}}&deg;), so that the
+    clamp sits flush at the top, and the feet sit flush on the ground.
   </p>
   <p>
     The measurements for the bolt holes in the legs are given from the
     middle of the angled foot. Instead of trying to measure from that
     point, measure the same distance from the acute edge of the foot,
-    then strike a {{leg_angle}}&deg; line across the leg at that
-    point. Find the midpoint of that line, and drill there.
+    then strike a {{st.leg_angle | times: -1 | plus: 90}}&deg; line
+    across the leg at that point. Find the midpoint of that line, and
+    drill there.
   </p>
   <p>
     Each brace has a 30&deg; mitre on one end. If your stock is long
