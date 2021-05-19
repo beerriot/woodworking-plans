@@ -8,7 +8,7 @@ include <params.scad>
 use <../common/labeling.scad>
 use <../common/math_funcs.scad>
 
-$vpt = [ 65.20, 0.00, 29.20 ];
+$vpt = [ 55.20, 0.00, 29.20 ];
 $vpr = [ 90.00, 0.00, 0.00 ];
 $vpd = 260.59;
 $vpf = 22.50;

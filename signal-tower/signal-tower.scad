@@ -157,15 +157,19 @@ module brace_hanger() {
     }
 }
 
+module brace_hanger_screw() {
+    deck_screw(hanger_screw_size.z,
+               hanger_screw_size.y,
+               hanger_screw_size.x);
+}
+
 module brace_hanger_screws() {
     module one_side() {
         for (p = brace_hanger_screw_positions()) {
             translate(p)
                 rotate([85, 0, 0])
                 translate([0, 0, -hanger_thickness*3])
-                deck_screw(hanger_screw_size.z,
-                           hanger_screw_size.y,
-                           hanger_screw_size.x);
+                brace_hanger_screw();
         }
     }
 
