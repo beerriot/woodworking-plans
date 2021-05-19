@@ -7,9 +7,9 @@ include <params.scad>
 
 use <../common/labeling.scad>
 
-$vpt = [ -0.45, 0.42, 30.34 ];
+$vpt = [ -0.16, -1.91, 30.34 ];
 $vpr = [ 0.00, 0.00, 0.00 ];
-$vpd = 68.99;
+$vpd = 114.80;
 $vpf = 22.50;
 
 brace_with_hanger_and_bolt(brace_elevations[0]);

@@ -17,18 +17,29 @@ project: true
   description="Third-angle view of the assembled signal tower." %}
 </div>
 
+{% assign st=site.data.signal-tower %}
+
 <div class="pure-u-1">
   <p>
     This tower is a relatively cheap and easy to build mounting point
-    for antennas and satellite dishes. By loosening the bolt in each
+    for antennas and satellite dishes. Standing {{st.assembled_height
+    | divided_by: 100 | round: 1}}m tall ({{st.assembled_height |
+    divided_by: 2.54 | divided_by: 12}}ft), it can easily raise a
+    receiver above small obstructions. By loosening the bolt in each
     clamp, the pipe mast can be lowered to allow easier access for
     antenna/dish installation. The tower should be cabled to anchors
     secured in the ground to prevent it from tipping.
   </p>
+  <p>
+    Note: all sizes in the diagrams are in centimeters, but the
+    original design was done in inches. If you are more familiar with
+    common metric sizes of these materials,
+    please <a href="https://github.com/beerriot/woodworking-plans">open
+    an issue or submit a pull request</a> to help me clean them up.
+  </p>
 </div>
 
-{% assign st=site.data.signal-tower %}
-{% increment st_fig %}
+{% capture figure_0_ignore %}{% increment st_fig %}{% endcapture %}
 
 <div class="pure-u-1">
   <h2>Building Guidelines</h2>

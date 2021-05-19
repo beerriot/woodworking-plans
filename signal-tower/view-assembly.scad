@@ -4,9 +4,9 @@ include <../common/echo-camera-arg.scad>
 
 use <signal-tower.scad>
 
-$vpt = [ -5.21, 20.05, 103.88 ];
+$vpt = [ -12.91, 65.39, 270.17 ];
 $vpr = [ 74.60, 0.00, 14.70 ];
-$vpd = 640.56;
+$vpd = 1618.92;
 $vpf = 22.50;
 
 tower($use_finish_colors=true);

@@ -8,9 +8,9 @@ include <params.scad>
 use <../common/labeling.scad>
 use <../common/math_funcs.scad>
 
-$vpt = [ 55.20, 0.00, 29.20 ];
+$vpt = [ 156.03, 0.00, 32.28 ];
 $vpr = [ 90.00, 0.00, 0.00 ];
-$vpd = 260.59;
+$vpd = 616.09;
 $vpf = 22.50;
 
 function brace_key_size(elevation) =

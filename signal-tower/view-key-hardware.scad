@@ -8,9 +8,9 @@ include <params.scad>
 use <../common/labeling.scad>
 use <../common/math_funcs.scad>
 
-$vpt = [ 2.83, 0.00, 14.75 ];
+$vpt = [ 6.58, 0.00, 23.56 ];
 $vpr = [ 90.00, 0.00, 0.00 ];
-$vpd = 85.60;
+$vpd = 132.78;
 $vpf = 22.50;
 
 key([["LEG BOLT", 3 * len(brace_elevations),

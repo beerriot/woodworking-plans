@@ -8,9 +8,9 @@ include <params.scad>
 use <../common/labeling.scad>
 use <../common/common.scad>
 
-$vpt = [ 12.84, -14.66, 15.13 ];
+$vpt = [ 12.60, -14.11, 15.94 ];
 $vpr = [ 54.60, 0.00, 39.90 ];
-$vpd = 43.32;
+$vpd = 118.50;
 $vpf = 22.50;
 
 $fs=0.1;
