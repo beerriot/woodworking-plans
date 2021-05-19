@@ -13,10 +13,20 @@ $vpr = [ 90.00, 0.00, 0.00 ];
 $vpd = 260.59;
 $vpf = 22.50;
 
+function brace_key_size(elevation) =
+    third_angle_size(brace_size(elevation), top_labels=[1,0,0]);
+
+function distance_to_brace(i) =
+    i == 0
+    ? 0
+    : (brace_key_size(brace_elevations[i-1]).x
+       + size_label_height() * 3 // space between
+       + distance_to_brace(i - 1));
+
 key([["LEG", 3, third_angle_size(leg_size, top_labels=[1,0,0])],
      ["BRACE",
-      3 * len(brace_elevations),
-      third_angle_size(brace_size(brace_elevations[0]), top_labels=[1,0,0])],
+      str(3, " of each size") ,
+      brace_key_size(brace_elevations[0])],
      ["CLAMP", 2, third_angle_size(pipe_clamp_size(), top_labels=[1,0,0])],
      ["PIPE",
       1,
@@ -46,20 +56,24 @@ key([["LEG", 3, third_angle_size(leg_size, top_labels=[1,0,0])],
         }
     }
 
-    third_angle(brace_size(brace_elevations[0])) {
-        brace(brace_elevations[0]);
-        union() {
-            size_label(brace_bolt_hole_position(brace_size(brace_elevations[0])).x);
-        }
-        ta_right_side(brace_size(brace_elevations[0]).x) {
-            size_label(brace_profile.y);
-            translate([brace_profile.y, 0, 0])
-                size_label(brace_profile.z, rotation=-90);
-        }
-        ta_top_side(brace_profile.z) {
-            translate([0, 0, brace_profile.y]) {
-                size_label(brace_size(brace_elevations[0]).x, over=true);
-                angle_label(30, -90, brace_profile.y);
+    for (i = [0 : len(brace_elevations) - 1]) {
+        translate([distance_to_brace(i), 0, 0]) {
+            e = brace_elevations[i];
+            s = brace_size(e);
+            third_angle(s) {
+                brace(e);
+                size_label(brace_bolt_hole_position(s).x);
+                ta_right_side(s.x) {
+                    size_label(brace_profile.y);
+                    translate([brace_profile.y, 0, 0])
+                        size_label(brace_profile.z, rotation=-90);
+                }
+                ta_top_side(brace_profile.z) {
+                    translate([0, 0, brace_profile.y]) {
+                        size_label(s.x, over=true);
+                        angle_label(30, -90, brace_profile.y);
+                    }
+                }
             }
         }
     }
