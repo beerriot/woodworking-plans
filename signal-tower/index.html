@@ -28,6 +28,7 @@ project: true
 </div>
 
 {% assign st=site.data.signal-tower %}
+{% increment st_fig %}
 
 <div class="pure-u-1">
   <h2>Building Guidelines</h2>
@@ -52,6 +53,13 @@ project: true
     across the leg at that point. Find the midpoint of that line, and
     drill there.
   </p>
+</div>
+
+{% capture figure_clamp_assembly %}{% increment st_fig %}{% endcapture %}
+{% include figure.html number=figure_clamp_assembly
+image="view-clamp-assembly.png"
+caption="Pipe clamps are made of three layers of wood in alternating grain directions." %}
+<div class="pure-u-1 pure-u-md-1-2">
   <p>
     Make the clamps out of three square layers of wood glued
     together. Orient the middle layer such that the grain runs
@@ -59,6 +67,15 @@ project: true
     clamp bolt through the side grain (not through the end grain) of
     the middle layer.
   </p>
+  <p>
+    File one side of the pipe hole flat, and then push a t-nut into
+    the bolt holt from the inside of the pipe hole. As the bolt screws
+    into the t-nut from the outside, it will press against the pipe,
+    holding the pipe in place.
+  </p>
+</div>
+
+<div class="pure-u-1">
   <p>
     If you're not using a well-calibrated drill press to make the bolt
     holes, then make sure to start the holes from the mating face of
@@ -69,9 +86,9 @@ project: true
 </div>
 
 {% capture figure_brace_assembly %}{% increment st_fig %}{% endcapture %}
-{% include figure.html number=figure_brace-assembly
+{% include figure.html number=figure_brace_assembly
 image="view-brace-assembly.png"
-caption="Screw braces together with brace hangers" %}
+caption="Screw braces together with brace hangers." %}
 <div class="pure-u-1 pure-u-md-1-2">
   <p>
     Each brace has a 30&deg; mitre on one end. If your stock is long
