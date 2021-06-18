@@ -38,8 +38,7 @@
         }
 
         if (menu.className.indexOf('active') !== -1) {
-            if (e.target.className.indexOf('pure-menu') === -1 &&
-                e.target.parentElement.className.indexOf('pure-menu') === -1) {
+            if (e.target.parentElement.className.indexOf('pure-menu') === -1) {
                 return toggleAll(e);
             }
         }
