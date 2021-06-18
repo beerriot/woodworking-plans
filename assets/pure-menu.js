@@ -31,17 +31,20 @@
         toggleClass(menu, active);
         toggleClass(menuLink, active);
     }
-    
+
     function handleEvent(e) {
         if (e.target.id === menuLink.id) {
             return toggleAll(e);
         }
-        
+
         if (menu.className.indexOf('active') !== -1) {
-            return toggleAll(e);
+            if (e.target.className.indexOf('pure-menu') === -1 &&
+                e.target.parentElement.className.indexOf('pure-menu') === -1) {
+                return toggleAll(e);
+            }
         }
     }
-    
+
     document.addEventListener('click', handleEvent);
 
 }(this, this.document));
