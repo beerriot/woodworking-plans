@@ -1,2 +1,6 @@
 exclude: ["Makefile*", "LICENSE", "README*.md", "*.scad", "common/*", "*/Makefile", "*/deps", "*/anim-*.png"]
+domain: woodworking-plans.beerriot.com
 url: https://woodworking-plans.beerriot.com
+email_suffix: woodworking
+remote_theme: beerriot/beerriot-jekyll-theme
+subtitle: "Woodworking Plans"

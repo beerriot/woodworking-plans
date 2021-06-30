@@ -1,0 +1,17 @@
+            <li class="pure-menu-item {% if page.url == "/" %}pure-menu-selected{% endif %}">
+              <a href="/" class="pure-menu-link">Woodworking Plans</a>
+            </li>
+            <li class="pure-menu-item {% if page.url == "/help/" %}pure-menu-selected{% endif %}">
+              <a href="/help/" class="pure-menu-link">Help</a>
+            </li>
+            <li class="pure-menu-heading menu-item-divided">
+              <span>Projects</span>
+            </li>
+            {% assign sorted_pages = site.pages  | sort: "title" %}
+            {% for navpage in sorted_pages %}
+            {% if navpage.project %}
+            <li class="pure-menu-item {% if page.url == navpage.url %}pure-menu-selected{% endif %}">
+              <a href="{{navpage.url}}" class="pure-menu-link">{{navpage.title}}</a>
+            </li>
+            {% endif %}
+            {% endfor %}
