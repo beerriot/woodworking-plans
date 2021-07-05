@@ -1,11 +1,25 @@
 body {
-    color: #777;
+    color: #333;
     background: #fafafa; /* background color of OpenSCAD's Nature theme */
 }
 
 .legal {
     font-size: x-small;
     text-align: right;
+}
+
+.pagedate, .pageauthor {
+    font-size: smaller;
+    font-style: italic;
+}
+
+.nextlink {
+    text-align: right;
+}
+
+figcaption {
+    font-size: smaller;
+    text-align: center;
 }
 
 .pure-img-responsive {
@@ -55,10 +69,9 @@ The content `<div>` is where all your content goes.
 
 .header {
      margin: 0;
-     color: #333;
+     color: rgb(107,126,123);
      text-align: center;
      padding: 2.5em 2em 0;
-     border-bottom: 1px solid #eee;
  }
     .header h1 {
         margin: 0.2em 0;
@@ -78,7 +91,22 @@ The content `<div>` is where all your content goes.
     color: #888;
 }
 
+.content a {
+    text-decoration: none;
+}
 
+.content a:hover,
+.content a:focus {
+    text-decoration: underline;
+}
+
+.content a:link {
+    color: rgb(107,126,123);
+}
+
+.content a:visited {
+    color: rgb(126,120,107);
+}
 
 /*
 The `#menu` `<div>` is the parent `<div>` that contains the `.pure-menu` that
@@ -93,7 +121,6 @@ appears on the left side of the page.
     left: 0;
     bottom: 0;
     z-index: 1000; /* so the menu or its navicon stays above all content */
-    background: #191818;
     overflow-y: auto;
 }
     /*
@@ -117,23 +144,22 @@ appears on the left side of the page.
     /*
     Add that light border to separate items into groups.
     */
-    #menu .pure-menu ul,
     #menu .pure-menu .menu-item-divided {
-        border-top: 1px solid #333;
+         border-top: 1px solid #eee;
     }
         /*
         Change color of the anchor links on hover/focus.
         */
         #menu .pure-menu li a:hover,
         #menu .pure-menu li a:focus {
-            background: #333;
+            background: rgb(244,233,211);
         }
 
     /*
     This styles the selected menu item `<li>`.
     */
     #menu .pure-menu-selected{
-        background: #1f8dd6;
+        background: rgb(107,126,123);
     }
         /*
         This styles a link within a selected menu item `<li>`.
@@ -147,7 +173,7 @@ appears on the left side of the page.
     */
     #menu .pure-menu-heading {
         font-size: 110%;
-        color: #fff;
+        color: rgb(107,126,123);
         margin: 0;
     }
 
