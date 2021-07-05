@@ -23,7 +23,7 @@ clean: release-clean
 	@rm -rf _data/
 
 release: all
-	jekyll build
+	PAGES_REPO_NWO=beerriot/woodworking-plans JEKYLL_ENV=production bundle exec jekyll build --baseurl=""
 
 release-clean:
-	jekyll clean
+	bundle exec jekyll clean
