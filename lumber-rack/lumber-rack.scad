@@ -30,7 +30,8 @@ module support(height, thickness) {
 }
 
 module shelf(height, thickness) {
-    difference() {
+    color(shelf_color)
+        difference() {
         support(height, thickness);
         translate([depth - thickness * tan(30) / 2, 0, 0])
             rotate([0, -60, 0])
@@ -41,7 +42,8 @@ module shelf(height, thickness) {
 
 module leg(thickness) {
     shift = -(stock_breadth - dado_depth());
-    difference() {
+    color(leg_color)
+        difference() {
         translate([0, shift, -thickness])
             stock(height + 2*thickness * tan(frame_angle), thickness);
 
@@ -77,10 +79,12 @@ module cross_stile(thickness, length) {
 // they still line up in mountable locations.
 module cross_brace(thickness) {
     length = thickness + (pair_separation - stock_breadth) * sqrt(2);
-    rotate([0, -45, 0]) cross_stile(thickness, length);
-    translate([pair_separation - stock_breadth, stock_breadth, 0])
-        rotate([0, -45, 180])
-        cross_stile(thickness, length);
+    color(brace_color) {
+        rotate([0, -45, 0]) cross_stile(thickness, length);
+        translate([pair_separation - stock_breadth, stock_breadth, 0])
+            rotate([0, -45, 180])
+            cross_stile(thickness, length);
+    }
 }
 
 // ASSEMBLY
@@ -93,7 +97,7 @@ module left_side() {
         leg(front_leg_thickness);
 
     // foot
-    support(shelf_height[0], shelf_thickness[0]);
+    color(foot_color) support(shelf_height[0], shelf_thickness[0]);
 
     for (i = [1:len(shelf_height)-1]) {
         translate([0, 0, shelf_height[i]-shelf_thickness[i]])

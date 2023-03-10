@@ -34,3 +34,8 @@ lower_brace_thickness = 5;
 
 // Placement of the plywood hook in the rear
 hook_height = 53;
+
+foot_color = "#ccccff";
+brace_color = "#ccffcc";
+shelf_color = "#cccc99";
+leg_color = "#99cccc";
