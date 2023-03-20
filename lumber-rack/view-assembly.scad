@@ -5,9 +5,9 @@ include <../common/echo-camera-arg.scad>
 use <lumber-rack.scad>
 
 $vpr=[ 84.40, 0.00, 52.50 ];
-$vpt=[ 212.98, -101.00, 114.46 ];
+$vpt=[ 212.98, -101.00, 107.46 ];
 $vpf=22.50;
-$vpd=542.30;
+$vpd=380;
 
 
 assembly();

@@ -1,4 +1,7 @@
 // Labeling library
+include <common.scad>
+use <math_funcs.scad>
+
 $fs = 0.1;
 
 default_marker_radius = 1.5;
@@ -123,7 +126,9 @@ module key(children_info=[],
             translate([-text_size / 2, 0, size(i).z / 2])
                 rotate([90, 0, 0])
                 color(text_color)
-                text(str(name(i), " (", count(i), ")"),
+                text(count(i) == undef
+                     ? name(i)
+                     : str(name(i), " (", count(i), ")"),
                      halign="right",
                      valign="center",
                      size=text_size);
@@ -231,6 +236,29 @@ function third_angle_size(size,
      + (size_label_height()
         * (front_labels[0] + front_labels[2]
            + (top_labels == undef ? 0 : (top_labels[0] + top_labels[2]))))];
+
+module elision(size=[1,1,1]) {
+    difference() {
+        cube(size+[2,2,2]*$err, center=true);
+
+        translate(scale(size, [-0.5, 0, -0.1]))
+            rotate([90, 0, 0])
+            scale([2,1,1])
+            cylinder(size.y+4*$err, d=size.z * 0.2, center=true);
+        translate(scale(size, [0.5, 0, 0.1]))
+            rotate([90, 0, 0])
+            scale([2,1,1])
+            cylinder(size.y+4*$err, d=size.z * 0.2, center=true);
+    }
+    translate(scale(size, [-0.5, 0, 0.1]))
+        rotate([90, 0, 0])
+        scale([2,1,1])
+        cylinder(size.y+4*$err, d=size.z * 0.2, center=true);
+    translate(scale(size, [0.5, 0, -0.1]))
+        rotate([90, 0, 0])
+        scale([2,1,1])
+        cylinder(size.y+4*$err, d=size.z * 0.2, center=true);
+}
 
 // test
 size_label(50);

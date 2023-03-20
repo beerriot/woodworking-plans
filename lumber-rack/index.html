@@ -4,6 +4,171 @@ layout: project
 copyright: 2023 Bryan Fink
 project: true
 ---
+<div class="pure-u-1 pure-u-lg-1-2">
+  {% include preview_image.html image="view-key.png"
+  description="Key to the components of the lumber rack." %}
+</div>
+<div class="pure-u-1 pure-u-lg-1-2">
+  {% include preview_image.html image="view-assembly-third-angle.png"
+  description="Third-angle view of the assembled lumber rack." %}
+</div>
+
 <div class="pure-u-1">
-  TADA!
+  <p>This free-standing storage rack offers
+  {{site.data.lumber-rack.shelf_count}} parallel supports that are
+  great for storing things that need good air circulation, like
+  lumber. It stands {{site.data.lumber-rack.height}}cm tall, and
+  {{site.data.lumber-rack.depth}}cm deep, with
+  {{site.data.lumber-rack.pair_separation}}cm between the centers of
+    the supports.</p>
+
+  <p>Made from a hardwood like red oak, this rack is able to hold
+  quite a bit of weight. A softwood will also hold a decent amount of
+  weight, but consider increasing the thickness of the material if you
+  intend to really load it up.</p>
+
+  <p>Build two or more of these units and stand them in line to store
+  even longer material or equipment.</p>
+</div>
+
+<div class="pure-u-1">
+  <h2>Building Instructions</h2>
+
+  <p>Begin by ripping the stock for the shelves and feet to
+  width. This will make it easier to size the dados in the legs
+    accurately.</p>
+</div>
+
+{% capture figure_leg_end %}{% increment ur_fig %}{% endcapture %}
+{% include figure.html number=figure_leg_end
+image="view-leg-end-detail.png"
+caption="Cut ends of legs parallel, not trapezoidal." %}
+<div class="pure-u-1 pure-u-md-1-2">
+  <p>Next, rip the stock for the legs to width, then cut them to
+  length with a {{site.data.lumber-rack.frame_angle}}&deg; angle on
+  each end. Make sure the ends end up parallel, and not wedged!</p>
+</div>
+
+<div class="pure-u-1">
+  <p>The trickiest part of this build is cutting the dados for the
+  shelves. The dados should fit snuggly to provide the most support
+  for the shelf. But that also means they must be cut at exactly the
+  same location and angle on each leg, or it will be impossible to
+  assemble the unit. Make sure your saw's miter gauge has as little
+  play as possible, and holds its setting firmly. Also use a stop
+  block to make repeat cuts, to avoid error introduced from repeated
+  measuring and marking.</p>
+</div>
+
+
+{% capture figure_leg_dados %}{% increment ur_fig %}{% endcapture %}
+{% include figure.html number=figure_leg_dados
+image="view-leg-dados-detail.png"
+caption="Right legs are the mirror image of left legs."
+pure_grid=" " %}
+<div class="pure-u-1">
+  <p class="tip">Tip: After trimming the ends, but before cutting the
+  dados, all four legs will be identical. The dados for the right legs
+  go on the opposite side as the dados for the left legs, though. This
+  puts both front legs on the inside of the shelves, and both rear
+  legs on the outside of the shelves. Making sure all of these dados
+  align requires either being able to reset either your miter gauge
+  (to +{{site.data.lumber-rack.frame_angle}}&deg; and
+  -{{site.data.lumber-rack.frame_angle}}&deg;) or your stop block (to
+  each shelf height, after completing one pair of legs) accurately. If
+  you decide to &ndash; or accidentally &ndash; put all the dados on
+  the same side of all the legs, you will need to adjust the length of
+  one or more legs of the cross braces, to accomodate one of the rear
+  legs being on the inside of the shelves.</p>
+</div>
+
+<div class="pure-u-1">
+  <p>Cut all leg dados to the same depth. The legs will "sandwich" the
+  shelves, and they should all to sit flush for a strong glue joint. A
+  good depth for the dado is 1/3 the thickness of the shelf, or
+  {{site.data.lumber-rack.dado_depth}}cm.</p>
+
+  <p>Cut all shelf supports and feet to length. Adding a
+  {{site.data.lumber-rack.frame_angle}}&deg; cut on the back is
+  optional, but does make alignment during assembly easier. Adding a
+  {{site.data.lumber-rack.shelf_relief_angle}}&deg; relief to the
+  front of the shelves is also optional, but will likely lead to fewer
+  knuckle and material scratches down the road.</p>
+</div>
+
+{% capture figure_leg_assembly %}{% increment ur_fig %}{% endcapture %}
+{% include figure.html number=figure_leg_assembly
+image="view-leg-assembly.png"
+caption="Attach the legs to the shelf with glue and screws or dowels." %}
+<div class="pure-u-1 pure-u-md-1-2">
+  <p>Dry-fit the legs to the feet and shelves. The
+  {{site.data.lumber-rack.frame_angle}}&deg; edge of each shelf should
+  be flush with the back edge of the rear leg. If you can, clamp one
+  whole set together at once, to ensure the fit is good. While
+  clamped, pre-drill holes for dowels or screws. Two such fasteners
+  should be used in each place a leg meets a shelf or foot.</p>
+
+  <p>Pull everything apart. To assemble permanently, spread glue
+  evenly across the bottom of each dado and clamp back together. Glue
+  and hammer in dowels, or drive screws, immediately to aid
+  alignment. I recommend working from the top down. The top two
+  supports kind of have to go in together, but the lower supports can
+  be twisted into place one at a time.</p>
+</div>
+
+{% capture figure_brace_assembly %}{% increment ur_fig %}{% endcapture %}
+{% include figure.html number=figure_brace_assembly
+image="view-brace-assembly.png"
+caption="Assemble the cross braces with glue and screws or dowels." %}
+<div class="pure-u-1 pure-u-md-1-2">
+  <p>While the shelf assemblies dry, make the cross braces. These are
+  half-lapped X shapes. The ends are cut at 45&deg;. The dados/laps
+  are cut perpendicular to the sides (90&deg;). To make sure they are
+  centered in the brace, use a stop-block. Place one of the brace
+  stiles against the block and cut one side of the dado. Then flip the
+  stile around and cut the other side. Work the stop block out,
+  repeating both cuts, until the other stile fits in the dado. When
+  the fit is perfect, cut both walls of the dado in the other
+  stile.</p>
+
+  <p>The cross braces should be similarly assembled using glue in the
+  bottom of each dado, with dowels or screws through the center for
+  alignment.</p>
+</div>
+
+{% capture figure_lower_brace_assembly %}{% increment ur_fig %}{% endcapture %}
+{% include figure.html number=figure_lower_brace_assembly
+image="view-lower-brace-assembly.png"
+caption="Attach the lower brace between the feet." %}
+{% capture figure_upper_brace_assembly %}{% increment ur_fig %}{% endcapture %}
+{% include figure.html number=figure_upper_brace_assembly
+image="view-upper-brace-assembly.png"
+caption="Attach the upper brace between the shelves." %}
+
+
+<div class="pure-u-1">
+  <p>Attach the cross braces to the shelf assemblies with your choice
+  of fastener. I found it easiest to attach the lower brace first,
+  with the shelf assemblies laying on their backs. With the lower
+  brace in place, the rack can stand on its own. Clamp the upper brace
+  in place, checking that the shelf assemblies are plumb, and then
+  fasten it in place.</p>
+
+  <p>Optionally, attach a small cleat that protrudes from the back of
+  the unit. This allows the flat back of the unit to be used to store
+  larger sheet material, like plywood.</p>
+</div>
+
+<div class="pure-u-1">
+  <h2 id="notes">Notes</h2>
+
+  <p>The back of this unit is a great place to store larger sheet
+  goods. Simply attach cleats that protrudes from a low spot on the
+  back. The cleat will keep the sheet goods off the ground, and they
+  should otherwise stably lean into the
+  {{site.data.lumber-rack.frame_angle}}&deg; back.</p>
+
+  <p>Alternately, this rack can be made double-sided. Instead of
+  cutting the shelves and feet to sit flush with the back, cut them to
+  extend past the back just like they extend past the front.</p>
 </div>

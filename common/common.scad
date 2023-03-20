@@ -1,4 +1,4 @@
-include <math_funcs.scad>
+use <math_funcs.scad>
 
 // minimum distance to move an edge to avoid face interference when
 // slicing
