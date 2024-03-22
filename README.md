@@ -9,7 +9,7 @@ attempt to change that.
 Here you'll find my experiments with 3D modeling to create shareable
 plans. If you're primarily interested in using these plans as-is to
 recreate these projects, you may prefer to browse the associated
-[project website](https://beerriot.github.io/woodworking-plans)
+[project website](https://woodworking-plans.beerriot.com)
 instead of this code repository. That site organizes descriptions and
 instructions with images to help you build each project.
 
@@ -72,9 +72,10 @@ make, grep, sed, most notably.
 
 The entire site can be built with a single command: `make
 release`. This will create a directory named `_site/`, and place a
-standalone copy of the site in it. To deploy the site publicly,
-checkout the `gh-pages` branch of the repo, and replace its contents
-with the contents of the fully-built `_site/` directory.
+standalone copy of the site in it. To deploy the site publicly, copy
+the contents of the _site directory to wherever your webserver wants
+them (this could include copying them to the `gh-pages` branch if you
+want to deploy on Github Pages).
 
 The release build runs two stages.
 

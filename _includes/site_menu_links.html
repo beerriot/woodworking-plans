@@ -1,3 +1,9 @@
+{% if site.repo_link_in_menu %}
+            <li class="pure-menu-item">
+              <a href="{{ site.repo_url }}" class="pure-menu-link"><img src="{% link assets/GitHub-Mark-24px.png %}">Source Code</a>
+            </li>
+{% endif %}
+
             <li class="pure-menu-item {% if page.url == "/help/" %}pure-menu-selected{% endif %}">
               <a href="/help/" class="pure-menu-link">Help</a>
             </li>

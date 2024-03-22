@@ -9,16 +9,17 @@ devices.
 
 ## Page Layouts
 
-There are two main page layout templates in the `_layouts/`
-folder. The `default` template includes everything that appears on
-every page, like the navigation bar and copyright/license note. This
-is where the top-level `pure-g` div lives, in which all page-specific
-content should go.
+The main page layout template, that adds all of the navigation to the
+page and places the top-level `pure-g` div, is in the
+`_layouts/default.html` layout in the `beerriot/purecss-theme` theme
+repository/gem. This is a bare-bones theme. I use another, private
+theme when deploying to woodworking-plans.beerriot.com to place
+navigation that matches the rest of the BeerRiot subdomains.
 
-The `project` template builds on the `default` template. Currently it
-only adds an assembly preview to the top of the page. Other things
-that every project should have (model downloads?) should be added to
-this template.
+The `project` template in this repo builds on the `default`
+template. Currently it only adds an assembly preview to the top of the
+page. Other things that every project should have (model downloads?)
+should be added to this template.
 
 ## Project Pages
 
