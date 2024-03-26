@@ -13,4 +13,4 @@ else
 	JEKYLL_CONFIG=../_config.yaml
 endif
 
-WEBSITE_URL=$(shell grep url ${JEKYLL_CONFIG} | cut -d " " -f 2)
+WEBSITE_URL=$(shell yq -r .url ${JEKYLL_CONFIG})

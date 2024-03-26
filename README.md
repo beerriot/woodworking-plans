@@ -67,6 +67,8 @@ associated gems for you.
 
 You will need [ImageMagick](http://www.imagemagick.org) installed.
 
+You will need [yq](https://github.com/mikefarah/yq) installed.
+
 You'll also need a scattering of other common command line utilities:
 make, grep, sed, most notably.
 
