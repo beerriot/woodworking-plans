@@ -308,18 +308,27 @@ module riser_rotate() {
         children();
 }
 
-module side() {
-    foot();
+// render() and recoloring is required below to resolve the conflict
+// between component faces. If the render() is put directly in the
+// component, we can't alter the color of the tenons/tongues for
+// clarity in the parts diagram.
+
+module side(flush_cleat_tongue=true, fancy_edges=true) {
+    color(foot_color) render()
+        foot(cut_fancy_ends=fancy_edges);
 
     riser_rotate() {
-        riser();
+        color(riser_color) render()
+            riser(cut_fancy_end=fancy_edges);
 
         translate([riser_length() - arm_width, 0, riser_width])
             rotate([0, 90, 0]) {
-            arm();
+            color(arm_color) render()
+                arm();
 
-            translate([arm_length() - cleat_base_depth(), 0, 0])
-                cleat();
+            color(cleat_color) render()
+                translate([arm_length() - cleat_base_depth(), 0, 0])
+                cleat(cut_taper=flush_cleat_tongue, cut_fancy_edge=fancy_edges);
         }
     }
 }
@@ -329,16 +338,19 @@ module assembly() {
     translate([0, stand_width() - wood_thickness, 0])
         side();
 
-    translate([foot_length()
-               - (foot_stretcher_inset_front()
-                  + stretcher_tenon_width()
-                  + stretcher_tenon_shoulder_depth()),
-               0,
-               foot_stretcher_inset_bottom() - stretcher_tenon_face_depth()])
+    color(stretcher_color) render()
+        translate([foot_length()
+                   - (foot_stretcher_inset_front()
+                      + stretcher_tenon_width()
+                      + stretcher_tenon_shoulder_depth()),
+                   0,
+                   foot_stretcher_inset_bottom()
+                   - stretcher_tenon_face_depth()])
         rotate([90, 0, 90])
         stretcher();
 
-    riser_rotate()
+    color(stretcher_color) render()
+        riser_rotate()
         translate([riser_length()
                    - (riser_stretcher_inset_top()
                       + stretcher_tenon_width()

@@ -13,6 +13,477 @@ project: true
   description="Third-angle view of the assembled laptop stand." %}
 </div>
 
+{% assign ls = site.data.laptop-stand %}
+{% capture figure_skip_zero %}{% increment ls_fig %}{% endcapture %}
+
 <div class="pure-u-1">
-  TODO: describe laptop stand
+  <p>
+    This laptop stand is designed to raise the screen of a laptop to
+    eye-level when seated at a desk or table. The dimensions given
+    here are for a laptop that is {{ ls.laptop_case_width }}cm from
+    its left edge to its right, and {{ ls.laptop_case_depth }}cm from
+    front to back (for example, {{ ls.laptop_example }}). The stand
+    raises the top edge of such a laptop's screen to {{ ls.goal_height
+    }}cm.
+  </p>
+
+  <p>
+    A few key design elements:
+  </p>
+
+  <ul>
+    {% if ls.tilt > 0 %}
+    <li>
+      The {{ ls.tilt }}&deg; forward tilt seats the laptop more
+      securely than a level shelf would. It also allows easier access
+      to the keyboard and trackpad than a level shelf would, for those
+      times when external devices are disconnected.
+    </li>
+    {% endif %}
+    <li>
+      The feet are set back from the front edge of the arms to allow
+      the laptop screen to be closer without interfering with the
+      placement of an external keyboard.
+    </li>
+    <li>
+      The open space between the feet and the arms is a great place to
+      keep other accessories (external drives, for example), or to
+      store an external keyboard temporarily.
+    </li>
+    <li>
+      The open space between the arms provides a clear area for
+      gripping the laptop when removing or installing it.
+    </li>
+  </ul>
+</div>
+
+<div class="pure-u-1">
+  <h2>Build Instructions</h2>
+
+  <p>
+    This design uses mortise-and-tenon joinery for attaching the the
+    stretchers to the feet and rear risers, and tongue-and-groove
+    joinery for attaching the pieces of each side to each other.
+    Exact dimensions for that joinery are only specified where it must
+    match another component. That is, the thickness of the tenons and
+    tongues is unspecified. It is far more important that they match
+    the mortises and grooves than that they meet a specific number. As
+    a general rule of thumb, cutting the tongues between 1/2 and 1/3
+    the thickness of the rest of the piece, leaving 1/4 to 1/3 of the
+    material on either side in its mate, will produce a strong, good
+    looking joint.
+  </p>
+
+  <p>
+    It is also far more important that the pairs of pieces match each
+    other than that they match specific numbers. If the left foot is
+    exactly the same as the right foot, the left riser is the same as
+    the right riser, the foot stretcher is the same as the riser
+    stretcher, etc., then the stand will fit together and stand
+    evenly.
+  </p>
+
+  <p>
+    The parts diagram at the top of this page shows the finished
+    components. You may wish to cut each piece slightly longer, and
+    cut the tenons, tongues, and grooves slightly deeper. This will
+    produce small amounts of over-extension that can be trimmed flush
+    for a perfect match later.
+  </p>
+
+  <p>
+    These instructions will also specifically recommend starting
+    longer stock for the feet, risers, and cleats. This allows for
+    better jig alignment during joinery cuts, and will be trimmed
+    after assembly.
+  </p>
+
+  <h3>Stock Preparation</h3>
+
+  <p>
+    All components in this piece are made from {{ ls.wood_thickness
+    }}cm-thick material. The following lengths do not include
+    allowance for saw kerfs.
+  </p>
+
+  <ul>
+    {% if ls.arm_width == ls.riser_width %}
+    <li>
+      The arms and risers are each {{ ls.arm_width }}cm wide, and
+      you'll need a combined length of {{ ls.arm_length | plus:
+      ls.riser_length | times: 2 }}cm.
+    </li>
+    {% else %}
+    <li>
+      The arms are {{ ls.arm_width }}cm wide, requiring a {{
+      ls.arm_length | times: 2 }}cm total length for the pair.
+    </li>
+    <li>
+      The risers are {{ ls.riser_width }}cm wide, and a total of {{
+      ls.riser_length | time: 2 }}cm long.
+    </li>
+    {% endif %}
+
+    {% if ls.foot_width == ls.stretcher_width %}
+    <li>
+      The feet and stretchers are each {{ ls.foot_width }}cm wide, and
+      require a combined length of {{ ls.foot_length | plus:
+      ls.stand_width | time: 2 }}cm.
+    </li>
+    {% else %}
+    <li>
+      The feet are {{ ls.foot_width }}cm wide, requiring a {{
+      ls.foot_length | times: 2 }}cm total length for the pair.
+    </li>
+    <li>
+      The stretchers are {{ ls.stand_width }}cm long, requiring {{
+      ls.stand_width | times: 2 }}cm total.
+    </li>
+    {% endif %}
+
+    <li>
+      The cleats are {{ ls.cleat_base_depth }}cm wide. I recommend
+      starting with one piece that is at least {{ ls.wood_thickness |
+      plus: ls.arm_width | times: 2 }}cm long. Both cleats will be
+      made from this piece, but keeping them together give much more
+      room for secure holding while cutting the joinery.
+    </li>
+  </ul>
+
+  <h3>Stretchers</h3>
+</div>
+
+{% capture figure_stretcher_tenon %}{% increment ls_fig %}{% endcapture %}
+{% include figure.html number=figure_stretcher_tenon
+image="view-stretcher-tenon.png"
+caption="Stretcher tenon detail." %}
+
+<div class="pure-u-1">
+  <p>
+    Cut the stretchers to length at {{ ls.stand_width }}cm. Then cut
+    tenons on either end that are {{ ls.wood_thickness }}cm long. ({%
+    include figure_link.html number=figure_stretcher_tenon %}) The
+    exact width and thickness of each tenon is up to you, but the
+    model given here demonstrates {{ ls.stretcher_tenon_width }}cm by
+    {{ ls.stretcher_tenon_thickness }}cm.
+  </p>
+
+  <p>
+    As noted earlier, it is less important that these stretchers are
+    any particular length, than it is that they are exactly the same
+    length. In particular, the distance from the shoulder at one end
+    to the shoulder at the other should match, to ensure the sides of
+    the stand are held parallel to each other.
+  </p>
+
+  <p>
+    Also note that this design is for through-tenons that are flush
+    with the outer edge of the stand. You may want to cut the tenons
+    just slightly longer than {{ ls.wood_thickness }}cm, to be able to
+    trim the excess flush after assembly.
+  </p>
+
+  <h3>Feet</h3>
+</div>
+
+{% capture figure_foot_mortise %}{% increment ls_fig %}{% endcapture %}
+{% include figure.html number=figure_foot_mortise
+image="view-foot-mortise.png"
+caption="Foot stretcher mortise detail." %}
+
+<div class="pure-u-1">
+  <p>
+    Cut the feet to length at {{ ls.foot_length }}cm (remember, this
+    is longer than indicated by the finished parts key at the top of
+    this page). Mark and cut a mortise in each foot matching the
+    tenons on one stretcher. ({% include figure_link.html
+    number=figure_foot_mortise %}) The exact placement of the mortise
+    is up to you. The diagrams here place it about 1/3 of the way from
+    the end of each foot (forward wall at {{
+    ls.foot_stretcher_inset_front }}cm, rear wall at
+    {{ls.foot_stretcher_inset_front | plus: ls.stretcher_tenon_width
+    }}cm), and in the middle of the foot vertically (bottom wall at {{
+    ls.foot_stretcher_inset_bottom }}cm, top wall at
+    {{ls.foot_stretcher_inset_bottom | plus:
+    ls.stretcher_tenon_thickness }}cm).
+  </p>
+
+  <p>
+    A good way to make marks exactly matching the size of a tenon is
+    to use the tenon itself, along with a speed square or marking
+    gauge. First decide where you want the far wall of the
+    mortise. Set the marking gauge to that distance, and mark the
+    wall. Without changing the gauge's setting, place the tenon
+    between the marking gauge and the workpiece (the foot) and make
+    another mark. Check the marks against the tenon, but they should
+    match exactly.
+  </p>
+
+  <h3>Risers</h3>
+</div>
+
+  {% capture figure_riser_mortise %}{% increment ls_fig %}{% endcapture %}
+  {% include figure.html number=figure_riser_mortise
+  image="view-riser-mortise.png"
+  caption="Riser mortise detail" %}
+
+<div class="pure-u-1">
+  <p>
+    Follow the same procedure for the risers as you just followed for
+    the feet. ({% include figure_link.html number=figure_riser_mortise
+    %}) The initial length for the risers is {{ ls.riser_length}}cm
+    (again, longer than the parts diagram shows). The diagrams shown
+    here place the riser stretcher about 1/3 of the way from the top
+    end (or at least far enough to miss the arm, if you have modified
+    the parameters: walls at {{ ls.riser_stretcher_inset_top }}cm and
+    {{ ls.riser_stretcher_inset_top | plus: ls.stretcher_tenon_width
+    }}cm), and again in the middle of the width (walls at {{
+    ls.riser_stretcher_inset_front }}cm and {{
+    ls.riser_stretcher_inset_front | plus:
+    ls.stretcher_tenon_thickness }}cm).
+  </p>
+
+  {% if ls.tilt != 0 %}
+  <h3>Tilt</h3>
+</div>
+
+{% capture figure_tilt_cut %}{% increment ls_fig %}{% endcapture %}
+{% include figure.html number=figure_tilt_cut
+image="view-tilt-cut.png"
+caption="Tilt cut detail." %}
+
+<div class="pure-u-1">
+  <p>
+    Cut the {{ ls.tilt }}&deg; tilt angle on the end of each foot and
+    riser, at the end farthest from the mortise. ({% include
+    figure_link.html number=figure_tilt_cut %})
+  </p>
+  {% endif %}
+
+  <h3>Arms and cleats</h3>
+</div>
+
+{% capture figure_arm_cleat %}{% increment ls_fig %}{% endcapture %}
+{% include figure.html number=figure_arm_cleat
+image="view-arm-cleat.png"
+caption="Arms and cleat blank cut to length." %}
+
+<div class="pure-u-1">
+  <p>
+    Cut the arms and cleat blank to length. {% include
+    figure_link.html number=figure_arm_cleat %} demonstrates how the
+    cleat blank should be long enough to make both cleats from.
+  </p>
+</div>
+
+{% capture figure_arm_taper %}{% increment ls_fig %}{% endcapture %}
+{% include figure.html number=figure_arm_taper
+image="view-arm-taper.png"
+caption="Arm taper detail." %}
+
+<div class="pure-u-1">
+  <p>
+    Optionally, cut a taper on the bottom edge of the arm. The exact
+    angle and placement of this taper is mostly up to your taste. It
+    helps open up the space between the feet and the arms, if you want
+    to store other desk items in that area. The pictured design starts
+    the taper at the inside edge of the riser, and ends it at the
+    front edge of the arm, at a distance below the top edge equal to
+    the width of the cleat. ({% include figure_link.html
+    number=figure_arm_taper %})
+  </p>
+
+  <h3>Grooves</h3>
+</div>
+
+{% capture figure_arm_groove %}{% increment ls_fig %}{% endcapture %}
+{% include figure.html number=figure_arm_groove
+image="view-arm-groove.png"
+caption="Arm groove detail." %}
+
+<div class="pure-u-1">
+  <p>
+    Cut the grooves in both ends of the arms. The groove in the front
+    end should match the width of the cleat blank at {{
+    ls.cleat_base_depth }}cm (or be just slightly deeper, to make it
+    easy to trim them flush after assembly). The groove in the back
+    end should match the width of the riser at {{ ls.riser_width
+    }}cm. ({% include figure_link.html number=figure_arm_groove %})
+  </p>
+
+  <p>
+    Tip: If you're using a table saw to make these cuts with a
+    tenoning jig, run the piece through one way, then flip it around
+    and run it through again the other way. This will ensure that the
+    groove is perfectly centered, regardless of the width of the piece
+    or of the groove.
+  </p>
+</div>
+
+{% capture figure_foot_groove %}{% increment ls_fig %}{% endcapture %}
+{% include figure.html number=figure_foot_groove
+image="view-foot-groove.png"
+caption="Foot groove detail."%}
+
+<div class="pure-u-1">
+  <p>
+    Also cut the grooves in the mitered end of the feet. The bottom of
+    the groove should be parallel to the mitered end. The depth of the
+    groove should match the width of the riser at {{ ls.riser_width }}
+    cm. ({% include figure_link.html number=figure_foot_groove %})
+  </p>
+
+  <h3>Tongues</h3>
+</div>
+
+{% capture figure_riser_tongues %}{% increment ls_fig %}{% endcapture %}
+{% include figure.html number=figure_riser_tongues
+image="view-riser-tongues.png"
+caption="Riser tongues detail." %}
+
+<div class="pure-u-1">
+  <p>
+    Cut the tongue on the mitered end of the riser to fit the groove
+    in the foot. The shoulder of the tongue should be parallel to the
+    miter, {{ ls.foot_width }}cm away. ({% include figure_link.html
+    number=figure_riser_tongues sub="a" %}) Cut the tongue on the
+    square end of the riser to fit the deep groove in the arm. This
+    shoulder is {{ ls.arm_width }}cm away from the end. ({% include
+    figure_link.html number=figure_riser_tongues sub="b" %})
+  </p>
+</div>
+
+{% capture figure_cleat_tongues %}{% increment ls_fig %}{% endcapture %}
+{% include figure.html number=figure_cleat_tongues
+image="view-cleat-tongues.png"
+caption="Cleat tongues detail." %}
+
+<div class="pure-u-1">
+  <p>
+    Cut tongues on either end of the cleat blank. Each cleat's tongue
+    only needs to be long enough to pass through the front end of the
+    arm, so if you cut the optional taper this won't be the full {{
+    ls.arm_width }}cm shown here. But, since they're easy to cut flush
+    later, leaving the tongue longer is an easy way to make sure you
+    don't end up short. ({% include figure_link.html
+    number=figure_cleat_tongues sub="a" %})
+  </p>
+
+  <p>
+    After cutting the tongues, separate the blank into two cleats by
+    cutting {{ ls.wood_thickness }}cm toward the blank center from
+    each tongue's shoulder. ({% include figure_link.html
+    number=figure_cleat_tongues sub="b" %})
+  </p>
+
+  <h3>Assembly</h3>
+
+  <p>
+    Before glueing everything together, dry assemble the parts to make
+    sure the two side assemblies match exactly when the shoulders of
+    each joint are fully seated. When they do, also install the
+    stretchers and make sure the stand sits flat, and that the arms
+    are parallel.
+  </p>
+</div>
+
+{% capture figure_side_glue %}{% increment ls_fig %}{% endcapture %}
+{% include figure.html number=figure_side_glue
+image="view-side-glue.png"
+caption="Glue the tongue-and-groove joints on each side assembly." %}
+
+<div class="pure-u-1">
+  <p>
+    When you're happy with the fit, disassemble everything, and then
+    reassemble after spreading glue in each groove and on each tongue
+    and its shoulders. ({% include figure_link.html
+    number=figure_side_glue %}) Clamping across the joint, to pinch
+    the groove onto the tongue, once the shoulders are fully seated,
+    should be sufficient to keep the joint in place while the glue
+    dries. Do not glue the stretchers into place yet.
+  </p>
+</div>
+
+{% capture figure_side_flush %}{% increment ls_fig %}{% endcapture %}
+{% include figure.html number=figure_side_flush
+image="view-side-flush.png"
+caption="Flush-trim any over-extensions." %}
+
+<div class="pure-u-1">
+  <p>
+    When the glue has set on the side assemblies, trim any over
+    extensions from the tongue-and-groove joints. ({% include
+    figure_link.html number=figure_side_flush %})
+  </p>
+</div>
+
+{% capture figure_fancy_cuts %}{% increment ls_fig %}{% endcapture %}
+{% include figure.html number=figure_fancy_cuts
+image="view-fancy-cuts.png"
+caption="Trim ends for aesthetics." %}
+
+<div class="pure-u-1">
+  <p>
+    It's finally time to do the bit of trimming that makes the ends of
+    the feet, risers, and cleats look exactly like they do in the
+    parts key. Cut {{ ls.tilt }}&deg; angles on the front and back of
+    the feet, and on the front edge of the cleats. ({% include
+    figure_link.html number=figure_fancy_cuts %}) These are purely
+    aesthetic, so don't fret too much about whether they <i>are</i>
+    exactly the same on each side - just make them <i>look</i>
+    similar.
+  </p>
+</div>
+
+{% capture figure_stretcher_glue %}{% increment ls_fig %}{% endcapture %}
+{% include figure.html number=figure_stretcher_glue
+image="view-stretcher-glue.png"
+caption="Glue the tenons into their mortises."%}
+
+<div class="pure-u-1">
+  <p>
+    Once the final modifications to the side assemblies are finished,
+    apply glue to the mortises and tenons, and install the
+    stretchers. After fully-seating both stretchers into both sides,
+    it's a good ideal to clamp across the stand to hold the sides
+    tight to the tenon shoulders. It's also a good idea to clamp the
+    base of the unit down to a flat table. If there is any play in the
+    joints, this will ensure that the glue cures in a way that keeps
+    the unit flat.
+  </p>
+
+  <h3>Finished</h3>
+
+  <p>
+    When the stretcher glue has set, trim the ends of the tenons flush
+    to the feet, and then apply the finish of your choice. Enjoy!
+  </p>
+
+  <h3>Notes</h3>
+
+  <p>
+    All components in the parts diagram are oriented such that wood
+    grain would run left-to-right (horizontally).
+  </p>
+
+  <p>
+    If your mortises and tenons are precise, it may not be necessary
+    to glue the stretchers into place. This will allow you to
+    disassemble and flat-pack the stand for storage or transport
+    later.
+  </p>
+
+  <p>
+    If you are glueing the stretchers into place, the stretcher
+    between the feet may not be necessary. It adds some rigidity, but
+    the riser stretcher may give you enough structure alone. You may
+    still find it useful to cut a length of wood to use in place of
+    the stretcher while assembling, to keep the feet (and arms)
+    parallel while the glue sets.
+  </p>
+
+  <p>
+    One example of a build of this stand is documented
+    here: <a href="https://blog.beerriot.com/2024/04/02/laptop-stand/">https://blog.beerriot.com/2024/04/02/laptop-stand/</a>.
+  </p>
 </div>

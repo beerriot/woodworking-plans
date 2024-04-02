@@ -260,8 +260,28 @@ module elision(size=[1,1,1]) {
         cylinder(size.y+4*$err, d=size.z * 0.2, center=true);
 }
 
+// A little bar to indicate alignment.
+module guide(length, r=0.05, color=[0.5, 0.5, 0.5, 0.25]) {
+    color(color)
+        cylinder(length, r, r);
+}
+
+module arrow(shaft_length=1,
+             head_length=0.75,
+             head_angle=30,
+             r=0.05,
+             color="grey") {
+    color(color) {
+        cylinder(shaft_length, r, r);
+        rotate([0, -head_angle, 0]) cylinder(head_length, r, r);
+        rotate([0, head_angle, 0]) cylinder(head_length, r, r);
+    }
+}
+
 // test
 size_label(50);
+
+translate([50, 0, 0]) arrow();
 
 key([["foo", 1, [1,1,1]],
      ["bar", 2, [2,2,2]]]) {

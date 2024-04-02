@@ -160,8 +160,12 @@ module foot_key() {
 
         union() {
             size_label(foot_length() - foot_width * tan(tilt));
-            translate([riser_width, 0, foot_width])
+            translate([riser_width / cos(tilt), 0, foot_width])
                 angle_label(tilt, -90-tilt, foot_width);
+            translate([0, 0, foot_width])
+                rotate([0, tilt, 0])
+                translate([0, 0, -size_label_height()])
+                size_label(riser_width, over=true);
         }
         ta_right_side(stretcher_size().x) {
             size_label(wood_thickness);
@@ -169,8 +173,10 @@ module foot_key() {
                 size_label(foot_width, rotation=-90);
         }
         ta_top_side(stretcher_size().z) {
+            /*
             translate([0, 0, wood_thickness / 3])
                 size_label(riser_width);
+            */
         }
     }
 }

@@ -1,5 +1,8 @@
 // Laptop model details (cm)
 
+// for website use only, but keeping it next to the dimensions
+laptop_example = "a 13-inch MacbookPro";
+
 // trackpad end to hinge end
 laptop_case_depth = 22;
 
